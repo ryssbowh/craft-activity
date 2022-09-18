@@ -1,0 +1,32 @@
+{% for log in logs %}
+    {% set description = log.description|trim %}
+    <tr data-id="{{ log.id }}">
+        <td>{{ log.userName|raw }}</td>
+        {% if craft.app.isMultiSite %}
+            <td>{{ log.siteName|raw }}</td>
+        {% endif %}
+        <td>
+            {% if log.request == 'cp' %}
+                {{ 'Control Panel'|t('activity') }}
+            {% elseif log.request == 'site' %}
+                {{ 'Site'|t('activity') }}
+            {% elseif log.request == 'yaml' %}
+                {{ 'Yaml config'|t('activity') }}
+            {% else %}
+                {{ 'Console'|t('activity') }}
+            {% endif %}
+        </td>
+        <td>{{ log.title|raw }} {% if description %}<a class="icon arrow"></a>{% endif %}</td>
+        <td>{{ log.dateCreated|date('d/m/Y H:i:s') }}</td>
+        <td class="thin">
+            {% if currentUser.can('deleteActivityLogs') %}
+                <a class="delete icon" title="{{ 'Delete'|t('app') }}" role="button"></a>
+            {% endif %}
+        </td>
+    </tr>
+    {% if description %}
+        <tr style="display:none" class="description">
+            <td colspan="4">{{ description|raw }}</td>
+        </tr>
+    {% endif %}
+{% endfor %}

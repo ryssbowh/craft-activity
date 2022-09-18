@@ -1,0 +1,40 @@
+.icon.arrow {
+    width: 8px;
+    height: 8px;
+    margin-left: 5px;
+}
+
+.icon.arrow:after {
+    transition: all 0.3s;
+    display: inline-block;
+    content: "";
+    font-size: 0;
+    width: 5px;
+    height: 5px;
+    border: solid var(--ui-control-color);
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: relative;
+}
+
+.icon.arrow.down:after {
+    -webkit-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+    margin-top: 2px;
+}
+
+#activity-table ul {
+    list-style: initial;
+    margin-left: 15px;
+}
+
+#activity-table .status {
+    margin-right: 3px;
+}
+
+#reset-filters {
+    margin-top: 7px;
+}

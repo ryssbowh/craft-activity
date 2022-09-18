@@ -1,0 +1,27 @@
+{% if logs %}
+    <div class="flex pagination" style="margin-top: 10px">
+        <div class="page-info">
+            {% if pageInfo.total %}
+                {{ "{first, number}-{last, number} of {total, number} {total, plural, =1{{item}} other{{items}}}"|t('app', {
+                    first: pageInfo.first,
+                    last: pageInfo.last,
+                    total: pageInfo.total,
+                    item: 'record'|t('activity'),
+                    items: 'records'|t('activity'),
+                }) }}
+            {% endif %}
+        </div>
+
+        {% if pageInfo.prevUrl %}
+            <a class="page-link prev-page" href="{{ pageInfo.prevUrl }}" title="{{ 'Previous page'|t('app') }}" aria-label="{{ 'Previous page'|t('app') }}"></a>
+        {% else %}
+            <div class="page-link prev-page disabled" title="{{ 'Previous page'|t('app') }}" aria-label="{{ 'Previous page'|t('app') }}"></div>
+        {% endif %}
+
+        {% if pageInfo.nextUrl %}
+            <a class="page-link next-page" href="{{ pageInfo.nextUrl }}" title="{{ 'Next page'|t('app') }}" aria-label="{{ 'Next page'|t('app') }}"></a>
+        {% else %}
+            <div class="page-link next-page disabled" title="{{ 'Next page'|t('app') }}" aria-label="{{ 'Next page'|t('app') }}"></div>
+        {% endif %}
+    </div>
+{% endif %}

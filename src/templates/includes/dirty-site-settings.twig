@@ -1,0 +1,78 @@
+{% macro fromValue(value) %}
+    <code>{{ (value.ff ?? value.f)|prettyPrint }}</code>
+{% endmacro %}
+
+{% macro toValue(value) %}
+    <code>{{ (value.tf ?? value.t)|prettyPrint }}</code>
+{% endmacro %}
+
+{% for fields in field.data %}
+    {% set site = craft.app.sites.getSiteById(fields.id) %}
+    {% set siteName = fields.name %}
+    {% if site %}
+        {% set siteName = site.name %}
+    {% endif %}
+    {% if fields.mode == 'enabled' %}
+        <li>
+            {{ "The site settings for site {site} were enabled"|t('activity', {
+                site: siteName,
+            })|raw }}
+            <ul>
+                <li>
+                    {{ "Template was set to {to}"|t('activity', {
+                        to: _self.toValue(fields.template)
+                    })|raw }}
+                </li>
+                <li>
+                    {{ "URI format was set to {to}"|t('activity', {
+                        to: _self.toValue(fields.uriFormat)
+                    })|raw }}
+                </li>
+            </ul>
+        </li>
+    {% elseif fields.mode == 'disabled' %}
+        <li>
+            {{ "The site settings for site {site} were disabled"|t('activity', {
+                site: siteName,
+            })|raw }}
+            <ul>
+                <li>
+                    {{ "Template was {from}"|t('activity', {
+                        from: _self.fromValue(fields.template)
+                    })|raw }}
+                </li>
+                <li>
+                    {{ "URI format was {from}"|t('activity', {
+                        from: _self.fromValue(fields.uriFormat)
+                    })|raw }}
+                </li>
+            </ul>
+        </li>
+    {% else %}
+        <li>
+            {{ "The site settings for site {site} were changed"|t('activity', {
+                site: siteName,
+            })|raw }}
+            <ul>
+                {% if fields.template ?? null %}
+                    <li>
+                        {{ "Template was changed from {from} to {to}"|t('activity', {
+                            site: siteName,
+                            from: _self.fromValue(fields.template),
+                            to: _self.toValue(fields.template)
+                        })|raw }}
+                    </li>
+                {% endif %}
+                {% if fields.uriFormat ?? null %}
+                    <li>
+                        {{ "URI format was changed from {from} to {to}"|t('activity', {
+                            site: siteName,
+                            from: _self.fromValue(fields.uriFormat),
+                            to: _self.toValue(fields.uriFormat)
+                        })|raw }}
+                    </li>
+                {% endif %}
+            </ul>
+        </li>
+    {% endif %}
+{% endfor %}

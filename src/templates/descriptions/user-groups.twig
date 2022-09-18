@@ -1,0 +1,10 @@
+{% if newGroups %}
+    <p>{{ 'Was added to groups: {groups}'|t('activity', {
+        groups: newGroups
+    }) }}</p>
+{% endif %}
+{% if removedGroups %}
+    <p>{{ 'Was removed from groups: {groups}'|t('activity', {
+        groups: removedGroups
+    }) }}</p>
+{% endif %}

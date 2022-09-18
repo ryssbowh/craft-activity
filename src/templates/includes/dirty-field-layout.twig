@@ -1,0 +1,26 @@
+{% if field.data.added ?? false %}
+    <li>
+        {% if field.data.added|length == 1 %}
+            {{ 'Field {field} was added to the field layout'|t('activity', {
+                field: field.data.added[field.data.added|keys|first].name
+            }) }}
+        {% else %}
+            {{ 'Fields {fields} were added to the field layout'|t('activity', {
+                fields: field.data.added|map(f => f.name)|join(', ')
+            }) }}
+        {% endif %}
+    </li>
+{% endif %}
+{% if field.data.removed ?? false %}
+    <li>
+        {% if field.data.removed|length == 1 %}
+            {{ 'Field {field} was removed from the field layout'|t('activity', {
+                field: field.data.removed[field.data.removed|keys|first].name
+            }) }}
+        {% else %}
+            {{ 'Fields {fields} were removed from the field layout'|t('activity', {
+                fields: field.data.removed|map(f => f.name)|join(', ')
+            }) }}
+        {% endif %}
+    </li>
+{% endif %}

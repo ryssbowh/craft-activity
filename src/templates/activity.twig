@@ -1,0 +1,100 @@
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% set title = 'Activity'|t('activity') %}
+
+{% block actionButton %}
+    {% if currentUser.can('deleteActivityLogs') %}
+        <a href="#" class="submit btn delete icon {% if not logs %}hidden{% endif %}">{{ "Delete all records"|t('activity') }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block toolbar %}
+    <button type="button" data-icon="users" class="btn menubtn">{{ "Users"|t('activity') }}</button>
+    <div class="menu activity-filter" id="users-filter" data-name="users">
+        <ul class="padded">
+            <li>
+                <a class="all {% if not filters.users ?? [] %}sel{% endif %}">{{ "All users"|t('activity') }}</a>
+            </li>
+            {% for user in users %}
+                <li>
+                    <a data-id="{{ user.id }}" {% if user.id in filters.users ?? [] %}class="sel"{% endif %}>
+                    {% if user.exists %}
+                        <span class="status {{ user.status }}"></span>{{ user.name }}
+                    {% else %}
+                        {{ user.name }}
+                    {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <button type="button" data-icon="settings" class="btn menubtn">{{ "Types"|t('activity') }}</button>
+    <div class="menu activity-filter" id="type-filter" data-name="types">
+        <ul class="padded">
+            <li>
+                <a class="all {% if not filters.types ?? [] %}sel{% endif %}">{{ "All types"|t('activity') }}</a>
+            </li>
+            {% for handle, name in types %}
+                <li>
+                    <a data-id="{{ handle }}" {% if handle in filters.types ?? [] %}class="sel"{% endif %}>
+                        {{ name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <div class="datetimewrapper">
+            <div class="datewrapper">
+                <input class="text datepicker" value="{{ filters.dateFrom ?? '' }}" name="dateFrom" placeholder="       {{ 'Date from'|t('activity') }}" autocomplete="off">
+                <div data-icon="date"></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="datetimewrapper">
+            <div class="datewrapper">
+                <input class="text datepicker" value="{{ filters.dateTo ?? '' }}" name="dateTo" placeholder="       {{ 'Date to'|t('activity') }}" autocomplete="off">
+                <div data-icon="date"></div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn menubtn">{{ "Per page"|t('activity') }}</button>
+    <div class="menu" id="per-page">
+        <ul class="padded">
+            <li><a class="{% if perPage == 10 %}sel{% endif %}">10</a></li>
+            <li><a class="{% if perPage == 20 %}sel{% endif %}">20</a></li>
+            <li><a class="{% if perPage == 30 %}sel{% endif %}">30</a></li>
+            <li><a class="{% if perPage == 50 %}sel{% endif %}">50</a></li>
+            <li><a class="{% if perPage == 100 %}sel{% endif %}">100</a></li>
+        </ul>
+    </div>
+    <a href="#" id="reset-filters">{{ 'Reset'|t('activity') }}</a>
+{% endblock %}
+
+{% block content %}
+    <div id="noactivity" class="hidden">{{ 'No activity found'|t('activity') }}</div>
+    <table id="activity-table" class="{% if not logs %}hidden{% endif %} data fullwidth collapsible">
+        <thead>
+            <th scope="col">{{ "User"|t('app') }}</th>
+            {% if craft.app.isMultiSite %}
+                <th scope="col">{{ "Site"|t('app') }}</th>
+            {% endif %}
+            <th scope="col">{{ "Request"|t('activity') }}</th>
+            <th scope="col">{{ "Activity"|t('activity') }}</th>
+            <th scope="col">{{ "Date"|t('app') }}</th>
+            <td class="thin"></td>
+        </thead>
+        <tbody>
+            {% include "activity/activity-logs" %}
+        </tbody>
+    </table>
+    <div id="activity-pager">
+        {% include "activity/activity-pager" %}
+    </div>
+{% endblock %}
+
+{% js on ready %}
+    new Activity;
+{% endjs %}

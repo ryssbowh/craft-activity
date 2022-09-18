@@ -1,0 +1,39 @@
+{% macro fromValue(value) %}
+    <code>{{ (value.ff ?? value.f)|prettyPrint }}</code>
+{% endmacro %}
+
+{% macro toValue(value) %}
+    <code>{{ (value.tf ?? value.t)|prettyPrint }}</code>
+{% endmacro %}
+
+{% for row in field.data %}
+    <li>{{ 'The ' ~ row.row ~ ' row of preview targets was ' ~ row.mode ~ ':' }}
+        <ul>
+            {% for fieldName, fieldLabel in {label: 'Label', urlFormat: 'Url format', refresh: 'Refresh'} %}
+                {% if row[fieldName] ?? false %}
+                    <li>
+                        {% set hasFrom = 'f' in row[fieldName]|keys %}
+                        {% set hasTo = 't' in row[fieldName]|keys %}
+                        {% if hasFrom and hasTo %}
+                            {{ "{field} was changed from {from} to {to}"|t('activity', {
+                                field: fieldLabel,
+                                from: _self.fromValue(row[fieldName]),
+                                to: _self.toValue(row[fieldName])
+                            })|raw }}
+                        {% elseif hasTo %}
+                            {{ "{field} was set to {to}"|t('activity', {
+                                field: fieldLabel,
+                                to: _self.toValue(row[fieldName])
+                            })|raw }}
+                        {% elseif hasFrom %}
+                            {{ "{field} value ({from}) was removed"|t('activity', {
+                                field: fieldLabel,
+                                from: _self.fromValue(row[fieldName])
+                            })|raw }}
+                        {% endif %}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </li>
+{% endfor %}

@@ -1,0 +1,5 @@
+{% if log.changedFields %}
+    {% include "activity/includes/dirty-field-layout" with {
+        field: log.changedFields.0
+    } %}
+{% endif %}

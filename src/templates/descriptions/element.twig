@@ -1,0 +1,42 @@
+{% macro value(value) %}
+    {% if value is iterable %}
+        {% set value = value|join(', ') %}
+    {% else %}
+        {% set value = value|prettyPrint %}
+    {% endif %}
+    <code>{{ value }}</code>
+{% endmacro %}
+
+{% macro toValue(field) %}
+    {{ _self.value(field.hasFancyTo ? field.fancyTo : field.to) }}
+{% endmacro %}
+
+{% macro fromValue(field) %}
+    {{ _self.value(field.hasFancyFrom ? field.fancyFrom : field.from) }}
+{% endmacro %}
+
+{% if log.changedFields %}
+    <ul>
+        {% for field in log.changedFields %}
+            <li>
+                {% if field.hasFrom and field.hasTo %}
+                    {{ "{field} was changed from {from} to {to}"|t('activity', {
+                        field: field.data.name,
+                        from: _self.fromValue(field),
+                        to: _self.toValue(field)
+                    })|raw }}
+                {% elseif field.hasTo %}
+                    {{ "{field} was set to {to}"|t('activity', {
+                        field: field.data.name,
+                        to: _self.toValue(field)
+                    })|raw }}
+                {% elseif field.hasFrom %}
+                    {{ "{field} value ({from}) was removed"|t('activity', {
+                        field: field.data.name,
+                        from: _self.fromValue(field)
+                    })|raw }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

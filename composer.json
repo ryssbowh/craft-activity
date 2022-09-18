@@ -1,0 +1,35 @@
+{
+    "name": "ryssbowh/craft-activity",
+    "description": "Record user activity in control panel",
+    "type": "craft-plugin",
+    "keywords": [
+        "cms",
+        "craftcms",
+        "user",
+        "activity",
+        "track"
+    ],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "The Web Puzzlers",
+            "homepage": "https://github.com/ryssbowh"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ryssbowh\\Activity\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Activity",
+        "handle": "activity",
+        "developer": "The Web Puzzlers",
+        "developerUrl": "https://github.com/ryssbowh",
+        "documentationUrl": "https://github.com/ryssbowh/craft-activity",
+        "class": "Ryssbowh\\Activity\\Activity"
+    }
+}

@@ -1,0 +1,98 @@
+{% import "_includes/forms" as forms %}
+
+{{
+    forms.lightswitchField({
+        label: 'Ignore activity for console requests'|t('activity'),
+        name: 'ignoreConsoleRequests',
+        on: settings.ignoreConsoleRequests,
+        fieldClass: 'first'
+    })
+}}
+
+{{
+    forms.lightswitchField({
+        label: 'Ignore activity for cp requests'|t('activity'),
+        name: 'ignoreCpRequests',
+        on: settings.ignoreCpRequests,
+        fieldClass: 'first'
+    })
+}}
+
+{{
+    forms.lightswitchField({
+        label: 'Ignore activity for site requests'|t('activity'),
+        name: 'ignoreSiteRequests',
+        on: settings.ignoreSiteRequests,
+        fieldClass: 'first'
+    })
+}}
+
+{{
+    forms.lightswitchField({
+        label: 'Ignore activity when elements are resaved'|t('activity'),
+        name: 'ignoreResaveElements',
+        on: settings.ignoreResaveElements,
+    })
+}}
+
+{{
+    forms.lightswitchField({
+        label: 'Ignore activity when elements slugs and uris are updated'|t('activity'),
+        name: 'ignoreUpdateSlugs',
+        on: settings.ignoreUpdateSlugs
+    })
+}}
+
+{{
+    forms.lightswitchField({
+        label: 'Ignore activity when elements are propagated to other sites'|t('activity'),
+        name: 'ignorePropagate',
+        on: settings.ignorePropagate,
+    })
+}}
+
+{{
+    forms.lightswitchField({
+        label: 'Deleting a user will delete all its activity'|t('activity'),
+        name: 'deleteLogsWithUser',
+        on: settings.deleteLogsWithUser
+    })
+}}
+
+{{
+    forms.lightswitchField({
+        label: 'Track changes made in element fields (entries, categories, users, globals etc)'|t('activity'),
+        name: 'trackElementFieldsChanges',
+        on: settings.trackElementFieldsChanges
+    })
+}}
+
+{{
+    forms.lightswitchField({
+        label: 'Track changes made in config fields (category groups, sections, volumes etc)'|t('activity'),
+        name: 'trackConfigFieldsChanges',
+        on: settings.trackConfigFieldsChanges
+    })
+}}
+
+{{
+    forms.textField({
+        label: 'Automatically delete activity older than'|t('activity'),
+        instructions: 'No value means activity will never be deleted'|t('activity'),
+        value: settings.autoDeleteLogsThreshold,
+        name: 'autoDeleteLogsThreshold',
+        type: 'number',
+        min: 1,
+        unit: 'days'|t('activity')
+    })
+}}
+
+<input type="hidden" name="ignoreTypes" value="">
+{{
+    forms.checkboxSelectField({
+        label: 'Ignore the following activity:'|t('activity'),
+        name: 'ignoreTypes',
+        options: types,
+        values: settings.ignoreTypes
+    })
+}}

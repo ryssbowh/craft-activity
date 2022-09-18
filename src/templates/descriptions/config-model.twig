@@ -1,0 +1,68 @@
+{% macro fromValue(field) %}
+    <code>{{ (field.fancyFrom ?? field.from)|prettyPrint }}</code>
+{% endmacro %}
+
+{% macro toValue(field) %}
+    <code>{{ (field.fancyTo ?? field.to)|prettyPrint }}</code>
+{% endmacro %}
+
+{% macro label(name, log) %}
+    {% set label = log.getFieldLabel(name) %}
+    {% if label %}
+        {{ label }}
+    {% else %}
+        <code>{{ name }}</code>
+    {% endif %}
+{% endmacro %}
+
+{% macro value(field, log) %}
+    <li>
+        {% if field.hasFrom and field.hasTo %}
+            {% if field.from is same as(true) and field.to is same as(false) %}
+                {{ "{field} was unchecked"|t('activity', {
+                    field: _self.label(field.name, log),
+                })|raw }}
+            {% elseif field.from is same as(false) and field.to is same as(true) %}
+                {{ "{field} was checked"|t('activity', {
+                    field: _self.label(field.name, log),
+                })|raw }}
+            {% else %}
+                {{ "{field} was changed from {from} to {to}"|t('activity', {
+                    field: _self.label(field.name, log),
+                    from: _self.fromValue(field),
+                    to: _self.toValue(field)
+                })|raw }}
+            {% endif %}
+        {% elseif field.hasTo %}
+            {{ "{field} was set to {to}"|t('activity', {
+                field: _self.label(field.name, log),
+                to: _self.toValue(field)
+            })|raw }}
+        {% elseif field.hasFrom %}
+            {{ "{field} value ({from}) was removed"|t('activity', {
+                field: _self.label(field.name, log),
+                from: _self.fromValue(field)
+            })|raw }}
+        {% else %}
+            {{ "{field} was changed"|t('activity', {
+                field: _self.label(field.name, log)
+            })|raw }}
+        {% endif %}
+    </li>
+{% endmacro %}
+
+{% if log.changedFields ?? false %}
+    <ul>
+        {% for field in log.changedFields %}
+            {% if field.name == 'previewTargets' %}
+                {% include "activity/includes/dirty-preview-targets" %}
+            {% elseif field.name == 'siteSettings' %}
+                {% include "activity/includes/dirty-site-settings" %}
+            {% elseif field.name == 'fieldLayout' %}
+                {% include "activity/includes/dirty-field-layout" %}
+            {% else %}
+                {{ _self.value(field, log) }}
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}
