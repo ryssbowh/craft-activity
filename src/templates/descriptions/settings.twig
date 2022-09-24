@@ -1,41 +1,26 @@
-{% macro fromValue(field) %}
-    <code>{{ (field.hasFancyFrom ? field.fancyFrom : field.from)|prettyPrint }}</code>
-{% endmacro %}
-
-{% macro toValue(field) %}
-    <code>{{ (field.hasFancyTo ? field.fancyTo : field.to)|prettyPrint }}</code>
-{% endmacro %}
-
-{% macro label(name, log) %}
-    {% set label = log.getSettingLabel(name) %}
-    {% if label %}
-        {{ label }}
-    {% else %}
-        <code>{{ name }}</code>
-    {% endif %}
-{% endmacro %}
+{% import "activity/includes/macros" as macros %}
 
 {% macro setting(field, log) %}
     <li>
         {% if field.hasFrom and field.hasTo %}
             {{ "{setting} was changed from {from} to {to}"|t('activity', {
-                setting: _self.label(field.name, log),
-                from: _self.fromValue(field),
-                to: _self.toValue(field)
+                setting: macros.settingLabel(field.name, log),
+                from: macros.fromValue(field),
+                to: macros.toValue(field)
             })|raw }}
         {% elseif field.hasTo %}
             {{ "{setting} was set to {to}"|t('activity', {
-                setting: _self.label(field.name, log),
-                to: _self.toValue(field)
+                setting: macros.settingLabel(field.name, log),
+                to: macros.toValue(field)
             })|raw }}
         {% elseif field.hasFrom %}
             {{ "{setting} value ({from}) was removed"|t('activity', {
-                setting: _self.label(field.name, log),
-                from: _self.fromValue(field)
+                setting: macros.settingLabel(field.name, log),
+                from: macros.fromValue(field)
             })|raw }}
         {% else %}
             {{ "{setting} was changed"|t('activity', {
-                setting: _self.label(field.name, log)
+                setting: macros.settingLabel(field.name, log)
             })|raw }}
         {% endif %}
     </li>

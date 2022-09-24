@@ -2,14 +2,15 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\elements;
 
-use Ryssbowh\Activity\base\ElementFieldHandler;
+use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
 use craft\fields\Dropdown;
 use craft\fields\RadioButtons;
 
 class ListField extends ElementFieldHandler
 {
-    public $fancyValue;
-
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
@@ -19,11 +20,17 @@ class ListField extends ElementFieldHandler
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function hasFancyValue(): bool
     {
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getTargets(): array
     {
         return [

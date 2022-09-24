@@ -3,35 +3,21 @@
 namespace Ryssbowh\Activity\traits;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\models\fieldHandlers\Title;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use craft\base\Element;
 use craft\fieldlayoutelements\CustomField;
 use craft\fieldlayoutelements\EntryTitleField;
 use craft\fieldlayoutelements\TitleField;
-use craft\fields\Assets;
-use craft\fields\BaseRelationField;
-use craft\fields\Categories;
-use craft\fields\Checkboxes;
-use craft\fields\Color;
-use craft\fields\Date;
-use craft\fields\Dropdown;
-use craft\fields\Email;
-use craft\fields\Entries;
-use craft\fields\Lightswitch;
-use craft\fields\Matrix;
-use craft\fields\MultiSelect;
-use craft\fields\Number;
-use craft\fields\PlainText;
-use craft\fields\RadioButtons;
-use craft\fields\Tags;
-use craft\fields\Time;
-use craft\fields\Url;
-use craft\fields\Users;
-use craft\redactor\Field as Redactor;
 
 trait ElementFields
 {
+    /**
+     * Calculate dirty fields, input are two arrays of field handlers
+     * 
+     * @param  array $newFields
+     * @param  array $oldFields
+     * @return array
+     */
     protected function getDirtyFields(array $newFields, array $oldFields): array
     {
         $dirty = [];
@@ -48,7 +34,13 @@ trait ElementFields
         return $dirty;
     }
 
-    protected function getFieldValues(Element $element): array
+    /**
+     * Get an element custom field values, returns an array of field handlers
+     * 
+     * @param  Element $element
+     * @return array
+     */
+    protected function getCustomFieldValues(Element $element): array
     {
         $handlers = [];
         foreach ($element->fieldLayout->tabs as $tab) {

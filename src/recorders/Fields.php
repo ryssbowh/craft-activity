@@ -3,11 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ConfigModelRecorder;
-use Ryssbowh\Activity\base\Recorder;
-use craft\base\Model;
-use craft\db\Query;
-use craft\db\Table;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\services\Fields as CraftFields;
 use yii\base\Event;
 
@@ -18,14 +14,14 @@ class Fields extends ConfigModelRecorder
      */
     public function init()
     {
-        Event::on(CraftFields::class, CraftFields::EVENT_BEFORE_SAVE_FIELD, function ($event) {
-            Activity::getRecorder('fields')->beforeSaved($event->field, $event->isNew);
+        \Craft::$app->projectConfig->onUpdate(CraftFields::CONFIG_FIELDS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('fields')->onUpdate($event);
         });
-        Event::on(CraftFields::class, CraftFields::EVENT_AFTER_SAVE_FIELD, function ($event) {
-            Activity::getRecorder('fields')->onSaved($event->field, $event->isNew);
+        \Craft::$app->projectConfig->onAdd(CraftFields::CONFIG_FIELDS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('fields')->onAdd($event);
         });
-        Event::on(CraftFields::class, CraftFields::EVENT_AFTER_DELETE_FIELD, function ($event) {
-            Activity::getRecorder('fields')->onDeleted($event->field);
+        \Craft::$app->projectConfig->onRemove(CraftFields::CONFIG_FIELDS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('fields')->onRemove($event);
         });
     }
         
@@ -40,41 +36,9 @@ class Fields extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function loadOldModel(int $id): ?Model
+    protected function getTrackedFieldNames(): array
     {
-        $query = (new Query())
-            ->select([
-                'fields.id',
-                'fields.dateCreated',
-                'fields.dateUpdated',
-                'fields.groupId',
-                'fields.name',
-                'fields.handle',
-                'fields.context',
-                'fields.instructions',
-                'fields.translationMethod',
-                'fields.translationKeyFormat',
-                'fields.type',
-                'fields.settings',
-                'fields.uid',
-                'fields.searchable',
-                'fields.columnSuffix',
-            ])
-            ->from(['fields' => Table::FIELDS])
-            ->where(['id' => $id])
-            ->one();
-        if (!$query) {
-            return null;
-        }
-        return \Craft::$app->fields->createField($query);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getTrackedFieldNames(Model $model): array
-    {
-        return ['name', 'type', 'handle', 'group.name', 'instructions', 'searchable', 'translationMethod'];
+        return ['name', 'type', 'instructions', 'handle', 'fieldGroup', 'instructions', 'searchable', 'translationMethod', 'translationKeyFormat'];
     }
 
     /**
@@ -85,5 +49,13 @@ class Fields extends ConfigModelRecorder
         return [
             'searchable' => 'bool'
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getDescriptiveFieldName(): ?string
+    {
+        return 'name';
     }
 }

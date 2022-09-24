@@ -70,6 +70,10 @@
             <li><a class="{% if perPage == 100 %}sel{% endif %}">100</a></li>
         </ul>
     </div>
+    <div class="input">
+        <input type="checkbox" class="checkbox js-hot-reload" id="activity-hot-reload">
+        <label for="activity-hot-reload">{{ 'Hot reload'|t('activity') }}</label>
+    </div>
     <a href="#" id="reset-filters">{{ 'Reset'|t('activity') }}</a>
 {% endblock %}
 

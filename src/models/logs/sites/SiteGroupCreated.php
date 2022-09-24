@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\sites;
 
-use Ryssbowh\Activity\base\ConfigModelLog;
+use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
 use craft\helpers\UrlHelper;
 
@@ -29,7 +29,7 @@ class SiteGroupCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->sites->getGroupById($this->target_id);
+        return \Craft::$app->sites->getGroupByUid($this->target_uid);
     }
 
     /**

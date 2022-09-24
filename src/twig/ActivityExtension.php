@@ -8,6 +8,9 @@ use Twig\TwigFilter;
 
 class ActivityExtension extends AbstractExtension
 {
+    /**
+     * @inheritDoc
+     */
     public function getFilters()
     {
         return [
@@ -15,6 +18,12 @@ class ActivityExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * Pretty print a value
+     * 
+     * @param  $value
+     * @return string
+     */
     public function prettyPrint($value)
     {
         return PrettyPrint::get($value);

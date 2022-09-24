@@ -2,13 +2,19 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\elements;
 
-use Ryssbowh\Activity\base\ElementFieldHandler;
+use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
 use craft\fields\Date as DateField;
 
 class Date extends ElementFieldHandler
 {
+    /**
+     * @var string
+     */
     public $format;
 
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
@@ -23,6 +29,9 @@ class Date extends ElementFieldHandler
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getTargets(): array
     {
         return [

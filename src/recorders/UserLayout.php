@@ -3,14 +3,12 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\Recorder;
-use Ryssbowh\Activity\models\fieldHandlers\config\FieldLayout as FieldLayoutHandler;
-use craft\elements\User;
-use craft\models\FieldLayout;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
+use craft\events\ConfigEvent;
 use craft\services\Users;
 use yii\base\Event;
 
-class UserLayout extends Recorder
+class UserLayout extends ConfigModelRecorder
 {
     /**
      * @inheritDoc
@@ -18,45 +16,37 @@ class UserLayout extends Recorder
     public function init()
     {
         \Craft::$app->projectConfig->onUpdate(Users::CONFIG_USERLAYOUT_KEY, function(Event $event) {
-            Activity::getRecorder('userLayout')->onSaved($event->oldValue, $event->newValue);
+            Activity::getRecorder('userLayout')->onUpdate($event);
         });
         \Craft::$app->projectConfig->onAdd(Users::CONFIG_USERLAYOUT_KEY, function(Event $event) {
-            Activity::getRecorder('userLayout')->onSaved($event->oldValue, $event->newValue);
+            Activity::getRecorder('userLayout')->onUpdate($event);
+        });
+        \Craft::$app->projectConfig->onAdd(Users::CONFIG_USERLAYOUT_KEY, function(Event $event) {
+            Activity::getRecorder('userLayout')->onUpdate($event);
         });
     }
-    
-    /**
-     * @inheritDoc
-     */
-    public function onSaved(array $oldValue, array $newValue)
-    {   
-        if (!$this->shouldSaveLog('userLayoutSaved')) {
-            return;
-        }
-        $oldLayout = $this->getUserLayout(reset($oldValue));
-        $newLayout = $this->getUserLayout(reset($newValue));
-        $newHandler = new FieldLayoutHandler([
-            'rawValue' => $newLayout
-        ]);
-        $oldHandler = new FieldLayoutHandler([
-            'rawValue' => $oldLayout
-        ]);
-        $dirty = ['fieldLayout' => $newHandler->getDirty($oldHandler)];
-        $this->saveLog('userLayoutSaved', [
-            'changedFields' => $dirty
-        ]);
+
+    public function onUpdate(ConfigEvent $event)
+    {
+        $event->oldValue = ['fieldLayouts' => $event->oldValue];
+        $event->newValue = ['fieldLayouts' => $event->newValue];
+        $event->path = Users::CONFIG_USERS_KEY;
+        parent::onUpdate($event);
     }
 
     /**
      * @inheritDoc
      */
-    protected function getUserLayout(?array $value)
+    protected function getActivityHandle(): string
     {
-        if ($value === null) {
-            $value = [];
-        }
-        $value['type'] = User::class;
-        $value['class'] = FieldLayout::class;
-        return \Craft::createObject($value);
+        return 'userLayout';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getTrackedFieldNames(): array
+    {
+        return ['fieldLayouts'];
     }
 }

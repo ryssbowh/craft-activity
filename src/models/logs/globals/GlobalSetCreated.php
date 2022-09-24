@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\globals;
 
-use Ryssbowh\Activity\base\ConfigModelLog;
+use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
 use craft\elements\GlobalSet;
 use craft\helpers\UrlHelper;
@@ -30,7 +30,12 @@ class GlobalSetCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->globals->getSetById($this->target_id);
+        foreach (\Craft::$app->globals->getAllSets() as $set) {
+            if ($set->uid == $this->target_uid) {
+                return $set;
+            }
+        }
+        return null;
     }
 
     /**

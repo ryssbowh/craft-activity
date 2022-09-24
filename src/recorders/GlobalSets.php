@@ -3,9 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ConfigModelRecorder;
-use craft\base\Model;
-use craft\elements\GlobalSet;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\services\Globals;
 use yii\base\Event;
 
@@ -16,14 +14,14 @@ class GlobalSets extends ConfigModelRecorder
      */
     public function init()
     {
-        Event::on(Globals::class, Globals::EVENT_BEFORE_SAVE_GLOBAL_SET, function ($event) {
-            Activity::getRecorder('globalSets')->beforeSaved($event->globalSet, $event->isNew);
+        \Craft::$app->projectConfig->onUpdate(Globals::CONFIG_GLOBALSETS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('globalSets')->onUpdate($event);
         });
-        Event::on(Globals::class, Globals::EVENT_AFTER_SAVE_GLOBAL_SET, function ($event) {
-            Activity::getRecorder('globalSets')->onSaved($event->globalSet, $event->isNew);
+        \Craft::$app->projectConfig->onAdd(Globals::CONFIG_GLOBALSETS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('globalSets')->onAdd($event);
         });
-        Event::on(GlobalSet::class, GlobalSet::EVENT_AFTER_DELETE, function ($event) {
-            Activity::getRecorder('globalSets')->onDeleted($event->sender);
+        \Craft::$app->projectConfig->onRemove(Globals::CONFIG_GLOBALSETS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('globalSets')->onRemove($event);
         });
     }
 
@@ -38,16 +36,16 @@ class GlobalSets extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function loadOldModel(int $id): ?Model
+    protected function getTrackedFieldNames(): array
     {
-        return GlobalSet::find()->id($id)->one();
+        return ['name', 'handle', 'fieldLayouts'];
     }
 
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(Model $model): array
+    protected function getDescriptiveFieldName(): ?string
     {
-        return ['name', 'handle', 'fieldLayout'];
+        return 'name';
     }
 }

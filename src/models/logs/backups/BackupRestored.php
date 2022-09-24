@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\backups;
 
-use Ryssbowh\Activity\base\BackupLog;
+use Ryssbowh\Activity\base\logs\BackupLog;
 
 class BackupRestored extends BackupLog
 {

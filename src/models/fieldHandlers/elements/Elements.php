@@ -2,8 +2,8 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\elements;
 
-use Ryssbowh\Activity\base\ElementFieldHandler;
-use Ryssbowh\Activity\base\FieldHandler;
+use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
+use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use craft\elements\User;
 use craft\fields\Assets;
 use craft\fields\Categories;
@@ -13,6 +13,9 @@ use craft\fields\Users;
 
 class Elements extends ElementFieldHandler
 {
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
@@ -27,11 +30,17 @@ class Elements extends ElementFieldHandler
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function hasFancyValue(): bool
     {
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function isDirty(FieldHandler $handler): bool
     {
         $from = is_array($this->value) ? $this->value : [];
@@ -39,6 +48,9 @@ class Elements extends ElementFieldHandler
         return !(empty(array_diff($from, $to)) and empty(array_diff($to, $from)));
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getTargets(): array
     {
         return [

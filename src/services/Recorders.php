@@ -2,6 +2,7 @@
 
 namespace Ryssbowh\Activity\services;
 
+use Ryssbowh\Activity\base\recorders\Recorder;
 use Ryssbowh\Activity\events\RegisterRecordersEvent;
 use yii\di\ServiceLocator;
 
@@ -9,8 +10,14 @@ class Recorders extends ServiceLocator
 {
     const EVENT_REGISTER = 'register';
 
+    /**
+     * @var boolean
+     */
     public bool $registered = false;
 
+    /**
+     * Register recorders
+     */
     public function register()
     {
         if ($this->registered) {
@@ -22,17 +29,33 @@ class Recorders extends ServiceLocator
         $this->registered = true;
     }
 
-    public function stopRecording()
+    /**
+     * get all recorders to save their committed logs
+     */
+    public function saveLogs()
     {
         foreach ($this->getComponents(false) as $recorder) {
-            $recorder->stopRecording = true;
+            $recorder->saveLogs();
         }
     }
 
+    /**
+     * Get all recorders to stop recording
+     */
+    public function stopRecording()
+    {
+        foreach ($this->getComponents(false) as $recorder) {
+            $recorder->stopRecording();
+        }
+    }
+
+    /**
+     * Get all recorders to start recording
+     */
     public function startRecording()
     {
         foreach ($this->getComponents(false) as $recorder) {
-            $recorder->stopRecording = false;
+            $recorder->startRecording();
         }
     }
 }

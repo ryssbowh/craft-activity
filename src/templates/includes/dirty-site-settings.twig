@@ -1,13 +1,7 @@
-{% macro fromValue(value) %}
-    <code>{{ (value.ff ?? value.f)|prettyPrint }}</code>
-{% endmacro %}
-
-{% macro toValue(value) %}
-    <code>{{ (value.tf ?? value.t)|prettyPrint }}</code>
-{% endmacro %}
+{% import "activity/includes/macros" as macros %}
 
 {% for fields in field.data %}
-    {% set site = craft.app.sites.getSiteById(fields.id) %}
+    {% set site = craft.app.sites.getSiteByUid(fields.uid) %}
     {% set siteName = fields.name %}
     {% if site %}
         {% set siteName = site.name %}
@@ -20,12 +14,12 @@
             <ul>
                 <li>
                     {{ "Template was set to {to}"|t('activity', {
-                        to: _self.toValue(fields.template)
+                        to: macros.rawToValue(fields.template)
                     })|raw }}
                 </li>
                 <li>
                     {{ "URI format was set to {to}"|t('activity', {
-                        to: _self.toValue(fields.uriFormat)
+                        to: macros.rawToValue(fields.uriFormat)
                     })|raw }}
                 </li>
             </ul>
@@ -38,12 +32,12 @@
             <ul>
                 <li>
                     {{ "Template was {from}"|t('activity', {
-                        from: _self.fromValue(fields.template)
+                        from: macros.rawFromValue(fields.template)
                     })|raw }}
                 </li>
                 <li>
                     {{ "URI format was {from}"|t('activity', {
-                        from: _self.fromValue(fields.uriFormat)
+                        from: macros.rawFromValue(fields.uriFormat)
                     })|raw }}
                 </li>
             </ul>
@@ -58,8 +52,8 @@
                     <li>
                         {{ "Template was changed from {from} to {to}"|t('activity', {
                             site: siteName,
-                            from: _self.fromValue(fields.template),
-                            to: _self.toValue(fields.template)
+                            from: macros.rawFromvalue(fields.template),
+                            to: macros.rawToValue(fields.template)
                         })|raw }}
                     </li>
                 {% endif %}
@@ -67,8 +61,8 @@
                     <li>
                         {{ "URI format was changed from {from} to {to}"|t('activity', {
                             site: siteName,
-                            from: _self.fromValue(fields.uriFormat),
-                            to: _self.toValue(fields.uriFormat)
+                            from: macros.rawFromvalue(fields.uriFormat),
+                            to: macros.rawToValue(fields.uriFormat)
                         })|raw }}
                     </li>
                 {% endif %}

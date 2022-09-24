@@ -3,11 +3,9 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ConfigModelRecorder;
-use craft\base\Model;
-use craft\models\CategoryGroup;
-use craft\records\CategoryGroup as CategoryGroupRecord;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\services\Categories;
+use craft\services\Sites;
 use yii\base\Event;
 
 class CategoryGroups extends ConfigModelRecorder
@@ -17,14 +15,14 @@ class CategoryGroups extends ConfigModelRecorder
      */
     public function init()
     {
-        Event::on(Categories::class, Categories::EVENT_BEFORE_SAVE_GROUP, function ($event) {
-            Activity::getRecorder('categoryGroups')->beforeSaved($event->categoryGroup, $event->isNew);
+        \Craft::$app->projectConfig->onUpdate(Categories::CONFIG_CATEGORYROUP_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('categoryGroups')->onUpdate($event);
         });
-        Event::on(Categories::class, Categories::EVENT_AFTER_SAVE_GROUP, function ($event) {
-            Activity::getRecorder('categoryGroups')->onSaved($event->categoryGroup, $event->isNew);
+        \Craft::$app->projectConfig->onAdd(Categories::CONFIG_CATEGORYROUP_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('categoryGroups')->onAdd($event);
         });
-        Event::on(Categories::class, Categories::EVENT_AFTER_DELETE_GROUP, function ($event) {
-            Activity::getRecorder('categoryGroups')->onDeleted($event->categoryGroup);
+        \Craft::$app->projectConfig->onRemove(Categories::CONFIG_CATEGORYROUP_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('categoryGroups')->onRemove($event);
         });
     }
 
@@ -39,39 +37,16 @@ class CategoryGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function loadOldModel(int $id): ?Model
+    protected function getTrackedFieldNames(): array
     {
-        $record = CategoryGroupRecord::find()
-                ->with('structure')
-                ->where(['id' => $id])
-                ->one();
-        if (!$record) {
-            return null;
-        }
-        $group = new CategoryGroup($record->toArray([
-            'id',
-            'structureId',
-            'fieldLayoutId',
-            'name',
-            'handle',
-            'defaultPlacement',
-            'uid',
-        ]));
-
-        if ($record->structure) {
-            $group->maxLevels = $record->structure->maxLevels;
-        }
-
-        $group->siteSettings = \Craft::$app->categories->getGroupSiteSettings($id);
-
-        return $group;
+        return ['name', 'handle', 'structure.maxLevels', 'defaultPlacement', 'siteSettings', 'fieldLayouts'];
     }
 
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(Model $model): array
+    protected function getDescriptiveFieldName(): ?string
     {
-        return ['name', 'handle', 'maxLevels', 'defaultPlacement', 'siteSettings', 'fieldLayout'];
+        return 'name';
     }
 }

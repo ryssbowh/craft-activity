@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\assets;
 
-use Ryssbowh\Activity\base\ConfigModelLog;
+use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
 use craft\helpers\UrlHelper;
 
@@ -29,7 +29,7 @@ class VolumeCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->volumes->getVolumeById($this->target_id);
+        return \Craft::$app->volumes->getVolumeByUid($this->target_uid);
     }
 
     /**
@@ -40,9 +40,10 @@ class VolumeCreated extends ConfigModelLog
         return [
             'handle' => \Craft::t('app', 'Handle'),
             'name' => \Craft::t('app', 'Name'),
+            'url' => \Craft::t('app', 'Base URL'),
             'hasUrls' => \Craft::t('app', 'Assets in this volume have public URLs'),
             'type' => \Craft::t('app', 'Type'),
-            'path' => \Craft::t('app', 'File System Path'),
+            'settings.path' => \Craft::t('app', 'File System Path'),
             'titleTranslationMethod' => \Craft::t('app', 'Title Translation Method'),
             'titleTranslationKeyFormat' => \Craft::t('app', 'Title Translation Key Format'),
         ];

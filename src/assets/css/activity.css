@@ -26,6 +26,10 @@
     margin-top: 2px;
 }
 
+#toolbar {
+    align-items: baseline;
+}
+
 #activity-table ul {
     list-style: initial;
     margin-left: 15px;

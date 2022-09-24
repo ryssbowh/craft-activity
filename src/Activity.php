@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity;
 
-use Ryssbowh\Activity\base\Recorder;
+use Ryssbowh\Activity\base\recorders\Recorder;
 use Ryssbowh\Activity\models\Settings;
 use Ryssbowh\Activity\services\FieldHandlers;
 use Ryssbowh\Activity\services\Logs;
@@ -13,8 +13,11 @@ use craft\base\Model;
 use craft\base\Plugin;
 use craft\services\Elements;
 use craft\services\Gc;
+use craft\services\Plugins;
 use craft\services\UserPermissions;
 use craft\web\UrlManager;
+use craft\web\twig\variables\CraftVariable;
+use yii\base\Application;
 use yii\base\Event;
 
 class Activity extends Plugin
@@ -47,17 +50,13 @@ class Activity extends Plugin
         $this->registerPermissions();
         $this->registerCpRoutes();
         $this->registerGarbageCollection();
+        $this->registerUserHook();
+        $this->registerTwig();
+        $this->registerRecorders();
 
-        if (!($this->settings->ignoreApplyingYaml and !\Craft::$app->projectConfig->isApplyingYamlChanges) and 
-            !($this->settings->ignoreConsoleRequests and \Craft::$app->request->isConsoleRequest) and
-            !($this->settings->ignoreCpRequests and \Craft::$app->request->isCpRequest) and
-            !($this->settings->ignoreSiteRequests and \Craft::$app->request->isSiteRequest)) {
-            $this->recorders->register();
-            $this->registerElementEvents();
-        }
-        if (\Craft::$app->request->isCpRequest) {
-            \Craft::$app->view->registerTwigExtension(new ActivityExtension);
-        }
+        Event::on(Application::class, Application::EVENT_AFTER_REQUEST, function (Event $event) {
+            $this->recorders->saveLogs();
+        });
     }
 
     /**
@@ -66,9 +65,26 @@ class Activity extends Plugin
      * @param  string $name
      * @return Recorder
      */
-    public static function getRecorder(string $name): ?Recorder
+    public static function getRecorder(string $name): Recorder
     {
         return static::$plugin->recorders->$name;
+    }
+
+    /**
+     * Register all recorders once all plugins are loaded
+     */
+    protected function registerRecorders()
+    {
+        Event::on(Plugins::class, Plugins::EVENT_AFTER_LOAD_PLUGINS, function (Event $event) {
+            $this->recorders->register();
+            $settings = Activity::$plugin->settings;
+            if (($settings->ignoreApplyingYaml and \Craft::$app->projectConfig->isApplyingYamlChanges) or 
+                ($settings->ignoreConsoleRequests and \Craft::$app->request->isConsoleRequest) or
+                ($settings->ignoreCpRequests and \Craft::$app->request->isCpRequest) or
+                ($settings->ignoreSiteRequests and \Craft::$app->request->isSiteRequest)) {
+                $this->recorders->stopRecording();
+            }
+        });
     }
 
     /**
@@ -80,7 +96,20 @@ class Activity extends Plugin
     }
 
     /**
-     * Register garbace collection
+     * Register twig variables and extensions
+     */
+    protected function registerTwig()
+    {
+        if (\Craft::$app->request->isCpRequest) {
+            \Craft::$app->view->registerTwigExtension(new ActivityExtension);
+        }
+        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
+            $event->sender->set('activity', Activity::$plugin);
+        });
+    }
+
+    /**
+     * Register garbage collection
      */
     protected function registerGarbageCollection()
     {
@@ -90,9 +119,9 @@ class Activity extends Plugin
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
-    protected function settingsHtml(): string
+    public function getSettingsResponse()
     {
         $types = [];
         foreach ($this->types->getTypes() as $handle => $class) {
@@ -100,52 +129,28 @@ class Activity extends Plugin
             $types[$handle] = $class->name;
         }
         ksort($types);
-        return \Craft::$app->view->renderTemplate(
-            'activity/settings',
-            [
-                'settings' => $this->getSettings(),
-                'types' => $types
-            ]
-        );
+        $controller = \Craft::$app->controller;
+
+        return $controller->renderTemplate('activity/settings', [
+            'settings' => $this->settings,
+            'types' => $types,
+            'plugin' => $this
+        ]);
     }
 
     /**
-     * Register elements events
+     * Register user details hook to show user's latest activity
      */
-    protected function registerElementEvents()
+    protected function registerUserHook()
     {
-        if ($this->settings->ignoreResaveElements) {
-            // Event::on(Elements::class, Elements::EVENT_BEFORE_RESAVE_ELEMENT, function (Event $event) {
-            //     \Craft::debug('disabling all recorders 1');
-            //     Activity::$plugin->recorders->stopRecording();
-            // });
-            // Event::on(Elements::class, Elements::EVENT_AFTER_RESAVE_ELEMENT, function (Event $event) {
-            //     Activity::$plugin->recorders->startRecording();
-            // });
-            // Event::on(Elements::class, Elements::EVENT_BEFORE_RESAVE_ELEMENTS, function (Event $event) {
-            //     \Craft::debug('disabling all recorders 2');
-            //     Activity::$plugin->recorders->stopRecording();
-            // });
-            // Event::on(Elements::class, Elements::EVENT_AFTER_RESAVE_ELEMENTS, function (Event $event) {
-            //     Activity::$plugin->recorders->startRecording();
-            // });
-        }
-        if ($this->settings->ignoreUpdateSlugs) {
-            Event::on(Elements::class, Elements::EVENT_BEFORE_UPDATE_SLUG_AND_URI, function (Event $event) {
-                Activity::$plugin->recorders->stopRecording();
-            });
-            Event::on(Elements::class, Elements::EVENT_AFTER_UPDATE_SLUG_AND_URI, function (Event $event) {
-                Activity::$plugin->recorders->startRecording();
-            });
-        }
-        if ($this->settings->ignorePropagate) {
-            Event::on(Elements::class, Elements::EVENT_BEFORE_PROPAGATE_ELEMENTS, function (Event $event) {
-                Activity::$plugin->recorders->stopRecording();
-            });
-            Event::on(Elements::class, Elements::EVENT_AFTER_PROPAGATE_ELEMENTS, function (Event $event) {
-                Activity::$plugin->recorders->startRecording();
-            });
-        }
+        \Craft::$app->view->hook('cp.users.edit.details', function(array &$context) {
+            if (\Craft::$app->user->identity->can('viewActivityLogs')) {
+                return \Craft::$app->view->renderTemplate('activity/user-latest-activity', [
+                    'user' => $context['user']
+                ]);
+            }
+        });
+
     }
 
     /**

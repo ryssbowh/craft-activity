@@ -3,30 +3,61 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ConfigModelRecorder;
-use craft\base\Model;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\db\Query;
 use craft\db\Table;
-use craft\models\UserGroup;
+use craft\events\ConfigEvent;
 use craft\services\UserGroups as CraftUserGroups;
 use yii\base\Event;
 
 class UserGroups extends ConfigModelRecorder
 {
+    protected $permTrigger;
+    protected $triggered;
+
     /**
      * @inheritDoc
      */
     public function init()
     {
-        Event::on(CraftUserGroups::class, CraftUserGroups::EVENT_BEFORE_SAVE_USER_GROUP, function ($event) {
-            Activity::getRecorder('userGroups')->beforeSaved($event->userGroup, $event->isNew);
+        \Craft::$app->projectConfig->onUpdate(CraftUserGroups::CONFIG_USERPGROUPS_KEY, function (Event $event) {
+            Activity::getRecorder('userGroups')->onGroupsUpdate($event);
         });
-        Event::on(CraftUserGroups::class, CraftUserGroups::EVENT_AFTER_SAVE_USER_GROUP, function ($event) {
-            Activity::getRecorder('userGroups')->onSaved($event->userGroup, $event->isNew);
+        \Craft::$app->projectConfig->onUpdate(CraftUserGroups::CONFIG_USERPGROUPS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('userGroups')->onUpdate($event);
         });
-        Event::on(CraftUserGroups::class, CraftUserGroups::EVENT_AFTER_DELETE_USER_GROUP, function ($event) {
-            Activity::getRecorder('userGroups')->onDeleted($event->userGroup);
+        \Craft::$app->projectConfig->onAdd(CraftUserGroups::CONFIG_USERPGROUPS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('userGroups')->onAdd($event);
         });
+        \Craft::$app->projectConfig->onRemove(CraftUserGroups::CONFIG_USERPGROUPS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('userGroups')->onRemove($event);
+        });
+    }
+
+    public function onGroupsUpdate(ConfigEvent $event)
+    {
+        //Need to save the general group trigger to get the value of the new permissions
+        //which is not included in each particular group event, as it happens after
+        $this->permTrigger = $event;
+    }
+
+    public function onUpdate(ConfigEvent $event)
+    {
+        if (!\Craft::$app->projectConfig->isApplyingYamlChanges) {
+            if ($this->triggered === null) {
+                //This event is triggered twice, once for the group, once for the permissions
+                //the first one has the data we need
+                $this->triggered = $event;
+                return;
+            }
+            $this->triggered->newValue = $this->permTrigger->newValue[$event->tokenMatches[0]];
+            $this->triggered->tokenMatches = $event->tokenMatches;
+            $event = $this->triggered;
+        }
+        $event->newValue = $this->permTrigger->newValue[$event->tokenMatches[0]];
+        parent::onUpdate($event);
+        $this->permTrigger = null;
+        $this->triggered = null;
     }
 
     /**
@@ -40,26 +71,16 @@ class UserGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function loadOldModel(int $id): ?Model
+    protected function getTrackedFieldNames(): array
     {
-        $record = $query = (new Query())
-            ->select([
-                'id',
-                'name',
-                'handle',
-                'uid',
-            ])
-            ->from([Table::USERGROUPS])
-            ->where(['id' => $id])
-            ->one();
-        return new UserGroup($record);
+        return ['name', 'handle', 'description', 'permissions'];
     }
 
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(Model $model): array
+    protected function getDescriptiveFieldName(): ?string
     {
-        return ['name', 'handle'];
+        return 'name';
     }
 }

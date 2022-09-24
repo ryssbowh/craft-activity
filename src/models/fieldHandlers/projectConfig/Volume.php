@@ -4,6 +4,9 @@ namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
 class Volume extends DefaultHandler
 {
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         if ($this->value) {
@@ -11,11 +14,17 @@ class Volume extends DefaultHandler
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function hasFancyValue(): bool
     {
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getTargets(): array
     {
         return [
@@ -24,6 +33,12 @@ class Volume extends DefaultHandler
         ];
     }
 
+    /**
+     * Get a volume name by uid
+     * 
+     * @param  string $uid
+     * @return string
+     */
     protected function getVolumeName(string $uid): string
     {
         $volume = \Craft::$app->volumes->getVolumeByUid($uid);

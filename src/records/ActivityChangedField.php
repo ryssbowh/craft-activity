@@ -16,6 +16,11 @@ class ActivityChangedField extends ActiveRecord
         return '{{%activity_changed_fields}}';
     }
 
+    /**
+     * Turn this record into a model
+     * 
+     * @return ChangedField
+     */
     public function toModel(): ChangedField
     {
         $params = $this->toArray(['name', 'data']);

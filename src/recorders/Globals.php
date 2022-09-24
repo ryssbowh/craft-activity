@@ -3,10 +3,12 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ElementsRecorder;
+use Ryssbowh\Activity\base\recorders\ElementsRecorder;
 use craft\base\Element;
 use craft\elements\GlobalSet;
+use craft\services\Elements;
 use craft\services\Globals as CraftGlobals;
+use craft\services\Sites;
 use yii\base\Event;
 
 class Globals extends ElementsRecorder
@@ -16,8 +18,23 @@ class Globals extends ElementsRecorder
      */
     public function init()
     {
+        if (Activity::$plugin->settings->ignoreResave) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_RESAVE_ELEMENT, function (Event $event) {
+                Activity::getRecorder('globals')->stopRecording();
+            });
+        }
+        if (Activity::$plugin->settings->ignoreUpdateSlugs) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_UPDATE_SLUG_AND_URI, function (Event $event) {
+                Activity::getRecorder('globals')->stopRecording();
+            });
+        }
+        if (Activity::$plugin->settings->ignorePropagate) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_PROPAGATE_ELEMENT, function (Event $event) {
+                Activity::getRecorder('globals')->stopRecording();
+            });
+        }
         Event::on(CraftGlobals::class, CraftGlobals::EVENT_BEFORE_SAVE_GLOBAL_SET, function ($event) {
-            Activity::getRecorder('globals')->stopRecording = true;
+            Activity::getRecorder('globals')->stopRecording();
         });
         Event::on(GlobalSet::class, GlobalSet::EVENT_BEFORE_SAVE, function ($event) {
             Activity::getRecorder('globals')->beforeSaved($event->sender);
@@ -46,8 +63,8 @@ class Globals extends ElementsRecorder
     /**
      * @inheritDoc
      */
-    protected function getFields(Element $global): array
+    protected function getFieldsValues(Element $global): array
     {
-        return $this->getFieldValues($global);
+        return $this->getCustomFieldValues($global);
     }
 }

@@ -2,10 +2,14 @@
 
 namespace Ryssbowh\Activity\models\logs\widgets;
 
-use Ryssbowh\Activity\base\ActivityLog;
+use Ryssbowh\Activity\base\logs\ActivityLog;
+use craft\base\Widget;
 
 class WidgetCreated extends ActivityLog
 {
+    /**
+     * @var Widget
+     */
     public $widget;
 
     /**
@@ -14,7 +18,7 @@ class WidgetCreated extends ActivityLog
     public function getDbData(): array
     {
         return array_merge(parent::getDbData(), [
-            'target_id' => $this->widget->id,
+            'target_uid' => $this->widget->id,
             'target_class' => get_class($this->widget),
             'target_name' => $this->widget->title
         ]);

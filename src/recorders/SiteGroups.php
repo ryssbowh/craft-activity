@@ -3,12 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ConfigModelRecorder;
-use Ryssbowh\Activity\base\Recorder;
-use craft\base\Model;
-use craft\db\Query;
-use craft\db\Table;
-use craft\models\SiteGroup;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\services\Sites;
 use yii\base\Event;
 
@@ -19,14 +14,14 @@ class SiteGroups extends ConfigModelRecorder
      */
     public function init()
     {
-        Event::on(Sites::class, Sites::EVENT_BEFORE_SAVE_SITE_GROUP, function ($event) {
-            Activity::getRecorder('siteGroups')->beforeSaved($event->group, $event->isNew);
+        \Craft::$app->projectConfig->onUpdate(Sites::CONFIG_SITEGROUP_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('siteGroups')->onUpdate($event);
         });
-        Event::on(Sites::class, Sites::EVENT_AFTER_SAVE_SITE_GROUP, function ($event) {
-            Activity::getRecorder('siteGroups')->onSaved($event->group, $event->isNew);
+        \Craft::$app->projectConfig->onAdd(Sites::CONFIG_SITEGROUP_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('siteGroups')->onAdd($event);
         });
-        Event::on(Sites::class, Sites::EVENT_AFTER_DELETE_SITE_GROUP, function ($event) {
-            Activity::getRecorder('siteGroups')->onDeleted($event->group);
+        \Craft::$app->projectConfig->onRemove(Sites::CONFIG_SITEGROUP_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('siteGroups')->onRemove($event);
         });
     }
     
@@ -41,25 +36,16 @@ class SiteGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function loadOldModel(int $id): ?Model
+    protected function getTrackedFieldNames(): array
     {
-        $record = (new Query())
-            ->select([
-                'id',
-                'name',
-                'uid',
-            ])
-            ->from([Table::SITEGROUPS])
-            ->where(['id' => $id])
-            ->one();
-        return new SiteGroup($record);
+        return ['name'];
     }
 
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(Model $model): array
+    protected function getDescriptiveFieldName(): ?string
     {
-        return ['name'];
+        return 'name';
     }
 }

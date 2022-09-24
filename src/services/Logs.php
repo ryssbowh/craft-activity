@@ -14,6 +14,12 @@ use craft\web\twig\variables\Paginate;
 
 class Logs extends Component
 {
+    /**
+     * Saves a log
+     * 
+     * @param array $data
+     * @param array $changedFields
+     */
     public function saveLog(array $data, array $changedFields = [])
     {
         if (!isset($data['type'])) {
@@ -30,7 +36,7 @@ class Logs extends Component
             'user_name' => ($data['user_name'] ?? null) ? $data['user_name'] : ($user ? $user->friendlyName : ''),
             'type' => $data['type'],
             'target_class' => $data['target_class'] ?? null,
-            'target_id' => $data['target_id'] ?? null,
+            'target_uid' => $data['target_uid'] ?? null,
             'target_name' => $data['target_name'] ?? null,
             'site_name' => $currentSite->name,
             'site_id' => $currentSite->id,
@@ -78,6 +84,14 @@ class Logs extends Component
         return $users;
     }
 
+    /**
+     * Get paginated logs according to some filters
+     * 
+     * @param  array       $filters
+     * @param  int|integer $perPage
+     * @param  string      $orderBy
+     * @return array
+     */
     public function getPaginatedLogs(array $filters, int $perPage = 5, string $orderBy = 'dateCreated desc'): array
     {
         $query = ActivityLog::find()->with('changedFields')->orderBy($orderBy);
@@ -109,21 +123,54 @@ class Logs extends Component
         ];
     }
 
+    /**
+     * Get the latest logs for a user
+     * 
+     * @param  User $user
+     * @param  int  $limit
+     * @return array
+     */
+    public function getUserLogs(User $user, int $limit = 10)
+    {
+        $query = ActivityLog::find()->where([
+            'user_id' => $user->id
+        ])->with('changedFields')->orderBy('dateCreated desc');
+        return array_map(function ($record) {
+            return $record->toModel();
+        }, $query->all());
+    }
+
+    /**
+     * Deletes all logs created by a user
+     * 
+     * @param User $user
+     */
     public function deleteUserLogs(User $user)
     {
         ActivityLog::deleteAll(['user_id' => $user->id]);
     }
 
+    /**
+     * Delete all logs
+     */
     public function deleteAllLogs()
     {
         ActivityLog::deleteAll();
     }
 
+    /**
+     * Delete a log by id
+     * 
+     * @param int $id
+     */
     public function deleteLog(int $id)
     {
         ActivityLog::deleteAll(['id' => $id]);
     }
 
+    /**
+     * Run garbage collection, delete all logs older than threshold
+     */
     public function runGc()
     {
         $threshold = Activity::$plugin->settings->autoDeleteLogsThreshold;

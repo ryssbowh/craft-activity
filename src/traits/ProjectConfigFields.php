@@ -6,9 +6,16 @@ use Ryssbowh\Activity\Activity;
 
 trait ProjectConfigFields
 {
+    /**
+     * Get config values for a path
+     * 
+     * @param  string $basePath
+     * @param  array  $config
+     * @return array
+     */
     public function getConfigValues(string $basePath, array $config): array
     {
-        $names = $this->getTrackedConfigNames();
+        $names = $this->getTrackedFieldNames();
         if ($names == '*') {
             $names = array_keys($config);
         }
@@ -43,6 +50,14 @@ trait ProjectConfigFields
         return $handlers;
     }
 
+    /**
+     * Calculate dirty config, $newSettigns and $oldSettings are arrays of field handlers
+     * 
+     * @param  string $basePath
+     * @param  array  $newSettings
+     * @param  array  $oldSettings
+     * @return array
+     */
     public function getDirtyConfig(string $basePath, array $newSettings, array $oldSettings): array
     {
         $dirty = [];
@@ -66,5 +81,5 @@ trait ProjectConfigFields
      * 
      * @return array|string
      */
-    abstract protected function getTrackedConfigNames();
+    abstract protected function getTrackedFieldNames();
 }

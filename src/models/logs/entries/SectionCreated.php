@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\entries;
 
-use Ryssbowh\Activity\base\ConfigModelLog;
+use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
 use craft\helpers\UrlHelper;
 
@@ -29,7 +29,7 @@ class SectionCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->sections->getSectionById($this->target_id);
+        return \Craft::$app->sections->getSectionByUid($this->target_uid);
     }
 
     /**

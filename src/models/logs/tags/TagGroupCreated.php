@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\tags;
 
-use Ryssbowh\Activity\base\ConfigModelLog;
+use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
 use craft\helpers\UrlHelper;
 use craft\models\TagGroup;
@@ -30,7 +30,7 @@ class TagGroupCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->tags->getTagGroupById($this->target_id);
+        return \Craft::$app->tags->getTagGroupByUid($this->target_uid);
     }
 
     /**

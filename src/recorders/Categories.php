@@ -3,11 +3,12 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ElementsRecorder;
+use Ryssbowh\Activity\base\recorders\ElementsRecorder;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use craft\base\Element;
 use craft\elements\Category;
 use craft\services\Categories as CraftCategories;
+use craft\services\Elements;
 use craft\services\Sites;
 use yii\base\Event;
 
@@ -18,12 +19,21 @@ class Categories extends ElementsRecorder
      */
     public function init()
     {
-        Event::on(Sites::class, Sites::EVENT_BEFORE_SAVE_SITE, function ($event) {
-            Activity::getRecorder('categories')->stopRecording = true;
-        });
-        Event::on(CraftCategories::class, CraftCategories::EVENT_BEFORE_SAVE_GROUP, function ($event) {
-            Activity::getRecorder('categories')->stopRecording = true;
-        });
+        if (Activity::$plugin->settings->ignoreResave) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_RESAVE_ELEMENT, function (Event $event) {
+                Activity::getRecorder('categories')->stopRecording();
+            });
+        }
+        if (Activity::$plugin->settings->ignoreUpdateSlugs) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_UPDATE_SLUG_AND_URI, function (Event $event) {
+                Activity::getRecorder('categories')->stopRecording();
+            });
+        }
+        if (Activity::$plugin->settings->ignorePropagate) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_PROPAGATE_ELEMENT, function (Event $event) {
+                Activity::getRecorder('categories')->stopRecording();
+            });
+        }
         Event::on(Category::class, Category::EVENT_BEFORE_SAVE, function ($event) {
             Activity::getRecorder('categories')->beforeSaved($event->sender);
         });
@@ -60,20 +70,20 @@ class Categories extends ElementsRecorder
     /**
      * @inheritDoc
      */
-    protected function getFields(Element $category): array
+    protected function getFieldsValues(Element $category): array
     {
         return array_merge(
             [
                 'slug' => new Plain([
-                    'label' => \Craft::t('app', 'Slug'),
+                    'name' => \Craft::t('app', 'Slug'),
                     'value' => $category->slug
                 ]),
                 'status' => new Plain([
-                    'label' => \Craft::t('app', 'Status'),
+                    'name' => \Craft::t('app', 'Status'),
                     'value' => Category::statuses()[$category->status],
                 ])
             ],
-            $this->getFieldValues($category)
+            $this->getCustomFieldValues($category)
         );
     }
 }

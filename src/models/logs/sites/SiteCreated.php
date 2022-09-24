@@ -2,8 +2,9 @@
 
 namespace Ryssbowh\Activity\models\logs\sites;
 
-use Ryssbowh\Activity\base\ConfigModelLog;
+use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
+use craft\errors\SiteNotFoundException;
 use craft\helpers\UrlHelper;
 use craft\models\Site;
 
@@ -30,7 +31,11 @@ class SiteCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->sites->getSiteById($this->target_id);
+        try {
+            return \Craft::$app->sites->getSiteByUid($this->target_uid);
+        } catch (SiteNotFoundException $e) {
+            return null;
+        }
     }
 
     /**
@@ -42,7 +47,7 @@ class SiteCreated extends ConfigModelLog
             'hasUrls' => \Craft::t('activity', 'Has its own base URL'),
             'enabled' => \Craft::t('app', 'Enabled'),
             'primary' => \Craft::t('app', 'Primary'),
-            'group' => \Craft::t('app', 'Group')
+            'siteGroup' => \Craft::t('app', 'Group')
         ]);
     }
 }

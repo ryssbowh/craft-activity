@@ -3,10 +3,11 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ElementsRecorder;
+use Ryssbowh\Activity\base\recorders\ElementsRecorder;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use craft\base\Element;
 use craft\elements\Asset;
+use craft\services\Elements;
 use yii\base\Event;
 
 class Assets extends ElementsRecorder
@@ -16,6 +17,21 @@ class Assets extends ElementsRecorder
      */
     public function init()
     {
+        if (Activity::$plugin->settings->ignoreResave) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_RESAVE_ELEMENT, function (Event $event) {
+                Activity::getRecorder('assets')->stopRecording();
+            });
+        }
+        if (Activity::$plugin->settings->ignoreUpdateSlugs) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_UPDATE_SLUG_AND_URI, function (Event $event) {
+                Activity::getRecorder('assets')->stopRecording();
+            });
+        }
+        if (Activity::$plugin->settings->ignorePropagate) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_PROPAGATE_ELEMENT, function (Event $event) {
+                Activity::getRecorder('assets')->stopRecording();
+            });
+        }
         Event::on(Asset::class, Asset::EVENT_BEFORE_SAVE, function ($event) {
             Activity::getRecorder('assets')->beforeSaved($event->sender);
         });
@@ -46,7 +62,7 @@ class Assets extends ElementsRecorder
     /**
      * @inheritDoc
      */
-    protected function getFields(Element $asset): array
+    protected function getFieldsValues(Element $asset): array
     {
         return array_merge(
             [
@@ -55,7 +71,7 @@ class Assets extends ElementsRecorder
                     'value' => $asset->filename
                 ])
             ],
-            $this->getFieldValues($asset)
+            $this->getCustomFieldValues($asset)
         );
     }
 }

@@ -3,11 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ConfigModelRecorder;
-use craft\base\Model;
-use craft\db\Query;
-use craft\db\Table;
-use craft\models\AssetTransform;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\services\AssetTransforms as CraftAssetTransforms;
 use yii\base\Event;
 
@@ -18,14 +14,14 @@ class AssetTransforms extends ConfigModelRecorder
      */
     public function init()
     {
-        Event::on(CraftAssetTransforms::class, CraftAssetTransforms::EVENT_BEFORE_SAVE_ASSET_TRANSFORM, function ($event) {
-            Activity::getRecorder('assetTransforms')->beforeSaved($event->assetTransform, $event->isNew);
+        \Craft::$app->projectConfig->onUpdate(CraftAssetTransforms::CONFIG_TRANSFORM_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('assetTransforms')->onUpdate($event);
         });
-        Event::on(CraftAssetTransforms::class, CraftAssetTransforms::EVENT_AFTER_SAVE_ASSET_TRANSFORM, function ($event) {
-            Activity::getRecorder('assetTransforms')->onSaved($event->assetTransform, $event->isNew);
+        \Craft::$app->projectConfig->onAdd(CraftAssetTransforms::CONFIG_TRANSFORM_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('assetTransforms')->onAdd($event);
         });
-        Event::on(CraftAssetTransforms::class, CraftAssetTransforms::EVENT_AFTER_DELETE_ASSET_TRANSFORM, function ($event) {
-            Activity::getRecorder('assetTransforms')->onDeleted($event->assetTransform);
+        \Craft::$app->projectConfig->onRemove(CraftAssetTransforms::CONFIG_TRANSFORM_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('assetTransforms')->onRemove($event);
         });
     }
 
@@ -40,37 +36,16 @@ class AssetTransforms extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function loadOldModel(int $id): ?Model
+    protected function getTrackedFieldNames(): array
     {
-        $query = (new Query())
-            ->select([
-                'id',
-                'name',
-                'handle',
-                'mode',
-                'position',
-                'height',
-                'width',
-                'format',
-                'quality',
-                'interlace',
-                'dimensionChangeTime',
-                'uid',
-            ])
-            ->from([Table::ASSETTRANSFORMS])
-            ->where(['id' => $id])
-            ->one();
-        if (!$query) {
-            return null;
-        }
-        return new AssetTransform($query);
+        return ['name', 'handle', 'mode', 'position', 'width', 'height', 'quality', 'interlace', 'format'];
     }
 
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(Model $model): array
+    protected function getDescriptiveFieldName(): ?string
     {
-        return ['name', 'handle', 'mode', 'position', 'width', 'height', 'quality', 'interlace', 'format'];
+        return 'name';
     }
 }

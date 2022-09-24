@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\users;
 
-use Ryssbowh\Activity\base\ConfigModelLog;
+use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
 use craft\helpers\UrlHelper;
 use craft\models\UserGroup;
@@ -30,7 +30,7 @@ class UserGroupCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->userGroups->getGroupById($this->target_id);
+        return \Craft::$app->userGroups->getGroupByUid($this->target_uid);
     }
 
     /**

@@ -3,10 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ConfigModelRecorder;
-use craft\base\Model;
-use craft\models\TagGroup;
-use craft\records\TagGroup as TagGroupRecord;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\services\Tags as CraftTags;
 use yii\base\Event;
 
@@ -17,14 +14,14 @@ class Tags extends ConfigModelRecorder
      */
     public function init()
     {
-        Event::on(CraftTags::class, CraftTags::EVENT_BEFORE_SAVE_GROUP, function ($event) {
-            Activity::getRecorder('tags')->beforeSaved($event->tagGroup, $event->isNew);
+        \Craft::$app->projectConfig->onUpdate(CraftTags::CONFIG_TAGGROUP_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('tags')->onUpdate($event);
         });
-        Event::on(CraftTags::class, CraftTags::EVENT_AFTER_SAVE_GROUP, function ($event) {
-            Activity::getRecorder('tags')->onSaved($event->tagGroup, $event->isNew);
+        \Craft::$app->projectConfig->onAdd(CraftTags::CONFIG_TAGGROUP_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('tags')->onAdd($event);
         });
-        Event::on(CraftTags::class, CraftTags::EVENT_AFTER_DELETE_GROUP, function ($event) {
-            Activity::getRecorder('tags')->onDeleted($event->tagGroup);
+        \Craft::$app->projectConfig->onRemove(CraftTags::CONFIG_TAGGROUP_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('tags')->onRemove($event);
         });
     }
 
@@ -39,29 +36,16 @@ class Tags extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function loadOldModel(int $id): ?Model
+    protected function getTrackedFieldNames(): array
     {
-        $record = TagGroupRecord::find()
-            ->where(['id' => $id])
-            ->one();
-        if (!$record) {
-            return null;
-        }
-
-        return new TagGroup($record->toArray([
-            'id',
-            'name',
-            'handle',
-            'fieldLayoutId',
-            'uid',
-        ]));
+        return ['name', 'handle', 'fieldLayouts'];
     }
 
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(Model $model): array
+    protected function getDescriptiveFieldName(): ?string
     {
-        return ['name', 'handle', 'fieldLayout'];
+        return 'name';
     }
 }

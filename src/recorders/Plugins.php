@@ -3,7 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\Recorder;
+use Ryssbowh\Activity\base\recorders\Recorder;
 use Ryssbowh\Activity\traits\ProjectConfigFields;
 use craft\base\Plugin;
 use craft\services\Plugins as CraftPlugins;
@@ -54,7 +54,7 @@ class Plugins extends Recorder
         if (!$this->shouldSaveLog('pluginInstalled')) {
             return;
         }
-        $this->saveLog('pluginInstalled', [
+        $this->commitLog('pluginInstalled', [
             'plugin' => $plugin
         ]);
     }
@@ -69,7 +69,7 @@ class Plugins extends Recorder
         if ($plugin->handle == 'activity' or !$this->shouldSaveLog('pluginUninstalled')) {
             return;
         }
-        $this->saveLog('pluginUninstalled', [
+        $this->commitLog('pluginUninstalled', [
             'plugin' => $plugin
         ]);
     }
@@ -84,7 +84,7 @@ class Plugins extends Recorder
         if (!$this->shouldSaveLog('pluginEnabled')) {
             return;
         }
-        $this->saveLog('pluginEnabled', [
+        $this->commitLog('pluginEnabled', [
             'plugin' => $plugin
         ]);
     }
@@ -99,7 +99,7 @@ class Plugins extends Recorder
         if (!$this->shouldSaveLog('pluginDisabled')) {
             return;
         }
-        $this->saveLog('pluginDisabled', [
+        $this->commitLog('pluginDisabled', [
             'plugin' => $plugin
         ]);
     }
@@ -115,7 +115,7 @@ class Plugins extends Recorder
             return;
         }
         $settings = \Craft::$app->projectConfig->get(CraftPlugins::CONFIG_PLUGINS_KEY . '.' . $plugin->handle . '.settings');
-        $this->saveLog('pluginSettingsChanged', [
+        $this->commitLog('pluginSettingsChanged', [
             'plugin' => $plugin,
             'changedFields' => $this->getDirtyConfig(CraftPlugins::CONFIG_PLUGINS_KEY . '.' . $plugin->handle . '.settings', $settings, $this->settings[$plugin->handle] ?? [])
         ]);
@@ -137,7 +137,7 @@ class Plugins extends Recorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedConfigNames()
+    protected function getTrackedFieldNames()
     {
         return '*';
     }

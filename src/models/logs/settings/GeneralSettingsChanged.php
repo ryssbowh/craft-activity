@@ -2,15 +2,21 @@
 
 namespace Ryssbowh\Activity\models\logs\settings;
 
-use Ryssbowh\Activity\base\SettingsLog;
+use Ryssbowh\Activity\base\logs\SettingsLog;
 
 class GeneralSettingsChanged extends SettingsLog
 {
+    /**
+     * @inheritDoc
+     */
     public function getTitle(): string
     {
         return \Craft::t('activity', 'Changed general settings');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getSettingLabels(): array
     {
         return [

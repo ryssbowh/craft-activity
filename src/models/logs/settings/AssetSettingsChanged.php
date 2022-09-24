@@ -2,15 +2,21 @@
 
 namespace Ryssbowh\Activity\models\logs\settings;
 
-use Ryssbowh\Activity\base\SettingsLog;
+use Ryssbowh\Activity\base\logs\SettingsLog;
 
 class AssetSettingsChanged extends SettingsLog
 {
+    /**
+     * @inheritDoc
+     */
     public function getTitle(): string
     {
         return \Craft::t('activity', 'Changed asset settings');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getSettingLabels(): array
     {
         return [

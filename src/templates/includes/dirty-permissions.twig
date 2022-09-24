@@ -1,0 +1,22 @@
+{% if field.data.added ?? [] %}
+    <li>{{ 'Added permissions:'|t('activity') }}
+        <ul>
+            {% for perm in field.data.added ?? [] %}
+                <li>
+                    {{ perm }}
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endif %}
+{% if field.data.removed ?? [] %}
+    <li>{{ 'Removed permissions:'|t('activity') }}
+        <ul>
+            {% for perm in field.data.removed ?? [] %}
+                <li>
+                    {{ perm }}
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endif %}

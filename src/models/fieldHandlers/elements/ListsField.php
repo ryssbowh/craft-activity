@@ -2,15 +2,16 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\elements;
 
-use Ryssbowh\Activity\base\ElementFieldHandler;
-use Ryssbowh\Activity\base\FieldHandler;
+use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
+use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use craft\fields\Checkboxes;
 use craft\fields\MultiSelect;
 
 class ListsField extends ElementFieldHandler
 {
-    public $fancyValue;
-
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
@@ -26,6 +27,9 @@ class ListsField extends ElementFieldHandler
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function isDirty(FieldHandler $handler): bool
     {
         $from = is_array($this->value) ? $this->value : [];
@@ -33,11 +37,17 @@ class ListsField extends ElementFieldHandler
         return !(empty(array_diff($from, $to)) and empty(array_diff($to, $from)));
     }
 
+    /**
+     * @inheritDoc
+     */
     public function hasFancyValue(): bool
     {
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getTargets(): array
     {
         return [

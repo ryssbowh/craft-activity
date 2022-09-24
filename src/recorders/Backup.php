@@ -3,7 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\Recorder;
+use Ryssbowh\Activity\base\recorders\Recorder;
 use craft\db\Connection;
 use yii\base\Event;
 
@@ -32,7 +32,7 @@ class Backup extends Recorder
         if (!$this->shouldSaveLog('backupCreated')) {
             return;
         }
-        $this->saveLog('backupCreated', [
+        $this->commitLog('backupCreated', [
             'data' => ['file' => str_replace(\Craft::getAlias('@root/'), '', $file)]
         ]);
     }
@@ -47,7 +47,7 @@ class Backup extends Recorder
         if (!$this->shouldSaveLog('backupRestored')) {
             return;
         }
-        $this->saveLog('backupRestored', [
+        $this->commitLog('backupRestored', [
             'data' => ['file' => str_replace(\Craft::getAlias('@root/'), '', $file)]
         ]);
     }

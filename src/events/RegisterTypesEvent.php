@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\events;
 
-use Ryssbowh\Activity\base\ActivityLog;
+use Ryssbowh\Activity\base\logs\ActivityLog;
 use Ryssbowh\Activity\exceptions\ActivityTypeException;
 use Ryssbowh\Activity\models\logs\CraftEditionChanged;
 use Ryssbowh\Activity\models\logs\assets\AssetCreated;
@@ -72,7 +72,6 @@ use Ryssbowh\Activity\models\logs\users\UserCreated;
 use Ryssbowh\Activity\models\logs\users\UserDeleted;
 use Ryssbowh\Activity\models\logs\users\UserGroupCreated;
 use Ryssbowh\Activity\models\logs\users\UserGroupDeleted;
-use Ryssbowh\Activity\models\logs\users\UserGroupPermissionsChanged;
 use Ryssbowh\Activity\models\logs\users\UserGroupSaved;
 use Ryssbowh\Activity\models\logs\users\UserInvalidToken;
 use Ryssbowh\Activity\models\logs\users\UserLayoutSaved;
@@ -94,8 +93,14 @@ use yii\base\Event;
 
 class RegisterTypesEvent extends Event
 {
+    /**
+     * @var array
+     */
     protected $_types = [];
 
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
@@ -178,7 +183,6 @@ class RegisterTypesEvent extends Event
             new UserGroupCreated,
             new UserGroupSaved,
             new UserGroupDeleted,
-            new UserGroupPermissionsChanged,
             new UserLayoutSaved,
             new VolumeCreated,
             new VolumeSaved,
@@ -189,11 +193,22 @@ class RegisterTypesEvent extends Event
         ]);
     }
 
+    /**
+     * Get registered types
+     * 
+     * @return array
+     */
     public function getTypes(): array
     {
         return $this->_types;
     }
 
+    /**
+     * Add a type to register
+     * 
+     * @param ActivityLog $type
+     * @param boolean     $replace
+     */
     public function add(ActivityLog $type, bool $replace = false)
     {
         if (isset($this->_types[$type->handle]) and !$replace) {
@@ -202,6 +217,12 @@ class RegisterTypesEvent extends Event
         $this->_types[$type->handle] = get_class($type);
     }
 
+    /**
+     * Add many types to register
+     * 
+     * @param array   $types
+     * @param boolean $replace
+     */
     public function addMany(array $types, bool $replace = false)
     {
         foreach ($types as $type) {

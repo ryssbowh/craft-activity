@@ -1,26 +1,53 @@
-{% if field.data.added ?? false %}
-    <li>
-        {% if field.data.added|length == 1 %}
-            {{ 'Field {field} was added to the field layout'|t('activity', {
-                field: field.data.added[field.data.added|keys|first].name
-            }) }}
-        {% else %}
-            {{ 'Fields {fields} were added to the field layout'|t('activity', {
-                fields: field.data.added|map(f => f.name)|join(', ')
-            }) }}
+{% if field.data.added ?? false or field.data.removed ?? false or field.data.changed ?? false %}
+    <li>{{ 'Field layout was changed'|t('activity') }}
+        {% if field.data.added ?? false %}
+            <ul>
+                {% for added in field.data.added %}
+                    <li>{{ 'Field {field} was added'|t('activity', {
+                            field: added.name
+                        }) }}
+                        <ul>
+                            {% for name in ['required', 'label'] %}
+                                <li>{{ '{name} was set to {value}'|t('activity', {
+                                        name: name|capitalize|t('app'),
+                                        value: '<code>' ~ added[name]|prettyPrint ~ '</code>'
+                                    })|raw }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
         {% endif %}
-    </li>
-{% endif %}
-{% if field.data.removed ?? false %}
-    <li>
-        {% if field.data.removed|length == 1 %}
-            {{ 'Field {field} was removed from the field layout'|t('activity', {
-                field: field.data.removed[field.data.removed|keys|first].name
-            }) }}
-        {% else %}
-            {{ 'Fields {fields} were removed from the field layout'|t('activity', {
-                fields: field.data.removed|map(f => f.name)|join(', ')
-            }) }}
+        {% if field.data.removed ?? false %}
+            <ul>
+                {% for removed in field.data.removed %}
+                    <li>{{ 'Field {field} was removed'|t('activity', {
+                            field: removed.name
+                        }) }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if field.data.changed ?? false %}
+            <ul>
+                {% for changed in field.data.changed %}
+                    <li>{{ 'Field {field} was changed'|t('activity', {
+                            field: changed.name
+                        }) }}
+                        <ul>
+                            {% for name in ['required', 'label'] %}
+                                <li>{{ '{name} was changed from {from} to {to}'|t('activity', {
+                                        name: name|capitalize|t('app'),
+                                        from: '<code>' ~ changed[name].f|prettyPrint ~ '</code>',
+                                        to: '<code>' ~ changed[name].t|prettyPrint ~ '</code>'
+                                    })|raw }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
         {% endif %}
     </li>
 {% endif %}

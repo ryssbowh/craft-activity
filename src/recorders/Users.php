@@ -3,7 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ElementsRecorder;
+use Ryssbowh\Activity\base\recorders\ElementsRecorder;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use craft\base\Element;
 use craft\controllers\UsersController;
@@ -87,7 +87,7 @@ class Users extends ElementsRecorder
         if (!$this->shouldSaveLog('userSuspended')) {
             return;
         }
-        $this->saveLog('userSuspended', [
+        $this->commitLog('userSuspended', [
             'element' => $user
         ]);
     }
@@ -102,7 +102,7 @@ class Users extends ElementsRecorder
         if (!$this->shouldSaveLog('userUnsuspended')) {
             return;
         }
-        $this->saveLog('userUnsuspended', [
+        $this->commitLog('userUnsuspended', [
             'element' => $user
         ]);
     }
@@ -117,7 +117,7 @@ class Users extends ElementsRecorder
         if (!$this->shouldSaveLog('userLocked')) {
             return;
         }
-        $this->saveLog('userLocked', [
+        $this->commitLog('userLocked', [
             'element' => $user,
             'user' => $user,
             'attempts' => \Craft::$app->config->general->maxInvalidLogins
@@ -134,7 +134,7 @@ class Users extends ElementsRecorder
         if (!$this->shouldSaveLog('userUnlocked')) {
             return;
         }
-        $this->saveLog('userUnlocked', [
+        $this->commitLog('userUnlocked', [
             'element' => $user
         ]);
     }
@@ -149,7 +149,7 @@ class Users extends ElementsRecorder
         if (!$this->shouldSaveLog('userLoginFailed')) {
             return;
         }
-        $this->saveLog('userLoginFailed', [
+        $this->commitLog('userLoginFailed', [
             'element' => $user,
             'user' => $user
         ]);
@@ -165,7 +165,7 @@ class Users extends ElementsRecorder
         if (!$this->shouldSaveLog('userInvalidToken')) {
             return;
         }
-        $this->saveLog('userInvalidToken', [
+        $this->commitLog('userInvalidToken', [
             'element' => $user,
             'user' => $user
         ]);
@@ -181,7 +181,7 @@ class Users extends ElementsRecorder
         if (!$this->shouldSaveLog('userEmailVerified')) {
             return;
         }
-        $this->saveLog('userEmailVerified', [
+        $this->commitLog('userEmailVerified', [
             'element' => $user,
             'user' => $user
         ]);
@@ -199,7 +199,7 @@ class Users extends ElementsRecorder
         if (!$this->shouldSaveLog('userAssignGroups')) {
             return;
         }
-        $this->saveLog('userAssignGroups', [
+        $this->commitLog('userAssignGroups', [
             'element' => User::find()->anyStatus()->id($userId),
             'changedFields' => [
                 'removedGroups' => $this->getGroupNames($removedGroupIds),
@@ -226,7 +226,7 @@ class Users extends ElementsRecorder
         if (!$this->shouldSaveLog($type)) {
             return;
         }
-        $this->saveLog($type, $params);
+        $this->commitLog($type, $params);
     }
 
     /**
@@ -241,7 +241,7 @@ class Users extends ElementsRecorder
         }
         $uid = \Craft::$app->getProjectConfig()->get('users.defaultGroup');
         $group = \Craft::$app->getUserGroups()->getGroupByUid($uid);
-        $this->saveLog('userAssignDefaultGroup', [
+        $this->commitLog('userAssignDefaultGroup', [
             'element' => $user,
             'user' => $user,
             'group' => $group->name
@@ -283,7 +283,7 @@ class Users extends ElementsRecorder
     /**
      * @inheritDoc
      */
-    protected function getSavedActivityType(Element $user)
+    protected function getSavedActivityType(Element $user): string
     {
         if ($user->firstSave) {
             return !\Craft::$app->user->identity ? 'userRegistered' : 'userCreated';
@@ -295,7 +295,7 @@ class Users extends ElementsRecorder
     /**
      * @inheritDoc
      */
-    protected function getFields(Element $user): array
+    protected function getFieldsValues(Element $user): array
     {
         return array_merge(
             [
@@ -320,7 +320,7 @@ class Users extends ElementsRecorder
                     'value' => $user->admin ? \Craft::t('app', 'Yes') : \Craft::t('app', 'No'),
                 ])
             ],
-            $this->getFieldValues($user)
+            $this->getCustomFieldValues($user)
         );
     }
 }

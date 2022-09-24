@@ -3,7 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\Recorder;
+use Ryssbowh\Activity\base\recorders\Recorder;
 use craft\base\Widget;
 use craft\services\Dashboard as CraftDashboard;
 use yii\base\Event;
@@ -35,7 +35,7 @@ class Dashboard extends Recorder
         if (!$this->shouldSaveLog($type)) {
             return;
         }
-        $this->saveLog($type, [
+        $this->commitLog($type, [
             'widget' => $widget
         ]);
     }
@@ -50,7 +50,7 @@ class Dashboard extends Recorder
         if (!$this->shouldSaveLog('widgetDeleted')) {
             return;
         }
-        $this->saveLog('widgetDeleted', [
+        $this->commitLog('widgetDeleted', [
             'widget' => $widget
         ]);
     }

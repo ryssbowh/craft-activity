@@ -2,10 +2,13 @@
 
 namespace Ryssbowh\Activity\models\logs\users;
 
-use Ryssbowh\Activity\base\UserLog;
+use Ryssbowh\Activity\base\logs\UserLog;
 
 class UserLocked extends UserLog
 {   
+    /**
+     * @var int
+     */
     public $attempts;
 
     public function getDbData(): array

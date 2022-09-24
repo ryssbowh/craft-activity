@@ -3,7 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\Recorder;
+use Ryssbowh\Activity\base\recorders\Recorder;
 use craft\services\Routes as CraftRoutes;
 use yii\base\Event;
 
@@ -38,7 +38,7 @@ class Routes extends Recorder
         if ($siteUid) {
             $site = \Craft::$app->sites->getSiteByUid($siteUid);
         }
-        $this->saveLog('routeSaved', [
+        $this->commitLog('routeSaved', [
             'changedFields' => [[
                 'uriParts' => $uriParts,
                 'template' => $template,
@@ -56,6 +56,6 @@ class Routes extends Recorder
         if (!$this->shouldSaveLog('routeDeleted')) {
             return;
         }
-        $this->saveLog('routeDeleted', []);
+        $this->commitLog('routeDeleted', []);
     }
 }

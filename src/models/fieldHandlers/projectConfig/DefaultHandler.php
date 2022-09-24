@@ -2,8 +2,8 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use Ryssbowh\Activity\base\ProjectConfigFieldHandler;
+use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 
-class DefaultHandler extends ProjectConfigFieldHandler
+class DefaultHandler extends FieldHandler
 {
 }

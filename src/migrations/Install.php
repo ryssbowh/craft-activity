@@ -15,7 +15,7 @@ class Install extends Migration
         $this->createTable('{{%activity_logs}}', [
             'id' => $this->primaryKey(),
             'type' => $this->string(255)->notNull(),
-            'target_id' => $this->integer(11)->unsigned(),
+            'target_uid' => $this->string(255),
             'target_class' => $this->string(255),
             'target_name' => $this->string(255),
             'user_name' => $this->string(255),

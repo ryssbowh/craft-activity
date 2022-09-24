@@ -3,7 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ProjectConfigRecorder;
+use Ryssbowh\Activity\base\recorders\ProjectConfigRecorder;
 use yii\base\Event;
 
 class EmailSettings extends ProjectConfigRecorder
@@ -21,7 +21,7 @@ class EmailSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedConfigNames(): array
+    protected function getTrackedFieldNames(): array
     {
         return ['fromEmail', 'fromName', 'replyToEmail', 'template', 'transportType', 'transportSettings.encryptionMethod', 'transportSettings.host', 'transportSettings.password', 'transportSettings.port', 'transportSettings.timeout', 'transportSettings.useAuthentication', 'transportSettings.username', 'transportSettings.command'];
     }

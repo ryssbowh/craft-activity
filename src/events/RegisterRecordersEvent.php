@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\events;
 
-use Ryssbowh\Activity\base\Recorder;
+use Ryssbowh\Activity\base\recorders\Recorder;
 use Ryssbowh\Activity\exceptions\ActivityRecorderException;
 use Ryssbowh\Activity\recorders\Application;
 use Ryssbowh\Activity\recorders\AssetSettings;
@@ -20,7 +20,6 @@ use Ryssbowh\Activity\recorders\Fields;
 use Ryssbowh\Activity\recorders\GeneralSettings;
 use Ryssbowh\Activity\recorders\GlobalSets;
 use Ryssbowh\Activity\recorders\Globals;
-use Ryssbowh\Activity\recorders\Permissions;
 use Ryssbowh\Activity\recorders\Plugins;
 use Ryssbowh\Activity\recorders\Routes;
 use Ryssbowh\Activity\recorders\Sections;
@@ -36,12 +35,20 @@ use yii\base\Event;
 
 class RegisterRecordersEvent extends Event
 {
+    /**
+     * @var array
+     */
     protected $_recorders = [];
 
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
         $this->addMany([
+            'sites' => new Sites,
+            'siteGroups' => new SiteGroups,
             'application' => new Application,
             'assets' => new Assets,
             'assetSettings' => new AssetSettings,
@@ -57,13 +64,10 @@ class RegisterRecordersEvent extends Event
             'fields' => new Fields,
             'globals' => new Globals,
             'globalSets' => new GlobalSets,
-            'permissions' => new Permissions,
             'plugins' => new Plugins,
             'routes' => new Routes,
             'sections' => new Sections,
             'generalSettings' => new GeneralSettings,
-            'sites' => new Sites,
-            'siteGroups' => new SiteGroups,
             'tags' => new Tags,
             'users' => new Users,
             'userLayout' => new UserLayout,
@@ -73,11 +77,23 @@ class RegisterRecordersEvent extends Event
         ]);
     }
 
+    /**
+     * Get registered recorders
+     * 
+     * @return array
+     */
     public function getRecorders(): array
     {
         return $this->_recorders;
     }
 
+    /**
+     * Add a recorder to register
+     * 
+     * @param string   $name
+     * @param Recorder $recorder
+     * @param boolean  $replace
+     */
     public function add(string $name, Recorder $recorder, bool $replace = false)
     {
         if (isset($this->_recorders[$name]) and !$replace) {
@@ -86,6 +102,12 @@ class RegisterRecordersEvent extends Event
         $this->_recorders[$name] = $recorder;
     }
 
+    /**
+     * Add many recorders to register
+     * 
+     * @param array   $recorders
+     * @param boolean $replace
+     */
     public function addMany(array $recorders, bool $replace = false)
     {
         foreach ($recorders as $name => $recorder) {

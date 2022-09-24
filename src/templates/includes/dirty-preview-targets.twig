@@ -1,10 +1,4 @@
-{% macro fromValue(value) %}
-    <code>{{ (value.ff ?? value.f)|prettyPrint }}</code>
-{% endmacro %}
-
-{% macro toValue(value) %}
-    <code>{{ (value.tf ?? value.t)|prettyPrint }}</code>
-{% endmacro %}
+{% import "activity/includes/macros" as macros %}
 
 {% for row in field.data %}
     <li>{{ 'The ' ~ row.row ~ ' row of preview targets was ' ~ row.mode ~ ':' }}
@@ -17,18 +11,18 @@
                         {% if hasFrom and hasTo %}
                             {{ "{field} was changed from {from} to {to}"|t('activity', {
                                 field: fieldLabel,
-                                from: _self.fromValue(row[fieldName]),
-                                to: _self.toValue(row[fieldName])
+                                from: macros.rawFromValue(row[fieldName]),
+                                to: macros.rawToValue(row[fieldName])
                             })|raw }}
                         {% elseif hasTo %}
                             {{ "{field} was set to {to}"|t('activity', {
                                 field: fieldLabel,
-                                to: _self.toValue(row[fieldName])
+                                to: macros.rawToValue(row[fieldName])
                             })|raw }}
                         {% elseif hasFrom %}
                             {{ "{field} value ({from}) was removed"|t('activity', {
                                 field: fieldLabel,
-                                from: _self.fromValue(row[fieldName])
+                                from: macros.rawFromvalue(row[fieldName])
                             })|raw }}
                         {% endif %}
                     </li>

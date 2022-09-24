@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\routes;
 
-use Ryssbowh\Activity\base\ActivityLog;
+use Ryssbowh\Activity\base\logs\ActivityLog;
 
 class RouteDeleted extends ActivityLog
 {   

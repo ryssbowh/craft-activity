@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\assets;
 
-use Ryssbowh\Activity\base\ConfigModelLog;
+use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
 use craft\helpers\UrlHelper;
 use craft\models\AssetTransform;
@@ -30,7 +30,7 @@ class AssetTransformCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->assetTransforms->getTransformById($this->target_id);
+        return \Craft::$app->assetTransforms->getTransformByUid($this->target_uid);
     }
 
     /**

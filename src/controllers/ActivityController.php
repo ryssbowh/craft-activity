@@ -9,6 +9,9 @@ use craft\web\Controller;
 
 class ActivityController extends Controller
 {
+    /**
+     * Index action
+     */
     public function actionIndex()
     {
         $this->requirePermission('viewActivityLogs');
@@ -36,6 +39,9 @@ class ActivityController extends Controller
         ]);
     }
 
+    /**
+     * Delete all logs action
+     */
     public function actionDeleteAllLogs()
     {
         $this->requirePermission('deleteActivityLogs');
@@ -43,6 +49,9 @@ class ActivityController extends Controller
         return $this->asJson(['success' => true]);
     }
 
+    /**
+     * Delete a log action
+     */
     public function actionDeleteLog()
     {
         $this->requirePermission('deleteActivityLogs');
@@ -51,6 +60,9 @@ class ActivityController extends Controller
         return $this->asJson(['success' => true]);
     }
 
+    /**
+     * Load logs action
+     */
     public function actionLoadLogs()
     {
         $this->requirePermission('viewActivityLogs');

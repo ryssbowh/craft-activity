@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\users;
 
-use Ryssbowh\Activity\base\ActivityLog;
+use Ryssbowh\Activity\base\logs\ActivityLog;
 
 class UserLayoutSaved extends ActivityLog
 {

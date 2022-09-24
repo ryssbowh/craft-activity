@@ -13,8 +13,14 @@ use yii\base\Event;
 
 class RegisterElementFieldHandlersEvent extends Event
 {
+    /**
+     * @var array
+     */
     protected $_handlers = [];
 
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
@@ -28,11 +34,21 @@ class RegisterElementFieldHandlersEvent extends Event
         ]);
     }
 
+    /**
+     * Get registered field handlers
+     * @return array
+     */
     public function getHandlers(): array
     {
         return $this->_handlers;
     }
 
+    /**
+     * Add a field handler to register
+     * 
+     * @param string  $handler
+     * @param boolean $replace
+     */
     public function add(string $handler, bool $replace = false)
     {
         foreach ($handler::getTargets() as $target) {
@@ -43,6 +59,12 @@ class RegisterElementFieldHandlersEvent extends Event
         }
     }
 
+    /**
+     * Add many field handlers to register
+     * 
+     * @param array   $handlers
+     * @param boolean $replace
+     */
     public function addMany(array $handlers, bool $replace = false)
     {
         foreach ($handlers as $handler) {

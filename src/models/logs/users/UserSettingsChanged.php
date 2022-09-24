@@ -2,15 +2,21 @@
 
 namespace Ryssbowh\Activity\models\logs\users;
 
-use Ryssbowh\Activity\base\SettingsLog;
+use Ryssbowh\Activity\base\logs\SettingsLog;
 
 class UserSettingsChanged extends SettingsLog
 {
+    /**
+     * @inheritDoc
+     */
     public function getTitle(): string
     {
         return \Craft::t('activity', 'Changed user settings');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getSettingLabels(): array
     {
         return [

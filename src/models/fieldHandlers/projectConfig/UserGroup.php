@@ -2,8 +2,13 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
+use craft\services\Users;
+
 class UserGroup extends DefaultHandler
 {
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         $this->fancyValue = \Craft::t('app', 'None');
@@ -12,21 +17,33 @@ class UserGroup extends DefaultHandler
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function hasFancyValue(): bool
     {
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getTargets(): array
     {
         return [
-            'users.defaultGroup'
+            Users::CONFIG_USERS_KEY . '.defaultGroup'
         ];
     }
 
+    /**
+     * Get a group name by uid
+     * 
+     * @param  string $uid
+     * @return string
+     */
     protected function getGroupName(string $uid): string
     {
-        $volume = \Craft::$app->volumes->getVolumeByUid($uid);
-        return $volume ? $volume->name : '';
+        $group = \Craft::$app->userGroups->getGroupByUid($uid);
+        return $group ? $group->name : '';
     }
 }

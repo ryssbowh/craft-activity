@@ -3,7 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ProjectConfigRecorder;
+use Ryssbowh\Activity\base\recorders\ProjectConfigRecorder;
 use yii\base\Event;
 
 class UserSettings extends ProjectConfigRecorder
@@ -21,7 +21,7 @@ class UserSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedConfigNames(): array
+    protected function getTrackedFieldNames(): array
     {
         return ['allowPublicRegistration', 'defaultGroup', 'photoSubpath', 'photoVolumeUid', 'requireEmailVerification', 'suspendByDefault', 'validateOnPublicRegistration'];
     }

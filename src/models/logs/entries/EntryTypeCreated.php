@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\entries;
 
-use Ryssbowh\Activity\base\ConfigModelLog;
+use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
 use craft\helpers\Html;
 use craft\helpers\UrlHelper;
@@ -88,7 +88,7 @@ class EntryTypeCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->sections->getEntryTypeById($this->target_id);
+        return \Craft::$app->sections->getEntryTypeByUid($this->target_uid);
     }
 
     /**

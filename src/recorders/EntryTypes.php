@@ -3,12 +3,8 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ConfigModelRecorder;
-use Ryssbowh\Activity\base\Recorder;
-use craft\base\Model;
-use craft\db\Query;
-use craft\db\Table;
-use craft\models\EntryType;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
+use craft\events\ConfigEvent;
 use craft\services\Sections;
 use yii\base\Event;
 
@@ -19,14 +15,14 @@ class EntryTypes extends ConfigModelRecorder
      */
     public function init()
     {
-        Event::on(Sections::class, Sections::EVENT_BEFORE_SAVE_ENTRY_TYPE, function (Event $event) {
-            Activity::getRecorder('entryTypes')->beforeSaved($event->entryType, $event->isNew);
+        \Craft::$app->projectConfig->onUpdate(Sections::CONFIG_ENTRYTYPES_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('entryTypes')->onUpdate($event);
         });
-        Event::on(Sections::class, Sections::EVENT_AFTER_SAVE_ENTRY_TYPE, function (Event $event) {
-            Activity::getRecorder('entryTypes')->onSaved($event->entryType, $event->isNew);
+        \Craft::$app->projectConfig->onAdd(Sections::CONFIG_ENTRYTYPES_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('entryTypes')->onAdd($event);
         });
-        Event::on(Sections::class, Sections::EVENT_AFTER_DELETE_ENTRY_TYPE, function (Event $event) {
-            Activity::getRecorder('entryTypes')->onDeleted($event->entryType);
+        \Craft::$app->projectConfig->onRemove(Sections::CONFIG_ENTRYTYPES_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('entryTypes')->onRemove($event);
         });
     }
 
@@ -41,46 +37,19 @@ class EntryTypes extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function modifyParams(array $params, string $type, Model $model)
+    protected function modifyParams(array $params, ConfigEvent $event): array
     {
-        $params['section'] = $model->section;
+        $uid = $event->newValue['section'] ?? $event->oldValue['section'];
+        $params['section'] = \Craft::$app->sections->getSectionByUid($uid);
         return $params;
     }
 
     /**
      * @inheritDoc
      */
-    protected function loadOldModel(int $id): ?Model
+    protected function getTrackedFieldNames(): array
     {
-        $query = (new Query())
-            ->select([
-                'id',
-                'sectionId',
-                'fieldLayoutId',
-                'name',
-                'handle',
-                'sortOrder',
-                'hasTitleField',
-                'titleFormat',
-                'uid',
-                'titleTranslationMethod',
-                'titleTranslationKeyFormat'
-            ])
-            ->from([Table::ENTRYTYPES])
-            ->where(['id' => $id])
-            ->one();
-        if (!$query) {
-            return null;
-        }
-        return new EntryType($query);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getTrackedFieldNames(Model $model): array
-    {
-        return ['name', 'handle', 'hasTitleField', 'titleTranslationMethod', 'titleFormat', 'fieldLayout'];
+        return ['name', 'handle', 'hasTitleField', 'titleTranslationMethod', 'titleFormat', 'fieldLayouts'];
     }
 
     /**
@@ -91,5 +60,13 @@ class EntryTypes extends ConfigModelRecorder
         return [
             'hasTitleField' => 'bool'
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getDescriptiveFieldName(): ?string
+    {
+        return 'name';
     }
 }

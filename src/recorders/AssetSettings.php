@@ -3,7 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ProjectConfigRecorder;
+use Ryssbowh\Activity\base\recorders\ProjectConfigRecorder;
 use yii\base\Event;
 
 class AssetSettings extends ProjectConfigRecorder
@@ -27,7 +27,7 @@ class AssetSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedConfigNames(): array
+    protected function getTrackedFieldNames(): array
     {
         return ['tempVolumeUid', 'tempSubpath'];
     }

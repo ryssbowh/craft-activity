@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\plugins;
 
-use Ryssbowh\Activity\base\PluginLog;
+use Ryssbowh\Activity\base\logs\PluginLog;
 
 class PluginEnabled extends PluginLog
 {

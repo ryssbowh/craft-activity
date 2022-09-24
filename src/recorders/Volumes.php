@@ -3,11 +3,8 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ConfigModelRecorder;
-use Ryssbowh\Activity\base\Recorder;
-use craft\base\Model;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\services\Volumes as CraftVolumes;
-use craft\volumes\Local;
 use yii\base\Event;
 
 class Volumes extends ConfigModelRecorder
@@ -17,14 +14,14 @@ class Volumes extends ConfigModelRecorder
      */
     public function init()
     {
-        Event::on(CraftVolumes::class, CraftVolumes::EVENT_BEFORE_SAVE_VOLUME, function ($event) {
-            Activity::getRecorder('volumes')->beforeSaved($event->volume, $event->isNew);
+        \Craft::$app->projectConfig->onUpdate(CraftVolumes::CONFIG_VOLUME_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('volumes')->onUpdate($event);
         });
-        Event::on(CraftVolumes::class, CraftVolumes::EVENT_AFTER_SAVE_VOLUME, function ($event) {
-            Activity::getRecorder('volumes')->onSaved($event->volume, $event->isNew);
+        \Craft::$app->projectConfig->onAdd(CraftVolumes::CONFIG_VOLUME_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('volumes')->onAdd($event);
         });
-        Event::on(CraftVolumes::class, CraftVolumes::EVENT_AFTER_DELETE_VOLUME, function ($event) {
-            Activity::getRecorder('volumes')->onDeleted($event->volume);
+        \Craft::$app->projectConfig->onRemove(CraftVolumes::CONFIG_VOLUME_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('volumes')->onRemove($event);
         });
     }
     
@@ -39,21 +36,9 @@ class Volumes extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function loadOldModel(int $id): ?Model
+    protected function getTrackedFieldNames(): array
     {
-        return \Craft::$app->volumes->getVolumeById($id);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getTrackedFieldNames(Model $model): array
-    {
-        $names = ['name', 'handle', 'hasUrls', 'type', 'titleTranslationMethod', 'fieldLayout', 'titleTranslationKeyFormat'];
-        if ($model instanceof Local) {
-            $names[] = 'path';
-        }
-        return $names;
+        return ['name', 'handle', 'hasUrls', 'url', 'type', 'titleTranslationMethod', 'fieldLayouts', 'titleTranslationKeyFormat', 'settings.path'];
     }
 
     /**
@@ -64,5 +49,13 @@ class Volumes extends ConfigModelRecorder
         return [
             'hasUrls' => 'bool'
         ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getDescriptiveFieldName(): ?string
+    {
+        return 'name';
     }
 }

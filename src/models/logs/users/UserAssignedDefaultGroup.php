@@ -2,10 +2,13 @@
 
 namespace Ryssbowh\Activity\models\logs\users;
 
-use Ryssbowh\Activity\base\UserLog;
+use Ryssbowh\Activity\base\logs\UserLog;
 
 class UserAssignedDefaultGroup extends UserLog
 {
+    /**
+     * @var string
+     */
     public $group = '';
 
     /**

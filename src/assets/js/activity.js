@@ -1,5 +1,6 @@
 var Activity = Garnish.Base.extend({
     adminTable: null,
+    hotReloadTimeout: null,
     $pager: null,
     $filters: null,
     $buttons: null,
@@ -15,6 +16,7 @@ var Activity = Garnish.Base.extend({
         this.$filters = $('.activity-filter');
         this.$pager = $('#activity-pager');
         this.$datepickers = $('#header .datepicker');
+        this.$hotReload = $('#header .js-hot-reload');
         this.initAdminTable();
         this.addListener($('#header .btn.delete'), 'click', 'handleDeleteAll');
         this.addListener($('#users-filter a'), 'click', 'handleChangeFilter');
@@ -24,6 +26,7 @@ var Activity = Garnish.Base.extend({
         this.initDatePickers();
         this.initPager();
         this.initRecords();
+        this.initHotReload();
     },
 
     initRecords: function () {
@@ -57,6 +60,18 @@ var Activity = Garnish.Base.extend({
             });
     },
 
+    initHotReload: function ()
+    {
+        let _this = this;
+        this.$hotReload.click(function (e) {
+            if ($(e.target).is(':checked')) {
+                _this.startHotReload();
+            } else {
+                _this.stopHotReload();
+            }
+        });
+    },
+
     initAdminTable: function () {
         this.adminTable = new Craft.AdminTable({
             tableSelector: '#activity-table',
@@ -74,6 +89,24 @@ var Activity = Garnish.Base.extend({
     initPager: function () {
         this.addListener($('#activity-pager a.prev-page'), 'click', 'handlePreviousPage');
         this.addListener($('#activity-pager a.next-page'), 'click', 'handleNextPage');
+    },
+
+    startHotReload: function ()
+    {
+        if (this.hotReloadTimeout) {
+            return;
+        }
+        let _this = this;
+        this.hotReloadTimeout = setInterval(function () {
+            _this.reloadRecords();
+        }, 5000);
+    },
+
+    stopHotReload: function ()
+    {
+        if (this.hotReloadTimeout) {
+            clearInterval(this.hotReloadTimeout);
+        }
     },
 
     handleDeleteAll: function () {

@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\elements;
 
-use Ryssbowh\Activity\base\ElementFieldHandler;
+use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
 use craft\fields\Color;
 use craft\fields\Email;
 use craft\fields\Lightswitch;
@@ -12,6 +12,9 @@ use craft\fields\Url;
 
 class Plain extends ElementFieldHandler
 {
+    /**
+     * @inheritDoc
+     */
     public static function getTargets(): array
     {
         return [

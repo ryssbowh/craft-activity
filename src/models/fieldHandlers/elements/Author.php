@@ -2,10 +2,13 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\elements;
 
-use Ryssbowh\Activity\base\ElementFieldHandler;
+use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
 
 class Author extends ElementFieldHandler
 {
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         parent::init();
@@ -13,6 +16,9 @@ class Author extends ElementFieldHandler
         $this->fancyValue = $this->rawValue->friendlyName;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function hasFancyValue(): bool
     {
         return true;

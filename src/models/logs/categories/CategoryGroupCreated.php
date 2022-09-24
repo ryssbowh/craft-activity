@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\logs\categories;
 
-use Ryssbowh\Activity\base\ConfigModelLog;
+use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
 use craft\helpers\UrlHelper;
 use craft\models\CategoryGroup;
@@ -22,7 +22,7 @@ class CategoryGroupCreated extends ConfigModelLog
      */
     protected function getModelLink(): string
     {
-        return UrlHelper::cpUrl('settings/categories/' . $this->target_id);
+        return UrlHelper::cpUrl('settings/categories/' . $this->model->id);
     }
 
     /**
@@ -30,7 +30,7 @@ class CategoryGroupCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->categories->getGroupById($this->target_id);
+        return \Craft::$app->categories->getGroupByUid($this->target_uid);
     }
 
     /**
@@ -39,7 +39,7 @@ class CategoryGroupCreated extends ConfigModelLog
     protected function getFieldLabels(): array
     {
         return array_merge((new CategoryGroup)->attributeLabels(), [
-            'maxLevels' => \Craft::t('app', 'Max Levels'),
+            'structure.maxLevels' => \Craft::t('app', 'Max Levels'),
             'defaultPlacement' => \Craft::t('activity', 'Default Placement')
         ]);
     }

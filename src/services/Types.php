@@ -11,8 +11,17 @@ class Types extends Component
 {   
     const EVENT_REGISTER = 'event-register';
 
+    /**
+     * All logs types, indexed by handle
+     * @var array
+     */
     protected $_types;
 
+    /**
+     * Get all registered types
+     * 
+     * @return array
+     */
     public function getTypes(): array
     {
         if ($this->_types === null) {
@@ -40,6 +49,12 @@ class Types extends Component
         return $types;
     }
 
+    /**
+     * Get a type class by handle
+     * 
+     * @param  string $handle
+     * @return string
+     */
     public function getTypeClassByHandle(string $handle): string
     {
         if ($this->hasType($handle)) {
@@ -48,11 +63,20 @@ class Types extends Component
         throw ActivityTypeException::noHandle($handle);
     }
 
+    /**
+     * Is a type handle registered
+     * 
+     * @param  string  $handle
+     * @return boolean
+     */
     public function hasType(string $handle): bool
     {
         return isset($this->types[$handle]);
     }
 
+    /**
+     * Register types
+     */
     protected function register()
     {
         $event = new RegisterTypesEvent;

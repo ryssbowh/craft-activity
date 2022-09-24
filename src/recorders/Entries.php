@@ -3,7 +3,7 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\ElementsRecorder;
+use Ryssbowh\Activity\base\recorders\ElementsRecorder;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Author;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Date;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
@@ -20,17 +20,35 @@ class Entries extends ElementsRecorder
      */
     public function init()
     {
-        if (Activity::$plugin->settings->ignoreResaveElements) {
+        if (Activity::$plugin->settings->ignoreResave) {
             Event::on(Elements::class, Elements::EVENT_BEFORE_RESAVE_ELEMENT, function (Event $event) {
-                Activity::getRecorder('entries')->stopRecording = true;
+                Activity::getRecorder('entries')->stopRecording();
             });
         }
-        Event::on(Sections::class, Sections::EVENT_BEFORE_SAVE_SECTION, function (Event $event) {
-            Activity::getRecorder('entries')->stopRecording = true;
+        if (Activity::$plugin->settings->ignoreUpdateSlugs) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_UPDATE_SLUG_AND_URI, function (Event $event) {
+                Activity::getRecorder('entries')->stopRecording();
+            });
+        }
+        if (Activity::$plugin->settings->ignorePropagate) {
+            Event::on(Elements::class, Elements::EVENT_BEFORE_PROPAGATE_ELEMENT, function (Event $event) {
+                Activity::getRecorder('entries')->stopRecording();
+            });
+        }
+        //------------Do not record entry changes when sections/entry types are being created/removed
+        \Craft::$app->projectConfig->onAdd(Sections::CONFIG_SECTIONS_KEY. '.{uid}', function (Event $event) {
+            Activity::getRecorder('entries')->stopRecording();
         });
-        Event::on(Sections::class, Sections::EVENT_BEFORE_SAVE_ENTRY_TYPE, function (Event $event) {
-            Activity::getRecorder('entries')->stopRecording = true;
+        \Craft::$app->projectConfig->onUpdate(Sections::CONFIG_SECTIONS_KEY. '.{uid}', function (Event $event) {
+            Activity::getRecorder('entries')->stopRecording();
         });
+        Event::on(Sections::class, Sections::EVENT_BEFORE_APPLY_ENTRY_TYPE_DELETE, function (Event $event) {
+            Activity::getRecorder('entries')->stopRecording();
+        });
+        Event::on(Sections::class, Sections::EVENT_BEFORE_APPLY_SECTION_DELETE, function (Event $event) {
+            Activity::getRecorder('entries')->stopRecording();
+        });
+        //------------
         Event::on(Entry::class, Entry::EVENT_BEFORE_SAVE, function ($event) {
             Activity::getRecorder('entries')->beforeSaved($event->sender);
         });
@@ -67,7 +85,7 @@ class Entries extends ElementsRecorder
     /**
      * @inheritDoc
      */
-    protected function getFields(Element $entry): array
+    protected function getFieldsValues(Element $entry): array
     {
         $fields = array_merge(
             [
@@ -88,7 +106,7 @@ class Entries extends ElementsRecorder
                     'rawValue' => $entry->expiryDate,
                 ]),
             ],
-            $this->getFieldValues($entry)
+            $this->getCustomFieldValues($entry)
         );
         if ($entry->section->type != 'single' and $entry->author) {
             $fields['author'] = new Author([
