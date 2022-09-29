@@ -3,12 +3,9 @@
 {% if log.changedFields ?? false %}
     <ul>
         {% for field in log.changedFields %}
-            {% set template = log.dirtyFieldTemplates[field.name] ?? false %}
-            {% if template %}
-                {% include template %}
-            {% else %}
-                {{ macros.fieldValue(field, log) }}
-            {% endif %}
+            <li>
+                {{ macros.configField(field) }}
+            </li>
         {% endfor %}
     </ul>
 {% endif %}

@@ -55,4 +55,12 @@ class ListsField extends ElementFieldHandler
             MultiSelect::class
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getTemplate(): ?string
+    {
+        return 'activity/field-handlers/lists-fields';
+    }
 }

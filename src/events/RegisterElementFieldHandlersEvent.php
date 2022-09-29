@@ -3,12 +3,20 @@
 namespace Ryssbowh\Activity\events;
 
 use Ryssbowh\Activity\exceptions\FieldHandlerException;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Assets;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Categories;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Date;
-use Ryssbowh\Activity\models\fieldHandlers\elements\Elements;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Entries;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Lightswitch;
 use Ryssbowh\Activity\models\fieldHandlers\elements\ListField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\ListsField;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Matrix;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Products;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Redactor;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Tags;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Users;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Variants;
 use yii\base\Event;
 
 class RegisterElementFieldHandlersEvent extends Event
@@ -25,12 +33,20 @@ class RegisterElementFieldHandlersEvent extends Event
     {
         parent::init();
         $this->addMany([
-            Elements::class,
+            Assets::class,
+            Categories::class,
+            Date::class,
+            Entries::class,
+            Lightswitch::class,
             ListField::class,
             ListsField::class,
+            Matrix::class,
             Plain::class,
+            Products::class,
             Redactor::class,
-            Date::class
+            Tags::class,
+            Users::class,
+            Variants::class
         ]);
     }
 

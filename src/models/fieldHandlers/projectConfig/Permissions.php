@@ -33,6 +33,14 @@ class Permissions extends DefaultHandler
     /**
      * @inheritDoc
      */
+    public static function getTemplate(): ?string
+    {
+        return 'activity/field-handlers/permissions';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getDirty(FieldHandler $handler): array
     {
         if ($this->_dirty === null) {

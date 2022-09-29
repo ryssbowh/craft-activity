@@ -79,7 +79,7 @@
 
 {% block content %}
     <div id="noactivity" class="hidden">{{ 'No activity found'|t('activity') }}</div>
-    <table id="activity-table" class="{% if not logs %}hidden{% endif %} data fullwidth collapsible">
+    <table id="activity-table" class="{% if not logs %}hidden{% endif %} fullwidth collapsible">
         <thead>
             <th scope="col">{{ "User"|t('app') }}</th>
             {% if craft.app.isMultiSite %}

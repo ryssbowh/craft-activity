@@ -17,82 +17,20 @@ class ChangedField extends Model
     public $data;
 
     /**
-     * Does this field define a from value
-     * 
-     * @return boolean
+     * @var string
      */
-    public function getHasFrom(): bool
-    {
-        return array_key_exists('f', $this->data);
-    }
+    public $handler;
 
     /**
-     * Does this field define a to value
+     * Get the template used to render this changed field description
      * 
-     * @return boolean
+     * @return ?string
      */
-    public function getHasTo(): bool
+    public function getTemplate(): ?string
     {
-        return array_key_exists('t', $this->data);
-    }
-
-    /**
-     * Get field from value
-     * 
-     * @return mixed|null
-     */
-    public function getFrom()
-    {
-        return $this->data['f'] ?? null;
-    }
-
-    /**
-     * Get field to value
-     * 
-     * @return mixed|null
-     */
-    public function getTo()
-    {
-        return $this->data['t'] ?? null;
-    }
-
-    /**
-     * Does this field define a fancy from value
-     * 
-     * @return boolean
-     */
-    public function getHasFancyFrom(): bool
-    {
-        return array_key_exists('ff', $this->data);
-    }
-
-    /**
-     * Does this field define a fancy to value
-     * 
-     * @return boolean
-     */
-    public function getHasFancyTo(): bool
-    {
-        return array_key_exists('tf', $this->data);
-    }
-
-    /**
-     * Get field fancy from value
-     * 
-     * @return mixed|null
-     */
-    public function getFancyFrom()
-    {
-        return $this->data['ff'] ?? null;
-    }
-
-    /**
-     * Get field fancy to value
-     * 
-     * @return mixed|null
-     */
-    public function getFancyTo()
-    {
-        return $this->data['tf'] ?? null;
+        if (class_exists($this->handler)) {
+            return $this->handler::getTemplate();
+        }
+        return null;
     }
 }

@@ -44,11 +44,12 @@ class Logs extends Component
             'data' => $data['data'] ?? null
         ]);
         $record->save(false);
-        foreach ($changedFields as $name => $field) {
+        foreach ($changedFields as $name => $array) {
             $field = new ActivityChangedField([
                 'log_id' => $record->id,
                 'name' => $name,
-                'data' => $field
+                'handler' => $array['handler'],
+                'data' => $array['data']
             ]);
             $field->save(false);
         }

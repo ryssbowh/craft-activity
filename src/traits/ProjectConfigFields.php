@@ -65,13 +65,22 @@ trait ProjectConfigFields
         $oldSettings = $this->getConfigValues($basePath, $oldSettings);
         foreach ($newSettings as $name => $handler) {
             if (!array_key_exists($name, $oldSettings)) {
-                $dirty[$name] = $handler->getDbValue('t');
+                $dirty[$name] = [
+                    'data' => $handler->getDbValue('t'),
+                    'handler' => get_class($handler)
+                ];
             } elseif ($handler->isDirty($oldSettings[$name])) {
-                $dirty[$name] = $handler->getDirty($oldSettings[$name]);
+                $dirty[$name] = [
+                    'data' => $handler->getDirty($oldSettings[$name]),
+                    'handler' => get_class($handler)
+                ];
             }
         }
         foreach (array_diff_key($oldSettings, $newSettings) as $name => $handler) {
-            $dirty[$name] = $handler->getDbValue('f');
+            $dirty[$name] = [
+                'data' => $handler->getDbValue('f'),
+                'handler' => get_class($handler)
+            ];
         }
         return $dirty;
     }

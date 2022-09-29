@@ -1,0 +1,48 @@
+{% import "activity/includes/macros" as macros %}
+
+{{ 'Field {field} was changed'|t('activity', {
+    field: field.data.name
+}) }}
+<ul>
+    {% for row, block in field.data.blocks %}
+        {% if block.mode == 'changed' %}
+            <li>{{ 'Block {row} was changed'|t('activity', {row: row + 1}) }}</li>
+            <ul>
+                {% if block.enabled.t ?? null is same as(true) and block.enabled.f ?? null is same as(false) %}
+                    <li>{{ 'Block was enabled'|t('activity') }}</li>
+                {% elseif block.enabled.t ?? null is same as(false) and block.enabled.f ?? null is same as(true) %}
+                    <li>{{ 'Block was disabled'|t('activity') }}</li>
+                {% endif %}
+                {% for mfield in block.fields ?? [] %}
+                    <li>{{ macros.elementField(mfield) }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if block.mode == 'removed' %}
+            <li>{{ 'Block {row} was removed'|t('activity', {row: row + 1}) }}</li>
+            <ul>
+                {% if block.enabled ?? null %}
+                    <li>{{ 'Block was enabled'|t('activity') }}</li>
+                {% else %}
+                    <li>{{ 'Block was disabled'|t('activity') }}</li>
+                {% endif %}
+                {% for mfield in block.fields ?? [] %}
+                    <li>{{ macros.elementField(mfield) }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <li>{{ 'Block {row} was added'|t('activity', {row: row + 1}) }}</li>
+            <ul>
+                <li>{{ 'Type was set to {type}'|t('activity', {type: block.name}) }}</li>
+                {% if block.enabled %}
+                    <li>{{ 'Block was enabled'|t('activity') }}</li>
+                {% else %}
+                    <li>{{ 'Block was disabled'|t('activity') }}</li>
+                {% endif %}
+                {% for mfield in block.fields ?? [] %}
+                    <li>{{ macros.elementField(mfield) }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+</ul>

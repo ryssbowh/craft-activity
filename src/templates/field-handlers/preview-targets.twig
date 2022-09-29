@@ -1,7 +1,7 @@
 {% import "activity/includes/macros" as macros %}
 
 {% for row in field.data %}
-    <li>{{ 'The ' ~ row.row ~ ' row of preview targets was ' ~ row.mode ~ ':' }}
+    <li>{{ 'Row {row} of preview targets was ' ~ row.mode ~ ':'|t('activity', {row: row + 1}) }}
         <ul>
             {% for fieldName, fieldLabel in {label: 'Label', urlFormat: 'Url format', refresh: 'Refresh'} %}
                 {% if row[fieldName] ?? false %}
@@ -11,18 +11,18 @@
                         {% if hasFrom and hasTo %}
                             {{ "{field} was changed from {from} to {to}"|t('activity', {
                                 field: fieldLabel,
-                                from: macros.rawFromValue(row[fieldName]),
-                                to: macros.rawToValue(row[fieldName])
+                                from: macros.fromValue(row[fieldName]),
+                                to: macros.toValue(row[fieldName])
                             })|raw }}
                         {% elseif hasTo %}
                             {{ "{field} was set to {to}"|t('activity', {
                                 field: fieldLabel,
-                                to: macros.rawToValue(row[fieldName])
+                                to: macros.toValue(row[fieldName])
                             })|raw }}
                         {% elseif hasFrom %}
                             {{ "{field} value ({from}) was removed"|t('activity', {
                                 field: fieldLabel,
-                                from: macros.rawFromvalue(row[fieldName])
+                                from: macros.fromValue(row[fieldName])
                             })|raw }}
                         {% endif %}
                     </li>

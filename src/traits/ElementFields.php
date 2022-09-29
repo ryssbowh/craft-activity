@@ -23,13 +23,22 @@ trait ElementFields
         $dirty = [];
         foreach ($newFields as $name => $handler) {
             if (!array_key_exists($name, $oldFields)) {
-                $dirty[$name] = $handler->getDbValue('t');
+                $dirty[$name] = [
+                    'data' => $handler->getDbValue('t'),
+                    'handler' => get_class($handler)
+                ];
             } elseif ($handler->isDirty($oldFields[$name])) {
-                $dirty[$name] = $handler->getDirty($oldFields[$name]);
+                $dirty[$name] = [
+                    'data' => $handler->getDirty($oldFields[$name]),
+                    'handler' => get_class($handler)
+                ];
             }
         }
         foreach (array_diff_key($oldFields, $newFields) as $name => $handler) {
-            $dirty[$name] = $handler->getDbValue('f');
+            $dirty[$name] = [
+                'data' => $handler->getDbValue('f'),
+                'handler' => get_class($handler)
+            ];
         }
         return $dirty;
     }

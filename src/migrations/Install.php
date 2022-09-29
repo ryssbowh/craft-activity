@@ -32,6 +32,7 @@ class Install extends Migration
             'id' => $this->primaryKey(),
             'log_id' => $this->integer(11),
             'name' => $this->string(255)->notNull(),
+            'handler' => $this->string(255)->notNull(),
             'data' => $this->text(),
             'dateCreated' => $this->dateTime()->notNull(),
             'dateUpdated' => $this->dateTime()->notNull(),

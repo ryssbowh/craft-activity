@@ -62,6 +62,16 @@ abstract class FieldHandler extends Model
     }
 
     /**
+     * Get the template used to render this field description
+     * 
+     * @return ?string
+     */
+    public static function getTemplate(): ?string
+    {
+        return null;
+    }
+
+    /**
      * Get the value to be stored in database.
      * $valueKey is either 'f' for a from value, or 't' for a to value
      * If this handler has a fancy value, the db value will also contain 'ff' or 'tf'

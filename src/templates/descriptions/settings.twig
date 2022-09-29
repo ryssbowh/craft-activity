@@ -2,21 +2,23 @@
 
 {% macro setting(field, log) %}
     <li>
-        {% if field.hasFrom and field.hasTo %}
+        {% set hasFrom = 'f' in field.data|keys %}
+        {% set hasTo = 't' in field.data|keys %}
+        {% if hasFrom and hasTo %}
             {{ "{setting} was changed from {from} to {to}"|t('activity', {
                 setting: macros.settingLabel(field.name, log),
-                from: macros.fromValue(field),
-                to: macros.toValue(field)
+                from: macros.fromValue(field.data),
+                to: macros.toValue(field.data)
             })|raw }}
-        {% elseif field.hasTo %}
+        {% elseif hasTo %}
             {{ "{setting} was set to {to}"|t('activity', {
                 setting: macros.settingLabel(field.name, log),
-                to: macros.toValue(field)
+                to: macros.toValue(field.data)
             })|raw }}
-        {% elseif field.hasFrom %}
+        {% elseif hasFrom %}
             {{ "{setting} value ({from}) was removed"|t('activity', {
                 setting: macros.settingLabel(field.name, log),
-                from: macros.fromValue(field)
+                from: macros.fromValue(field.data)
             })|raw }}
         {% else %}
             {{ "{setting} was changed"|t('activity', {

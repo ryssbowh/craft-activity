@@ -36,6 +36,14 @@ class PreviewTargets extends DefaultHandler
     /**
      * @inheritDoc
      */
+    public static function getTemplate(): ?string
+    {
+        return 'activity/field-handlers/preview-targets';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getDirty(FieldHandler $handler): array
     {
         if ($this->_dirty === null) {
@@ -102,7 +110,7 @@ class PreviewTargets extends DefaultHandler
                 foreach (['label', 'urlFormat', 'refresh'] as $field) {
                     if (array_key_exists($field, $values) and $values[$field] !== $oldFields[$id][$field]) {
                         $rDirty['mode'] = 'changed';
-                        $rDirty['row'] = $this->getRowLabel($id + 1);
+                        $rDirty['row'] = $id;
                         $rDirty[$field]['f'] = $oldFields[$id][$field];
                         $rDirty[$field]['t'] = $values[$field];
                     }    
@@ -113,7 +121,7 @@ class PreviewTargets extends DefaultHandler
             } else {
                 $value = [
                     'mode' => 'added',
-                    'row' => $this->getRowLabel($id + 1),
+                    'row' => $id,
                     'urlFormat' => ['t' => $values['urlFormat']],
                     'label' => ['t' => $values['label']],
                 ];
@@ -126,7 +134,7 @@ class PreviewTargets extends DefaultHandler
         foreach (array_diff_key($oldFields, $newFields) as $id => $values) {
             $value = [
                 'mode' => 'removed',
-                'row' => $this->getRowLabel($id + 1),
+                'row' => $id,
                 'urlFormat' => ['f' => $values['urlFormat']],
                 'label' => ['f' => $values['label']]
             ];
@@ -136,24 +144,5 @@ class PreviewTargets extends DefaultHandler
             $dirty[] = $value;
         }
         return $dirty;
-    }
-
-    /**
-     * Get a row label
-     * 
-     * @param  int    $id
-     * @return string
-     */
-    protected function getRowLabel(int $id): string
-    {
-        $id = (string)$id;
-        if (substr($id, -1) == '1') {
-            return $id . 'st';
-        } elseif (substr($id, -1) == '2') {
-            return $id . 'nd';
-        } elseif (substr($id, -1) == '3') {
-            return $id . 'rd';
-        }
-        return $id . 'th';
     }
 }

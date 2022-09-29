@@ -1,4 +1,4 @@
-# Craft activity (v3.x)
+# Craft activity (Craft 3)
 
 Record user activity in Craft, this plugin can record and keep track of changed fields for pretty much any event that happens in the frontend/control panel/console whether it's an element or some config that's being changed.
 
@@ -38,9 +38,13 @@ A non exhaustive list of things this plugin can track :
 
 User activity and the fields changed will remain viewable even when the object recorded for no longer exists.
 
+## Installation
+
+Install through plugin store or with composer : `composer require rysbowh/craft-activity:^0.1`
+
 ## Settings
 
-This plugin has some extensive settings to tweak the activity you want recorded. Lots of events can be ignored (cp, frontend, console, project config), or you can ignore only some log types.  
+This plugin has some extensive settings to control the activity you want recorded. Lots of events can be ignored (cp, frontend, console, project config), or you can ignore only some log types.  
 Logs can be deleted when they become too old, and be deleted along with the user that created them.
 
 By default the routes logs are ignored (because we can't track their changes), and the "update slugs and uris", "elements are propagated" and "elements are resaved" logs are ignored which should be what you need in most cases. Turning on those logs can create lots of useless activities as they are triggered by the system.
@@ -123,10 +127,131 @@ Event::on(Types::class, Types::EVENT_REGISTER, function (Event $event) {
 })
 ```
 
+### Field handlers
+
+A field handler can change how changes are calculated on a field, and how the value is saved in database, they also can save "fancy" values to be displayed to the user.
+
+The system typically defines handlers for things like arrays, where the label of the value changed also needs to be saved, to display a more user friendly value to the user.
+
+Field handlers can completely override how the changes made to a field are saved, a good example would be entry types field layouts, where calculating changes can be a bit complex.
+
+Each field handler has a target which defines when it's triggered.
+
+#### Project Config fields
+
+For config fields, the target is defined by its Yaml path, example if you wanted to add a handler for the General System Status setting, the path would be `system.live`.
+
+**Define a new handler :**
+
+```
+use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
+
+class MyHandler extends FieldHandler
+{
+    /**
+     * @inheritDoc
+     */
+    public function init()
+    {
+        $this->fancyValue = $this->value ? 'Live' : 'Offline';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasFancyValue(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getTargets(): array
+    {
+        return [
+            'system.live'
+        ];
+    }
+}
+```
+
+**Register it:**
+
+```
+use Ryssbowh\Activity\services\FieldHandlers;
+
+Event::on(FieldHandlers::class, FieldHandlers::EVENT_REGISTER_PROJECTCONFIG_HANDLERS, function (Event $e) {
+    $e->add(MyHandler::class);
+});
+```
+
+That's enough to trigger your field handler when the path `system.live` is changed. This will cause the activity log to save a fancy value ('Live' or 'Offline') in the database alongside the original value (true or false). That fancy value will be displayed to the user instead.
+
+### Element fields
+
+Same idea than project config, but here the targets are field classes. Example if you wanted to change how Matrix fields changes are calculated you would do something like this :
+
+**Define a new handler :**
+
+```
+use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
+use craft\fields\Matrix;
+
+class MyHandler extends ElementFieldHandler
+{
+    /**
+     * @inheritDoc
+     */
+    public function init()
+    {
+        $this->fancyValue = $this->calculateFancyValue();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasFancyValue(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getTargets(): array
+    {
+        return [
+            Matrix::class
+        ];
+    }
+
+    protected function calculateFancyValue()
+    {
+
+    }
+}
+```
+
+**Register it:**
+
+```
+use Ryssbowh\Activity\services\FieldHandlers;
+
+Event::on(FieldHandlers::class, FieldHandlers::EVENT_REGISTER_ELEMENT_HANDLERS, function (Event $e) {
+    $e->add(MyHandler::class);
+});
+```
+
+In this example an exception would be thrown as Matrix fields already have a handler defined by this plugin, but you can replace it by doing `$e->add(MyHandler::class, true);` instead.
+
+## Requirements
+
+This plugin requires Craft 3.7 or above.
+
 ## Known issues
 
-- provisional drafts cannot be ignored, they are not technically provisional drafts
-- hard delete events can't be ignored
-- routes changes can't be tracked
-- changing edition will create one log for settings as well
-- widgets changes can't be tracked
+- Drafts aren't managed at the moment as provisional drafts cannot be ignored which creates lots of useless logs. May implement this in the future.
+- Hard delete events can't be ignored
+- Routes changes can't be tracked
+- Widgets changes can't be tracked

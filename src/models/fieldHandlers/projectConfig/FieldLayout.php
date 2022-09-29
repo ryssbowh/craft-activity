@@ -46,6 +46,14 @@ class FieldLayout extends DefaultHandler
     /**
      * @inheritDoc
      */
+    public static function getTemplate(): ?string
+    {
+        return 'activity/field-handlers/field-layout';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getDirty(FieldHandler $handler): array
     {
         if ($this->_dirty === null) {
@@ -63,29 +71,14 @@ class FieldLayout extends DefaultHandler
     }
 
     /**
-     * Build values for a field layout config
-     * 
-     * @param  array $fieldLayout
-     * @return array
+     * @inheritDoc
      */
-    protected function buildValues(array $fieldLayout): array
+    public function getDbValue(string $valueKey): array
     {
-        $fieldLayout = ProjectConfig::unpackAssociativeArrays($fieldLayout);
-        $values = [];
-        $fieldLayout = reset($fieldLayout);
-        foreach ($fieldLayout['tabs'] as $tab) {
-            foreach ($tab['elements'] as $element) {
-                if ($element['type'] == CustomField::class) {
-                    $field = \Craft::$app->fields->getFieldByUid($element['fieldUid']);
-                    $values[$element['fieldUid']] = [
-                        'name' => $field->name,
-                        'label' => $element['label'],
-                        'required' => $element['required']
-                    ];
-                }
-            }
+        if ($valueKey == 'f') {
+            return $this->buildDirty([], $this->value);
         }
-        return $values;
+        return $this->buildDirty($this->value, []);
     }
 
     /**
@@ -135,13 +128,28 @@ class FieldLayout extends DefaultHandler
     }
 
     /**
-     * @inheritDoc
+     * Build values for a field layout config
+     * 
+     * @param  array $fieldLayout
+     * @return array
      */
-    public function getDbValue(string $valueKey): array
+    protected function buildValues(array $fieldLayout): array
     {
-        if ($valueKey == 'f') {
-            return $this->buildDirty([], $this->value);
+        $fieldLayout = ProjectConfig::unpackAssociativeArrays($fieldLayout);
+        $values = [];
+        $fieldLayout = reset($fieldLayout);
+        foreach ($fieldLayout['tabs'] as $tab) {
+            foreach ($tab['elements'] as $element) {
+                if ($element['type'] == CustomField::class) {
+                    $field = \Craft::$app->fields->getFieldByUid($element['fieldUid']);
+                    $values[$element['fieldUid']] = [
+                        'name' => $field->name,
+                        'label' => $element['label'],
+                        'required' => $element['required']
+                    ];
+                }
+            }
         }
-        return $this->buildDirty($this->value, []);
+        return $values;
     }
 }
