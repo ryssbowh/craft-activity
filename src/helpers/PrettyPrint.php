@@ -13,10 +13,18 @@ class PrettyPrint
     public static function get($value)
     {
         $type = gettype($value);
-        if (in_array($type, ['boolean', 'array', 'NULL'])) {
+        if (in_array($type, ['boolean', 'array', 'NULL', 'string'])) {
             return self::$type($value);
         }
         return $value;
+    }
+
+    public static function string($value)
+    {
+        if ($value) {
+            return $value;
+        }
+        return \Craft::t('activity', '*empty string*');
     }
 
     /**
@@ -51,7 +59,10 @@ class PrettyPrint
     {
         $string = '[';
         foreach ($value as $index => $val) {
-            $string .= "$index => " . self::get($val) . ', ';
+            $string .= is_int($index) ? self::get($val) .', ' : "$index => " . self::get($val) . ', ';
+        }
+        if ($string === '[') {
+            return '[]';
         }
         return substr($string, 0, -2) . ']';
     }
