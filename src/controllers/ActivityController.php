@@ -17,7 +17,7 @@ class ActivityController extends Controller
         $this->requirePermission('viewActivityLogs');
         \Craft::$app->view->registerAssetBundle(ActivityAssets::class);
         $filters = $this->request->getParam('filters', []);
-        $perPage = $this->request->getParam('perPage', 10);
+        $perPage = $this->request->getParam('perPage', 20);
         list($paginator, $logs) = Activity::$plugin->logs->getPaginatedLogs($filters, $perPage);
         $types = [];
         foreach (Activity::$plugin->types->usedTypes as $handle => $class) {
@@ -78,6 +78,21 @@ class ActivityController extends Controller
                 'pageInfo' => $paginator,
                 'logs' => $logs
             ])
+        ]);
+    }
+
+    /**
+     * Return the value of a changed field, requires 'data' to be set in the request as 't' or 'f' for example
+     */
+    public function actionFieldValue()
+    {
+        $this->requirePermission('viewActivityLogs');
+        $id = $this->request->getRequiredBodyParam('id');
+        $data = $this->request->getRequiredBodyParam('data');
+        $field = Activity::$plugin->logs->getChangedFieldById($id);
+        return $this->asJson([
+            'success' => true,
+            'data' => array_key_exists($data, $field->data) ? $field->data[$data] : ''
         ]);
     }
 }

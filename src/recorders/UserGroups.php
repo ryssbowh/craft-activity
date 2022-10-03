@@ -12,8 +12,9 @@ use yii\base\Event;
 
 class UserGroups extends ConfigModelRecorder
 {
-    protected $permTrigger;
     protected $triggered;
+    protected $mode;
+    protected $added = false;
 
     /**
      * @inheritDoc
@@ -21,7 +22,10 @@ class UserGroups extends ConfigModelRecorder
     public function init()
     {
         \Craft::$app->projectConfig->onUpdate(CraftUserGroups::CONFIG_USERPGROUPS_KEY, function (Event $event) {
-            Activity::getRecorder('userGroups')->onGroupsUpdate($event);
+            Activity::getRecorder('userGroups')->onGroupsChanged($event);
+        });
+        \Craft::$app->projectConfig->onAdd(CraftUserGroups::CONFIG_USERPGROUPS_KEY, function (Event $event) {
+            Activity::getRecorder('userGroups')->onGroupsChanged($event);
         });
         \Craft::$app->projectConfig->onUpdate(CraftUserGroups::CONFIG_USERPGROUPS_KEY . '.{uid}', function (Event $event) {
             Activity::getRecorder('userGroups')->onUpdate($event);
@@ -34,11 +38,31 @@ class UserGroups extends ConfigModelRecorder
         });
     }
 
-    public function onGroupsUpdate(ConfigEvent $event)
+    /**
+     * Little fiddling with the data :
+     * If we're applying project config need to save the event for the specific events (onAdd, onUpdate) to use it later.
+     * If we're not, the specific events have been triggered already and the data is there to use
+     * 
+     * @param ConfigEvent $event
+     */
+    public function onGroupsChanged(ConfigEvent $event)
     {
-        //Need to save the general group trigger to get the value of the new permissions
-        //which is not included in each particular group event, as it happens after
-        $this->permTrigger = $event;
+        if (!\Craft::$app->projectConfig->isApplyingYamlChanges) {
+            if ($this->triggered and $this->mode) {
+                $path = explode('.', $this->triggered->path);
+                $this->triggered->tokenMatches = [$path[2]];
+                $this->triggered->newValue['permissions'] = $event->newValue[$path[2]]['permissions'];
+                if ($this->mode == 'add') {
+                    parent::onAdd($this->triggered);
+                } else {
+                    parent::onUpdate($this->triggered);
+                }
+                $this->triggered = null;
+                $this->mode = null;
+            }
+        } else {
+            $this->triggered = $event;
+        }
     }
 
     public function onUpdate(ConfigEvent $event)
@@ -48,16 +72,26 @@ class UserGroups extends ConfigModelRecorder
                 //This event is triggered twice, once for the group, once for the permissions
                 //the first one has the data we need
                 $this->triggered = $event;
-                return;
+                $this->mode = 'update';
             }
-            $this->triggered->newValue = $this->permTrigger->newValue[$event->tokenMatches[0]];
-            $this->triggered->tokenMatches = $event->tokenMatches;
-            $event = $this->triggered;
+        } else {
+            $uid = $event->tokenMatches[0];
+            $event->newValue['permissions'] = $this->triggered->newValue[$uid]['permissions'];
+            parent::onUpdate($event);
         }
-        $event->newValue = $this->permTrigger->newValue[$event->tokenMatches[0]];
-        parent::onUpdate($event);
-        $this->permTrigger = null;
-        $this->triggered = null;
+    }
+
+    public function onAdd(ConfigEvent $event)
+    {
+        if (!\Craft::$app->projectConfig->isApplyingYamlChanges) {
+            $this->triggered = $event;
+            $this->mode = 'add';
+        } else if (!$this->added) {
+            $uid = $event->tokenMatches[0];
+            $event->newValue['permissions'] = $this->triggered->newValue[$uid]['permissions'];
+            $this->added = true;
+            parent::onAdd($event);
+        }
     }
 
     /**

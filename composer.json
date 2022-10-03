@@ -25,7 +25,7 @@
         }
     },
     "extra": {
-        "name": "Activity",
+        "name": "User Activity",
         "handle": "activity",
         "developer": "The Web Puzzlers",
         "developerUrl": "https://github.com/ryssbowh",

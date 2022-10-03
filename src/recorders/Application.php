@@ -14,11 +14,8 @@ class Application extends Recorder
      */
     public function init()
     {
-        Event::on(WebApplication::class, WebApplication::EVENT_AFTER_EDITION_CHANGE, function ($event) {
-            Activity::getRecorder('application')->onEditionChanged($event->oldEdition, $event->newEdition);
-        });
-        \Craft::$app->projectConfig->onUpdate('system', function(Event $event) {
-            Activity::getRecorder('application')->onEditionChanged($event->oldValue['edition'], $event->newValue['edition']);
+        \Craft::$app->projectConfig->onUpdate('system.edition', function(Event $event) {
+            Activity::getRecorder('application')->onEditionChanged($event->oldValue, $event->newValue);
         });
     }
     
@@ -36,8 +33,10 @@ class Application extends Recorder
         $this->commitLog('craftEditionChanged', [
             'changedFields' => [
                 'edition' => [
-                    'f' => $oldEdition,
-                    't' => $newEdition
+                    'data' => [
+                        'f' => $oldEdition,
+                        't' => $newEdition
+                    ]
                 ]
             ]
         ]);

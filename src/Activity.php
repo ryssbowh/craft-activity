@@ -77,13 +77,6 @@ class Activity extends Plugin
     {
         Event::on(Plugins::class, Plugins::EVENT_AFTER_LOAD_PLUGINS, function (Event $event) {
             $this->recorders->register();
-            $settings = Activity::$plugin->settings;
-            if (($settings->ignoreApplyingYaml and \Craft::$app->projectConfig->isApplyingYamlChanges) or 
-                ($settings->ignoreConsoleRequests and \Craft::$app->request->isConsoleRequest) or
-                ($settings->ignoreCpRequests and \Craft::$app->request->isCpRequest) or
-                ($settings->ignoreSiteRequests and \Craft::$app->request->isSiteRequest)) {
-                $this->recorders->stopRecording();
-            }
         });
     }
 

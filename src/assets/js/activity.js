@@ -4,6 +4,8 @@ var Activity = Garnish.Base.extend({
     $pager: null,
     $filters: null,
     $buttons: null,
+    modal: null,
+    modalContent: null,
     page: 1,
 
     init: function(settings) {
@@ -12,6 +14,10 @@ var Activity = Garnish.Base.extend({
         $.each($('#header .menubtn'), function (i, btn) {
             let menu = $(btn).data('menubtn');
             menu.menu.$container.appendTo(Garnish.$bod);
+        });
+        this.$modal = $('#activity-field-modal');
+        this.modal = new Garnish.Modal('#activity-field-modal', {
+            autoShow: false
         });
         this.$filters = $('.activity-filter');
         this.$pager = $('#activity-pager');
@@ -27,10 +33,21 @@ var Activity = Garnish.Base.extend({
         this.initPager();
         this.initRecords();
         this.initHotReload();
+        this.initModal();
+    },
+
+    initModal: function () {
+        this.$modal.find('.js-close').click(() => {
+            this.modal.hide();
+        });
+        this.$modal.find('.js-switch').click(() => {
+            this.switchModalSource();
+        });
     },
 
     initRecords: function () {
         this.addListener($('#activity-table .arrow'), 'click', 'handleArrowClick');
+        this.addListener($('#activity-table .js-view-field-value'), 'click', 'loadFieldValue');
     },
 
     handleReset: function (e) {
@@ -49,6 +66,47 @@ var Activity = Garnish.Base.extend({
             $(e.target).addClass('down');
             $(e.target).closest('tr').next().show();
         }
+    },
+
+    switchModalSource: function ()
+    {
+        let link = this.$modal.find('.js-switch');
+        let currentLabel = link.html();
+        let newLabel = link.data('label');
+        let content = this.$modal.find('.content');
+        if (content.hasClass('src')) {
+            content.html(this.modalContent);
+            content.removeClass('src');
+        } else {
+            content.html('<script type="text/plain" style="display: block">' + this.modalContent + '</script>');
+            content.addClass('src');
+        }
+        link.data('label', currentLabel);
+        link.html(newLabel);
+    },
+
+    loadFieldValue: function (e) {
+        e.preventDefault();
+        let data = {
+            data: $(e.target).data('data'),
+            id: $(e.target).data('id')
+        };
+        Craft.postActionRequest('activity/activity/field-value', data, (response, textStatus) => {
+            if (textStatus === 'success') {
+                if (response.success) {
+                    this.$modal.find('.content').html(response.data);
+                    this.modalContent = response.data;
+                    if ($(e.target).data('hassource')) {
+                        this.$modal.find('.js-switch').show();
+                    } else {
+                        this.$modal.find('.js-switch').hide();
+                    }
+                    this.modal.show();
+                } else {
+                    Craft.cp.displayError(Craft.t('app', "Couldn't load field value"));
+                }
+            }
+        });
     },
 
     initDatePickers: function () {

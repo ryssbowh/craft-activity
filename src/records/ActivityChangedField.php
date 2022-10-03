@@ -23,7 +23,7 @@ class ActivityChangedField extends ActiveRecord
      */
     public function toModel(): ChangedField
     {
-        $params = $this->toArray(['name', 'data', 'handler']);
+        $params = $this->toArray(['name', 'data', 'handler', 'id']);
         $params['data'] = Json::decode($params['data']);
         return new ChangedField($params);
     }

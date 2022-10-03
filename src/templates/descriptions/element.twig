@@ -3,9 +3,7 @@
 {% if log.changedFields ?? false %}
     <ul>
         {% for field in log.changedFields %}
-            <li>
-                {{ macros.elementField(field) }}
-            </li>
+            {{ macros.elementField(field) }}
         {% endfor %}
     </ul>
 {% endif %}

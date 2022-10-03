@@ -1,33 +1,35 @@
 {% set hasFrom = 'f' in field.data|keys %}
 {% set hasTo = 't' in field.data|keys %}
-{% if hasFrom and hasTo %}
-    {% if field.f is same as(true) and field.t is same as(false) %}
-        {{ "Field {field} was switched off"|t('activity', {
-            field: field.data.name
-        })|raw }}
-    {% elseif field.f is same as(false) and field.t is same as(true) %}
-        {{ "Field {field} was switched on"|t('activity', {
-            field: field.data.name
-        })|raw }}
+<li>
+    {% if hasFrom and hasTo %}
+        {% if field.data.f is same as(true) and field.data.t is same as(false) %}
+            {{ "Field {field} was switched off"|t('activity', {
+                field: field.data.name
+            })|raw }}
+        {% elseif field.data.f is same as(false) and field.data.t is same as(true) %}
+            {{ "Field {field} was switched on"|t('activity', {
+                field: field.data.name
+            })|raw }}
+        {% endif %}
+    {% elseif hasTo %}
+        {% if field.data.t is same as(false) %}
+            {{ "Field {field} was switched off"|t('activity', {
+                field: field.data.name
+            })|raw }}
+        {% elseif field.data.t is same as(true) %}
+            {{ "Field {field} was switched on"|t('activity', {
+                field: field.data.name
+            })|raw }}
+        {% endif %}
+    {% elseif hasFrom %}
+        {% if field.data.f is same as(false) %}
+            {{ "Field {field} was switched off"|t('activity', {
+                field: field.data.name
+            })|raw }}
+        {% elseif field.data.f is same as(true) %}
+            {{ "Field {field} was switched on"|t('activity', {
+                field: field.data.name
+            })|raw }}
+        {% endif %}
     {% endif %}
-{% elseif hasTo %}
-    {% if field.t is same as(false) %}
-        {{ "Field {field} was switched off"|t('activity', {
-            field: field.data.name
-        })|raw }}
-    {% elseif field.t is same as(true) %}
-        {{ "Field {field} was switched on"|t('activity', {
-            field: field.data.name
-        })|raw }}
-    {% endif %}
-{% elseif hasFrom %}
-    {% if field.f is same as(false) %}
-        {{ "Field {field} was switched off"|t('activity', {
-            field: field.data.name
-        })|raw }}
-    {% elseif field.f is same as(true) %}
-        {{ "Field {field} was switched on"|t('activity', {
-            field: field.data.name
-        })|raw }}
-    {% endif %}
-{% endif %}
+</li>

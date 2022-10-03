@@ -4,6 +4,7 @@ namespace Ryssbowh\Activity\base\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\exceptions\ActivityTypeException;
+use Ryssbowh\Activity\services\Logs;
 use craft\base\Component;
 
 abstract class Recorder extends Component
@@ -32,24 +33,28 @@ abstract class Recorder extends Component
     /**
      * Commit a log to be saved, log will be added in the queue if $saveNow is false
      * 
-     * @param string $type
-     * @param array  $params
-     * @param bool $saveNow
+     * @param  string $type
+     * @param  array  $params
+     * @param  bool $saveNow
+     * @return bool
      */
-    protected function commitLog(string $type, array $params, bool $saveNow = false)
+    protected function commitLog(string $type, array $params, bool $saveNow = false): bool
     {
         try {
             $class = Activity::$plugin->types->getTypeClassByHandle($type);
         } catch (ActivityTypeException $e) {
             \Craft::$app->errorHandler->logException($e);
-            return;
+            return false;
         }
         $log = new $class($params);
-        if ($saveNow) {
-            $log->save();
-        } else {
-            $this->logQueue[] = $log;
+        if (!$log->request and \Craft::$app->projectConfig->isApplyingYamlChanges) {
+            $log->request = Logs::REQUEST_YAML;
         }
+        if ($saveNow) {
+            return $log->save();
+        }
+        $this->logQueue[] = $log;
+        return true;
     }
 
     /**
@@ -116,7 +121,13 @@ abstract class Recorder extends Component
     protected function shouldSaveLog(string $type): bool
     {
         $settings = Activity::$plugin->settings;
-        if (!$this->isRecording or $settings->isTypeIgnored($type)) {
+        if (!$this->isRecording or 
+            $settings->isTypeIgnored($type) or 
+            ($settings->ignoreApplyingYaml and \Craft::$app->projectConfig->isApplyingYamlChanges) or 
+            ($settings->ignoreConsoleRequests and \Craft::$app->request->isConsoleRequest) or
+            ($settings->ignoreCpRequests and \Craft::$app->request->isCpRequest) or
+            ($settings->ignoreSiteRequests and \Craft::$app->request->isSiteRequest)
+        ) {
             return false;
         }
         return true;

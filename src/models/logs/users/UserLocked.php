@@ -13,8 +13,8 @@ class UserLocked extends UserLog
 
     public function getDbData(): array
     {
-        return array_merge(parent::getDbData(), [
-            'attempts' => $this->attempts
+        return array_merge_recursive(parent::getDbData(), [
+            'data' => ['attempts' => $this->attempts]
         ]);
     }
 

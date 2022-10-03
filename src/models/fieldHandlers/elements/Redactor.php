@@ -15,4 +15,12 @@ class Redactor extends ElementFieldHandler
             'craft\\redactor\\Field'
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getTemplate(): ?string
+    {
+        return 'activity/field-handlers/redactor-field';
+    }
 }

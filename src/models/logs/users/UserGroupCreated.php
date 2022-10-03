@@ -38,6 +38,8 @@ class UserGroupCreated extends ConfigModelLog
      */
     protected function getFieldLabels(): array
     {
-        return (new UserGroup)->attributeLabels();
+        return array_merge((new UserGroup)->attributeLabels(), [
+            'description' => \Craft::t('app', 'Description')
+        ]);
     }
 }

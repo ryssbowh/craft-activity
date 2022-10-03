@@ -7,6 +7,11 @@ use craft\base\Model;
 class ChangedField extends Model
 {
     /**
+     * @var id
+     */
+    public $id;
+
+    /**
      * @var string
      */
     public $name;

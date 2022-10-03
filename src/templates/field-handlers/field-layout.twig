@@ -1,9 +1,11 @@
 {% if field.data.added ?? false or field.data.removed ?? false or field.data.changed ?? false %}
-    <li>{{ 'Field layout was changed'|t('activity') }}
+    <li>
+        {{ 'Field layout was changed'|t('activity') }}
         {% if field.data.added ?? false %}
             <ul>
                 {% for added in field.data.added %}
-                    <li>{{ 'Field {field} was added'|t('activity', {
+                    <li>
+                        {{ 'Field {field} was added'|t('activity', {
                             field: added.name
                         }) }}
                         <ul>
@@ -22,9 +24,19 @@
         {% if field.data.removed ?? false %}
             <ul>
                 {% for removed in field.data.removed %}
-                    <li>{{ 'Field {field} was removed'|t('activity', {
+                    <li>
+                        {{ 'Field {field} was removed'|t('activity', {
                             field: removed.name
                         }) }}
+                        <ul>
+                            {% for name in ['required', 'label'] %}
+                                <li>{{ '{name} was {value}'|t('activity', {
+                                        name: name|capitalize|t('app'),
+                                        value: '<code>' ~ removed[name]|prettyPrint ~ '</code>'
+                                    })|raw }}
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </li>
                 {% endfor %}
             </ul>
@@ -32,7 +44,8 @@
         {% if field.data.changed ?? false %}
             <ul>
                 {% for changed in field.data.changed %}
-                    <li>{{ 'Field {field} was changed'|t('activity', {
+                    <li>
+                        {{ 'Field {field} was changed'|t('activity', {
                             field: changed.name
                         }) }}
                         <ul>

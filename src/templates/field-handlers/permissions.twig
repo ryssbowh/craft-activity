@@ -1,5 +1,6 @@
 {% if field.data.added ?? [] %}
-    <li>{{ 'Added permissions:'|t('activity') }}
+    <li>
+        {{ 'Added permissions:'|t('activity') }}
         <ul>
             {% for perm in field.data.added ?? [] %}
                 <li>
@@ -10,7 +11,8 @@
     </li>
 {% endif %}
 {% if field.data.removed ?? [] %}
-    <li>{{ 'Removed permissions:'|t('activity') }}
+    <li>
+        {{ 'Removed permissions:'|t('activity') }}
         <ul>
             {% for perm in field.data.removed ?? [] %}
                 <li>

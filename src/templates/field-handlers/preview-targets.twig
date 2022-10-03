@@ -1,7 +1,8 @@
 {% import "activity/includes/macros" as macros %}
 
-{% for row in field.data %}
-    <li>{{ 'Row {row} of preview targets was ' ~ row.mode ~ ':'|t('activity', {row: row + 1}) }}
+<li>
+    {% for row in field.data %}
+        {{ ('Row {row} of preview targets was ' ~ row.mode)|t('activity', {row: row.row + 1}) }}
         <ul>
             {% for fieldName, fieldLabel in {label: 'Label', urlFormat: 'Url format', refresh: 'Refresh'} %}
                 {% if row[fieldName] ?? false %}
@@ -29,5 +30,5 @@
                 {% endif %}
             {% endfor %}
         </ul>
-    </li>
-{% endfor %}
+    {% endfor %}
+</li>

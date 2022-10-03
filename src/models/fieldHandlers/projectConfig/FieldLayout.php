@@ -119,10 +119,16 @@ class FieldLayout extends DefaultHandler
         $added = array_diff_key($newFields, $oldFields);
         if ($added) {
             $dirty['added'] = $added;
+            foreach ($dirty['added'] as $index => $rm) {
+                $dirty['added'][$index]['required'] = (bool)$dirty['added'][$index]['required'];
+            }
         }
         $removed = array_diff_key($oldFields, $newFields);
         if ($removed) {
             $dirty['removed'] = $removed;
+            foreach ($dirty['removed'] as $index => $rm) {
+                $dirty['removed'][$index]['required'] = (bool)$dirty['removed'][$index]['required'];
+            }
         }
         return $dirty;
     }

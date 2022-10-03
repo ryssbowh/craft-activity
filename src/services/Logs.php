@@ -3,7 +3,9 @@
 namespace Ryssbowh\Activity\services;
 
 use Ryssbowh\Activity\Activity;
+use Ryssbowh\Activity\exceptions\ActivityChangedFieldException;
 use Ryssbowh\Activity\exceptions\ActivityLogException;
+use Ryssbowh\Activity\models\ChangedField;
 use Ryssbowh\Activity\records\ActivityChangedField;
 use Ryssbowh\Activity\records\ActivityLog;
 use craft\base\Component;
@@ -14,22 +16,30 @@ use craft\web\twig\variables\Paginate;
 
 class Logs extends Component
 {
+    const REQUEST_CP = 'cp';
+    const REQUEST_SITE = 'site';
+    const REQUEST_YAML = 'yaml';
+    const REQUEST_CONSOLE = 'console';
     /**
      * Saves a log
      * 
-     * @param array $data
-     * @param array $changedFields
+     * @param  array $data
+     * @param  array $changedFields
+     * @throws ActivityLogException
+     * @return bool
      */
-    public function saveLog(array $data, array $changedFields = [])
+    public function saveLog(array $data, array $changedFields = [], ?string $request = null): bool
     {
         if (!isset($data['type'])) {
             throw ActivityLogException::noType();
         }
         $user = \Craft::$app->user->identity;
         $currentSite = \Craft::$app->sites->currentSite;
-        $request = \Craft::$app->request->isConsoleRequest ? 'console' : (\Craft::$app->request->isCpRequest ? 'cp' : 'site');
-        if (\Craft::$app->projectConfig->isApplyingYamlChanges) {
-            $request = 'yaml';
+        if ($request === null) {
+            $request = \Craft::$app->request->isConsoleRequest ? self::REQUEST_CONSOLE : (\Craft::$app->request->isCpRequest ? self::REQUEST_CP : self::REQUEST_SITE);
+            if (\Craft::$app->projectConfig->isApplyingYamlChanges) {
+                $request = self::REQUEST_YAML;
+            }
         }
         $record = new ActivityLog([
             'user_id' => ($data['user_id'] ?? null) ? $data['user_id'] : ($user ? $user->id : 0),
@@ -43,20 +53,24 @@ class Logs extends Component
             'request' => $request,
             'data' => $data['data'] ?? null
         ]);
-        $record->save(false);
-        foreach ($changedFields as $name => $array) {
-            $field = new ActivityChangedField([
-                'log_id' => $record->id,
-                'name' => $name,
-                'handler' => $array['handler'],
-                'data' => $array['data']
-            ]);
-            $field->save(false);
+        if ($record->save(false)) {
+            foreach ($changedFields as $name => $array) {
+                $field = new ActivityChangedField([
+                    'log_id' => $record->id,
+                    'name' => $name,
+                    'handler' => $array['handler'] ?? '',
+                    'data' => $array['data'] ?? []
+                ]);
+                $field->save(false);
+            }
+            return true;
         }
+        \Craft::warning('Unable to save activity record ' . $data['type'], __METHOD__);
+        return false;
     }
 
     /**
-     * Get all user used in database
+     * Get all user used in database in all records
      * 
      * @return array
      */
@@ -95,7 +109,7 @@ class Logs extends Component
      */
     public function getPaginatedLogs(array $filters, int $perPage = 5, string $orderBy = 'dateCreated desc'): array
     {
-        $query = ActivityLog::find()->with('changedFields')->orderBy($orderBy);
+        $query = ActivityLog::find()->with('changedFields')->orderBy($orderBy . ', id desc');
         if ($filters['users'] ?? false) {
             $query->andWhere(['in', 'user_id', $filters['users']]);
         }
@@ -135,7 +149,7 @@ class Logs extends Component
     {
         $query = ActivityLog::find()->where([
             'user_id' => $user->id
-        ])->with('changedFields')->orderBy('dateCreated desc');
+        ])->with('changedFields')->orderBy('dateCreated desc')->limit($limit);
         return array_map(function ($record) {
             return $record->toModel();
         }, $query->all());
@@ -167,6 +181,22 @@ class Logs extends Component
     public function deleteLog(int $id)
     {
         ActivityLog::deleteAll(['id' => $id]);
+    }
+
+    /**
+     * Get a changed field by id
+     * 
+     * @param  int    $id
+     * @return ChangedField
+     * @throws ActivityChangedFieldException
+     */
+    public function getChangedFieldById(int $id): ChangedField
+    {
+        $record = ActivityChangedField::find()->where(['id' => $id])->one();
+        if ($record) {
+            return $record->toModel();
+        }
+        throw ActivityChangedFieldException::noId($id);
     }
 
     /**

@@ -1,5 +1,5 @@
 {% macro fromValue(data) %}
-    <code>{{ (data.ff ? data.f)|prettyPrint }}</code>
+    <code>{{ (data.ff ?? data.f)|prettyPrint }}</code>
 {% endmacro %}
 
 {% macro toValue(data) %}
@@ -48,27 +48,29 @@
     {% else %}
         {% set hasFrom = 'f' in field.data|keys %}
         {% set hasTo = 't' in field.data|keys %}
-        {% if hasFrom and hasTo %}
-            {{ "Field {field} was changed from {from} to {to}"|t('activity', {
-                field: field.data.name,
-                from: _self.elementFromValue(field.data),
-                to: _self.elementToValue(field.data)
-            })|raw }}
-        {% elseif hasTo %}
-            {{ "Field {field} was set to {to}"|t('activity', {
-                field: field.data.name,
-                to: _self.elementToValue(field.data)
-            })|raw }}
-        {% elseif hasFrom %}
-            {{ "Field {field} value ({from}) was removed"|t('activity', {
-                field: field.data.name,
-                from: _self.elementFromValue(field.data)
-            })|raw }}
-        {% endif %}
+        <li>
+            {% if hasFrom and hasTo %}
+                {{ "Field {field} was changed from {from} to {to}"|t('activity', {
+                    field: field.data.name,
+                    from: _self.elementFromValue(field.data),
+                    to: _self.elementToValue(field.data)
+                })|raw }}
+            {% elseif hasTo %}
+                {{ "Field {field} was set to {to}"|t('activity', {
+                    field: field.data.name,
+                    to: _self.elementToValue(field.data)
+                })|raw }}
+            {% elseif hasFrom %}
+                {{ "Field {field} value ({from}) was removed"|t('activity', {
+                    field: field.data.name,
+                    from: _self.elementFromValue(field.data)
+                })|raw }}
+            {% endif %}
+        </li>
     {% endif %}
 {% endmacro %}
 
-{% macro configField(field) %}
+{% macro configField(field, log) %}
     {% set template = handlerTemplate(field.handler) %}
     {% if template %}
         {% include template %}
@@ -93,11 +95,11 @@
                     })|raw }}
                 {% endif %}
             {% elseif hasTo %}
-                {% if field.t is same as(false) %}
+                {% if field.data.t is same as(false) %}
                     {{ "{field} was unchecked"|t('activity', {
                         field: _self.fieldLabel(field.name, log),
                     })|raw }}
-                {% elseif field.t is same as(true) %}
+                {% elseif field.data.t is same as(true) %}
                     {{ "{field} was checked"|t('activity', {
                         field: _self.fieldLabel(field.name, log),
                     })|raw }}
@@ -108,11 +110,11 @@
                     })|raw }}
                 {% endif %}
             {% elseif hasFrom %}
-                {% if field.f is same as(false) %}
+                {% if field.data.f is same as(false) %}
                     {{ "{field} was unchecked"|t('activity', {
                         field: _self.fieldLabel(field.name, log),
                     })|raw }}
-                {% elseif field.f is same as(true) %}
+                {% elseif field.data.f is same as(true) %}
                     {{ "{field} was checked"|t('activity', {
                         field: _self.fieldLabel(field.name, log),
                     })|raw }}

@@ -42,3 +42,8 @@
 #reset-filters {
     margin-top: 7px;
 }
+
+#activity-field-modal .body {
+    height: calc(100% - 126px);
+    overflow-y: auto;
+}

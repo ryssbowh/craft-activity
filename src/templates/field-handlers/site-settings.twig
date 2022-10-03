@@ -6,44 +6,40 @@
     {% if site %}
         {% set siteName = site.name %}
     {% endif %}
-    {% if fields.mode == 'enabled' %}
-        <li>
+    <li>
+        {% if fields.mode == 'enabled' %}
             {{ "The site settings for site {site} were enabled"|t('activity', {
                 site: siteName,
             })|raw }}
             <ul>
                 <li>
                     {{ "Template was set to {to}"|t('activity', {
-                        to: macros.rawToValue(fields.template)
+                        to: macros.toValue(fields.template)
                     })|raw }}
                 </li>
                 <li>
                     {{ "URI format was set to {to}"|t('activity', {
-                        to: macros.rawToValue(fields.uriFormat)
+                        to: macros.toValue(fields.uriFormat)
                     })|raw }}
                 </li>
             </ul>
-        </li>
-    {% elseif fields.mode == 'disabled' %}
-        <li>
+        {% elseif fields.mode == 'disabled' %}
             {{ "The site settings for site {site} were disabled"|t('activity', {
                 site: siteName,
             })|raw }}
             <ul>
                 <li>
                     {{ "Template was {from}"|t('activity', {
-                        from: macros.rawFromValue(fields.template)
+                        from: macros.fromValue(fields.template)
                     })|raw }}
                 </li>
                 <li>
                     {{ "URI format was {from}"|t('activity', {
-                        from: macros.rawFromValue(fields.uriFormat)
+                        from: macros.fromValue(fields.uriFormat)
                     })|raw }}
                 </li>
             </ul>
-        </li>
-    {% else %}
-        <li>
+        {% else %}
             {{ "The site settings for site {site} were changed"|t('activity', {
                 site: siteName,
             })|raw }}
@@ -52,8 +48,8 @@
                     <li>
                         {{ "Template was changed from {from} to {to}"|t('activity', {
                             site: siteName,
-                            from: macros.rawFromvalue(fields.template),
-                            to: macros.rawToValue(fields.template)
+                            from: macros.fromvalue(fields.template),
+                            to: macros.toValue(fields.template)
                         })|raw }}
                     </li>
                 {% endif %}
@@ -61,12 +57,12 @@
                     <li>
                         {{ "URI format was changed from {from} to {to}"|t('activity', {
                             site: siteName,
-                            from: macros.rawFromvalue(fields.uriFormat),
-                            to: macros.rawToValue(fields.uriFormat)
+                            from: macros.fromvalue(fields.uriFormat),
+                            to: macros.toValue(fields.uriFormat)
                         })|raw }}
                     </li>
                 {% endif %}
             </ul>
-        </li>
-    {% endif %}
+        {% endif %}
+    </li>
 {% endfor %}

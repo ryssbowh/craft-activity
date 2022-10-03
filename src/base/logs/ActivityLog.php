@@ -219,7 +219,7 @@ abstract class ActivityLog extends Model
      */
     public function save()
     {
-        Activity::$plugin->logs->saveLog($this->getDbData(), $this->changedFields);
+        Activity::$plugin->logs->saveLog($this->getDbData(), $this->changedFields, $this->request);
     }
 
     /**

@@ -28,7 +28,7 @@ class ActivityExtension extends AbstractExtension
 
     public function handlerTemplate(string $handlerClass): ?string
     {
-        if (!$handlerClass) {
+        if (!$handlerClass or !class_exists($handlerClass)) {
             return null;
         }
         return $handlerClass::getTemplate();

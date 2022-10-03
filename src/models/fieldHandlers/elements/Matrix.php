@@ -39,7 +39,7 @@ class Matrix extends ElementFieldHandler
      */
     public function isDirty(FieldHandler $handler): bool
     {
-        return !empty($this->getDirty($handler));
+        return !empty($this->getDirty($handler)['blocks']);
     }
 
     /**
@@ -133,13 +133,10 @@ class Matrix extends ElementFieldHandler
             $block['mode'] = 'removed';
             $blocks[$id] = $block;
         }
-        if ($blocks) {
-            return [
-                'name' => $this->name,
-                'blocks' => $blocks
-            ];
-        }
-        return [];
+        return [
+            'name' => $this->name,
+            'blocks' => $blocks
+        ];
     }
 
     /**

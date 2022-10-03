@@ -1,35 +1,21 @@
-{% import "activity/includes/macros" as macros %}
-
-{% macro arrayValue(value) %}
-    <code>{{ value|join(', ') }}</code>
-{% endmacro %}
-
-{% macro toValue(data) %}
-    {{ _self.arrayValue(data.tf ?? data.t) }}
-{% endmacro %}
-
-{% macro fromValue(data) %}
-    {{ _self.arrayValue(data.ff ?? data.f) }}
-{% endmacro %}
-
 {% set hasFrom = 'f' in field.data|keys %}
 {% set hasTo = 't' in field.data|keys %}
 <li>
     {% if hasFrom and hasTo %}
         {{ "Field {field} was changed from {from} to {to}"|t('activity', {
             field: field.data.name,
-            from: _self.fromValue(field.data),
-            to: _self.toValue(field.data)
+            from: '<a href="#" class="js-view-field-value" data-id="' ~ field.id ~ '" data-data="f" data-hassource="1">view</a>',
+            to: '<a href="#" class="js-view-field-value" data-id="' ~ field.id ~ '" data-data="t" data-hassource="1">view</a>',
         })|raw }}
     {% elseif hasTo %}
         {{ "Field {field} was set to {to}"|t('activity', {
             field: field.data.name,
-            to: _self.toValue(field.data)
+            to: '<a href="#" class="js-view-field-value" data-id="' ~ field.id ~ '" data-data="t" data-hassource="1">view</a>',
         })|raw }}
     {% elseif hasFrom %}
         {{ "Field {field} value ({from}) was removed"|t('activity', {
             field: field.data.name,
-            from: _self.fromValue(field.data)
+            from: '<a href="#" class="js-view-field-value" data-id="' ~ field.id ~ '" data-data="f" data-hassource="1">view</a>',
         })|raw }}
     {% endif %}
 </li>

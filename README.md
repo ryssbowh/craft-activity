@@ -42,12 +42,29 @@ User activity and the fields changed will remain viewable even when the object r
 
 Install through plugin store or with composer : `composer require rysbowh/craft-activity:^0.1`
 
+## Dashboard
+
+The dashboard is on the main menu, under "Activity".
+
+You can filter activity by users, type of activity and date range. The hot reload option will reload the activity automatically every 5 seconds.
+
+Description of columns :
+- User : The user logged in when the activity was triggered
+- Site : The current site when the activity was triggered
+- Request : The type of request which can be :
+  - Console
+  - Site
+  - Control Panel
+  - Yaml config : This request is for when someone applies yaml config, regardless of whether it's done through the control panel or console
+- Activity
+- Date
+
 ## Settings
 
 This plugin has some extensive settings to control the activity you want recorded. Lots of events can be ignored (cp, frontend, console, project config), or you can ignore only some log types.  
 Logs can be deleted when they become too old, and be deleted along with the user that created them.
 
-By default the routes logs are ignored (because we can't track their changes), and the "update slugs and uris", "elements are propagated" and "elements are resaved" logs are ignored which should be what you need in most cases. Turning on those logs can create lots of useless activities as they are triggered by the system.
+By default the routes logs are ignored (because we can't track their changes), and the "update slugs and uris", "elements are propagated" and "elements are resaved" logs are ignored which should be what you need in most cases. Turning on those logs can create lots of useless records as they are triggered by the system.
 
 ## Extend
 
@@ -78,7 +95,7 @@ class MyRecorder extends Recorder
         if (!$this->shouldSaveLog($logType)) {
             return;
         }
-        $this->saveLog($logType, $data);
+        $this->commitLog($logType, $data);
     }
 }
 ```
@@ -187,6 +204,8 @@ Event::on(FieldHandlers::class, FieldHandlers::EVENT_REGISTER_PROJECTCONFIG_HAND
 ```
 
 That's enough to trigger your field handler when the path `system.live` is changed. This will cause the activity log to save a fancy value ('Live' or 'Offline') in the database alongside the original value (true or false). That fancy value will be displayed to the user instead.
+
+You can also change the description of the field being changed that will be displayed to the user by overriding the `getTemplate(): ?string` method.
 
 ### Element fields
 

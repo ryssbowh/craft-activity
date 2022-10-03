@@ -28,7 +28,7 @@ abstract class UserLog extends ElementLog
      */
     protected function loadElement(): ?Element
     {
-        return $this->getElementType()::find()->anyStatus()->id($this->target_id)->one();
+        return $this->getElementType()::find()->anyStatus()->uid($this->target_uid)->one();
     }
 
     /**

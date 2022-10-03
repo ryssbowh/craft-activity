@@ -58,6 +58,17 @@ class Permissions extends DefaultHandler
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getDbValue(string $valueKey): array
+    {
+        if ($valueKey == 'f') {
+            return $this->buildDirty([], $this->value);
+        }
+        return $this->buildDirty($this->value, []);
+    }
+
+    /**
      * Build dirty values
      * 
      * @param  array $newPerms

@@ -13,7 +13,7 @@ class CraftEditionChanged extends ActivityLog
     {
         $changed = $this->changedFields[0] ?? null;
         if (!$changed) {
-            return Craft::t('activity', 'Changed Craft edition');
+            return \Craft::t('activity', 'Changed Craft edition');
         }
         $pro = \Craft::t('activity', 'Pro');
         $solo = \Craft::t('activity', 'Solo');
