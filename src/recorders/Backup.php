@@ -33,7 +33,7 @@ class Backup extends Recorder
             return;
         }
         $this->commitLog('backupCreated', [
-            'data' => ['file' => str_replace(\Craft::getAlias('@root/'), '', $file)]
+            'file' => str_replace(\Craft::getAlias('@root/'), '', $file)
         ]);
     }
 
@@ -48,7 +48,7 @@ class Backup extends Recorder
             return;
         }
         $this->commitLog('backupRestored', [
-            'data' => ['file' => str_replace(\Craft::getAlias('@root/'), '', $file)]
+            'file' => str_replace(\Craft::getAlias('@root/'), '', $file)
         ]);
     }
 }

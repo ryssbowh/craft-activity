@@ -14,8 +14,8 @@ abstract class BackupLog extends ActivityLog
      */
     public function getDbData(): array
     {
-        return array_merge(parent::getDbData(), [
-            'file' => $this->file
+        return array_merge_recursive(parent::getDbData(), [
+            'data' => ['file' => $this->file]
         ]);
     }
 }
