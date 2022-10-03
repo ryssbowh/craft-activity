@@ -14,6 +14,7 @@ use Ryssbowh\Activity\models\fieldHandlers\elements\Matrix;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Products;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Redactor;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Seo;
 use Ryssbowh\Activity\models\fieldHandlers\elements\SuperTable;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Tags;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Users;
@@ -45,6 +46,7 @@ class RegisterElementFieldHandlersEvent extends Event
             Plain::class,
             Products::class,
             Redactor::class,
+            Seo::class,
             SuperTable::class,
             Tags::class,
             Users::class,

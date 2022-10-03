@@ -1,0 +1,144 @@
+{% import "activity/includes/macros" as macros %}
+
+{% macro assetValue(title, id) %}
+    {% set value = title %}
+    {% if id %}
+        {% set elem = craft.assets.id(id).anyStatus().one() %}
+        {% if elem %}
+            {% set value = elem.title %}
+        {% endif %}
+    {% endif %}
+    <code>{{ value }}</code>
+{% endmacro %}
+
+{% macro assetToValue(data) %}
+    {{ _self.assetValue(data.tf ?? '', data.t) }}
+{% endmacro %}
+
+{% macro assetFromValue(data) %}
+    {{ _self.assetValue(data.ff ?? '', data.f) }}
+{% endmacro %}
+
+<li>
+    {{ 'Field {name} was changed'|t('activity', {
+        name: field.data.name
+    }) }}
+    <ul>
+        {% for key in ['title', 'description', 'keywords'] %}
+            {% if field.data[key] ?? false %}
+                {% set hasFrom = 'f' in field.data[key]|keys %}
+                {% set hasTo = 't' in field.data[key]|keys %}
+                <li>
+                    {% if hasFrom and hasTo %}
+                        {{ '{field} was changed from {from} to {to}'|t('activity', {
+                            field: key|capitalize|t('activity'),
+                            from: macros.fromValue(field.data[key]),
+                            to: macros.toValue(field.data[key])
+                        })|raw }}
+                    {% elseif hasTo %}
+                        {{ "{field} was set to {to}"|t('activity', {
+                            field: key|capitalize|t('activity'),
+                            to: macros.toValue(field.data[key])
+                        })|raw }}
+                    {% elseif hasFrom %}
+                        {{ "Field {field} value ({from}) was removed"|t('activity', {
+                            field: key|capitalize|t('activity'),
+                            from: macros.fromValue(field.data[key])
+                        })|raw }}
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% for social in ['twitter', 'facebook'] %}
+            {% if field.data[social] ?? false %}
+                {% for key in ['title', 'description'] %}
+                    {% if field.data[social][key] ?? false %}
+                        {% set hasFrom = 'f' in field.data[social][key]|keys %}
+                        {% set hasTo = 't' in field.data[social][key]|keys %}
+                        <li>
+                            {% if hasFrom and hasTo %}
+                                {{ '{field} was changed from {from} to {to}'|t('activity', {
+                                    field: (social ~ ' ' ~ key)|capitalize|t('activity'),
+                                    from: macros.fromValue(field.data[social][key]),
+                                    to: macros.toValue(field.data[social][key])
+                                })|raw }}
+                            {% elseif hasTo %}
+                                {{ "{field} was set to {to}"|t('activity', {
+                                    field: (social ~ ' ' ~ key)|capitalize|t('activity'),
+                                    to: macros.toValue(field.data[social][key])
+                                })|raw }}
+                            {% elseif hasFrom %}
+                                {{ "Field {field} value ({from}) was removed"|t('activity', {
+                                    field: (social ~ ' ' ~ key)|capitalize|t('activity'),
+                                    from: macros.fromValue(field.data[social][key])
+                                })|raw }}
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if field.data[social].image ?? false %}
+                    {% set hasFrom = 'f' in field.data[social].image|keys %}
+                    {% set hasTo = 't' in field.data[social].image|keys %}
+                    <li>
+                        {% if hasFrom and hasTo %}
+                            {{ '{field} was changed from {from} to {to}'|t('activity', {
+                                field: (social ~ ' image')|capitalize|t('activity'),
+                                from: _self.assetFromValue(field.data[social].image),
+                                to: _self.assetToValue(field.data[social].image)
+                            })|raw }}
+                        {% elseif hasTo %}
+                            {{ "{field} was set to {to}"|t('activity', {
+                                field: (social ~ ' image')|capitalize|t('activity'),
+                                to: _self.assetToValue(field.data[social].image)
+                            })|raw }}
+                        {% elseif hasFrom %}
+                            {{ "Field {field} value ({from}) was removed"|t('activity', {
+                                field: (social ~ ' image')|capitalize|t('activity'),
+                                from: _self.assetFromValue(field.data[social].image)
+                            })|raw }}
+                        {% endif %}
+                    </li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if field.data.advanced.canonical ?? false %}
+            {% set hasFrom = 'f' in field.data.advanced.canonical|keys %}
+            {% set hasTo = 't' in field.data.advanced.canonical|keys %}
+            <li>
+                {% if hasFrom and hasTo %}
+                    {{ '{field} was changed from {from} to {to}'|t('activity', {
+                        field: 'Canonical'|t('activity'),
+                        from: macros.fromValue(field.data.advanced.canonical),
+                        to: macros.toValue(field.data.advanced.canonical)
+                    })|raw }}
+                {% elseif hasTo %}
+                    {{ "{field} was set to {to}"|t('activity', {
+                        field: 'Canonical'|t('activity'),
+                        to: macros.toValue(field.data.advanced.canonical)
+                    })|raw }}
+                {% elseif hasFrom %}
+                    {{ "Field {field} value ({from}) was removed"|t('activity', {
+                        field: 'Canonical'|t('activity'),
+                        from: macros.fromValue(field.data.advanced.canonical),
+                    })|raw }}
+                {% endif %}
+            </li>
+        {% endif %}
+        {% for key in ['noindex', 'nofollow', 'noarchive', 'nosnippet', 'notranslate', 'noimageindex'] %}
+            {% set value = field.data.advanced[key] ?? false %}
+            {% if value %}
+                <li>
+                    {% if value.t is same as(true) and value.f is same as(false) %}
+                        {{ '{field} was checked'|t('activity', {
+                            field: key|t('activity'),
+                        })|raw }}
+                    {% else %}
+                        {{ '{field} was unchecked'|t('activity', {
+                            field: key|t('activity'),
+                        })|raw }}
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</li>

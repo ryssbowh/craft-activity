@@ -73,8 +73,8 @@ class SuperTable extends ElementFieldHandler
     /**
      * Build dirty values
      * 
-     * @param  array  $newFields
-     * @param  array  $oldFields
+     * @param  array  $newBlocks
+     * @param  array  $oldBlocks
      * @return array
      */
     protected function buildDirty(array $newBlocks, array $oldBlocks): array
