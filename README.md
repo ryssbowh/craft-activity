@@ -36,6 +36,7 @@ A non exhaustive list of things this plugin can track :
 - User groups (created, saved, deleted, permissions)
 - User layout changed
 - Widgets (created, saved, deleted)
+- Emails (sent, failed)
 - Craft edition changed
 
 User activity and the fields changed will remain viewable even when the object recorded for no longer exists.

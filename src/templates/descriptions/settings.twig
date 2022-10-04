@@ -5,24 +5,24 @@
         {% set hasFrom = 'f' in field.data|keys %}
         {% set hasTo = 't' in field.data|keys %}
         {% if hasFrom and hasTo %}
-            {{ "{setting} was changed from {from} to {to}"|t('activity', {
-                setting: macros.settingLabel(field.name, log),
+            {{ "{field} was changed from {from} to {to}"|t('activity', {
+                field: macros.settingLabel(field.name, log),
                 from: macros.fromValue(field.data),
                 to: macros.toValue(field.data)
             })|raw }}
         {% elseif hasTo %}
-            {{ "{setting} was set to {to}"|t('activity', {
-                setting: macros.settingLabel(field.name, log),
+            {{ "{field} was set to {to}"|t('activity', {
+                field: macros.settingLabel(field.name, log),
                 to: macros.toValue(field.data)
             })|raw }}
         {% elseif hasFrom %}
-            {{ "{setting} value ({from}) was removed"|t('activity', {
-                setting: macros.settingLabel(field.name, log),
+            {{ "{field} value ({from}) was removed"|t('activity', {
+                field: macros.settingLabel(field.name, log),
                 from: macros.fromValue(field.data)
             })|raw }}
         {% else %}
-            {{ "{setting} was changed"|t('activity', {
-                setting: macros.settingLabel(field.name, log)
+            {{ "{field} was changed"|t('activity', {
+                field: macros.settingLabel(field.name, log)
             })|raw }}
         {% endif %}
     </li>

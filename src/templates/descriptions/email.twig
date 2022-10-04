@@ -1,0 +1,16 @@
+{% import "activity/includes/macros" as macros %}
+
+<ul>
+    {% if log.target_name ?? false %}
+        <li>Key : {{ log.target_name }}</li>
+    {% endif %}
+    {% if log.data.to ?? false %}
+        <li>To : {{ log.to }}</li>
+    {% endif %}
+    {% if log.data.cc ?? false %}
+        <li>Cc : {{ log.cc }}</li>
+    {% endif %}
+    {% if log.data.bcc ?? false %}
+        <li>Bcc : {{ log.bcc }}</li>
+    {% endif %}
+</ul>

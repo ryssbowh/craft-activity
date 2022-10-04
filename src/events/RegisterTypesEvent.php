@@ -24,6 +24,8 @@ use Ryssbowh\Activity\models\logs\categories\CategoryGroupSaved;
 use Ryssbowh\Activity\models\logs\categories\CategoryMoved;
 use Ryssbowh\Activity\models\logs\categories\CategoryRestored;
 use Ryssbowh\Activity\models\logs\categories\CategorySaved;
+use Ryssbowh\Activity\models\logs\emails\EmailFailed;
+use Ryssbowh\Activity\models\logs\emails\EmailSent;
 use Ryssbowh\Activity\models\logs\entries\EntryCreated;
 use Ryssbowh\Activity\models\logs\entries\EntryDeleted;
 use Ryssbowh\Activity\models\logs\entries\EntryMoved;
@@ -132,6 +134,8 @@ class RegisterTypesEvent extends Event
             new EntryTypeCreated,
             new EntryTypeSaved,
             new EntryTypeDeleted,
+            new EmailSent,
+            new EmailFailed,
             new FieldCreated,
             new FieldSaved,
             new FieldDeleted,

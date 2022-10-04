@@ -20,6 +20,7 @@ use Ryssbowh\Activity\recorders\Fields;
 use Ryssbowh\Activity\recorders\GeneralSettings;
 use Ryssbowh\Activity\recorders\GlobalSets;
 use Ryssbowh\Activity\recorders\Globals;
+use Ryssbowh\Activity\recorders\Mailer;
 use Ryssbowh\Activity\recorders\Plugins;
 use Ryssbowh\Activity\recorders\Routes;
 use Ryssbowh\Activity\recorders\Sections;
@@ -64,6 +65,7 @@ class RegisterRecordersEvent extends Event
             'fields' => new Fields,
             'globals' => new Globals,
             'globalSets' => new GlobalSets,
+            'mailer' => new Mailer,
             'plugins' => new Plugins,
             'routes' => new Routes,
             'sections' => new Sections,
