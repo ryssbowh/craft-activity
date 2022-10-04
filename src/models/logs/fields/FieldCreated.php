@@ -46,6 +46,7 @@ class FieldCreated extends ConfigModelLog
             'instructions' => \Craft::t('app', 'Default Instructions'),
             'type' => \Craft::t('app', 'Field Type'),
             'translationMethod' => \Craft::t('app', 'Translation Method'),
+            'translationKeyFormat' => \Craft::t('app', 'Translation Key Format')
         ];
     }
 }

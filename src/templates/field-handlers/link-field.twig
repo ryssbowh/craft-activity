@@ -1,0 +1,117 @@
+{% import "activity/includes/macros" as macros %}
+
+{% macro linkValue(data) %}
+    {% set value = data.id %}
+    {% if data.id %}
+        {% set elem = false %}
+        {% if data.type == 'entry' %}
+            {% set elem = craft.entries.id(data.id).anyStatus().one() %}
+        {% elseif data.type == 'asset' %}
+            {% set elem = craft.assets.id(data.id).anyStatus().one() %}
+        {% elseif data.type == 'category' %}
+            {% set elem = craft.categories.id(data.id).anyStatus().one() %}
+        {% elseif data.type == 'product' and craft.app.plugins.getPlugin('commerce') %}
+            {% set elem = craft.products.id(data.id).anyStatus().one() %}
+        {% endif %}
+        {% if elem %}
+            {% set value = elem.title %}
+        {% endif %}
+        {% if data.type == 'site' %}
+            {% set elem = craft.app.sites.getSiteById(data.id) %}
+            {% if elem %}
+                {% set value = elem.name %}
+            {% endif %}
+        {% elseif data.type == 'user' %}
+            {% set elem = craft.users.id(data.id).anyStatus().one() %}
+            {% if elem %}
+                {% set value = elem.friendlyName %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    <code>{{ value }}</code>
+{% endmacro %}
+
+<li>
+    {{ 'Field {name} was changed'|t('activity', {
+        name: field.data.name
+    }) }}
+    <ul>
+        {% for key in ['ariaLabel', 'customText', 'newWindow', 'title'] %}
+            {% if field.data[key] ?? false %}
+                {% set label = key|capitalize|t('activity') %}
+                {% if key == 'customText' %}
+                    {% set label = 'Custom text'|t('activity') %}
+                {% elseif key == 'ariaLabel' %}
+                    {% set label = 'Aria label'|t('activity') %}
+                {% elseif key == 'newWindow' %}
+                    {% set label = 'Open in new window'|t('activity') %}
+                {% endif %}
+                {% set hasFrom = 'f' in field.data[key]|keys %}
+                {% set hasTo = 't' in field.data[key]|keys %}
+                <li>
+                    {% if hasFrom and hasTo %}
+                        {{ '{field} was changed from {from} to {to}'|t('activity', {
+                            field: label,
+                            from: macros.fromValue(field.data[key]),
+                            to: macros.toValue(field.data[key])
+                        })|raw }}
+                    {% elseif hasTo %}
+                        {{ "{field} was set to {to}"|t('activity', {
+                            field: label,
+                            to: macros.toValue(field.data[key])
+                        })|raw }}
+                    {% elseif hasFrom %}
+                        {{ "Field {field} value ({from}) was removed"|t('activity', {
+                            field: label,
+                            from: macros.fromValue(field.data[key])
+                        })|raw }}
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% if field.data.value ?? false %}
+            {% set hasFrom = 'f' in field.data.value|keys %}
+            {% set hasTo = 't' in field.data.value|keys %}
+            {% if hasFrom and hasTo %}
+                {% if field.data.value.f.type != field.data.value.t.type %}
+                    <li>
+                        {{ 'Type was changed from {from} to {to}'|t('activity', {
+                            from: field.data.value.f.type|capitalize|t('activity'),
+                            to: field.data.value.t.type|capitalize|t('activity')
+                        })|raw }}
+                    </li>
+                {% endif %}
+                {% if field.data.value.f.id != field.data.value.t.id %}
+                    <li>
+                        {{ 'Value was changed from {from} to {to}'|t('activity', {
+                            from: _self.linkValue(field.data.value.f),
+                            to: _self.linkValue(field.data.value.t)
+                        })|raw }}
+                    </li>
+                {% endif %}
+            {% elseif hasFrom %}
+                <li>
+                    {{ 'Type ({from}) was removed'|t('activity', {
+                        from: field.data.value.t.type|capitalize|t('activity'),
+                    })|raw }}
+                </li>
+                <li>
+                    {{ "Value ({from}) was removed"|t('activity', {
+                        from: _self.linkValue(field.data.value.f)
+                    })|raw }}
+                </li>
+            {% elseif hasTo %}
+                <li>
+                    {{ "Type was set to {to}"|t('activity', {
+                        to: field.data.value.t.type|capitalize|t('activity'),
+                    })|raw }}
+                </li>
+                <li>
+                    {{ "Value was set to {to}"|t('activity', {
+                        to: _self.linkValue(field.data.value.t)
+                    })|raw }}
+                </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</li>

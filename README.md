@@ -33,6 +33,7 @@ A non exhaustive list of things this plugin can track :
   - registered
   - suspended, unsuspended
   - email verified
+  - failed to login
 - User groups (created, saved, deleted, permissions)
 - User layout changed
 - Widgets (created, saved, deleted)
@@ -95,11 +96,12 @@ class MyRecorder extends Recorder
     public function somethingChanged(Event $event)
     {
         $logType = 'somethingCreated';
-        $data = [];
-        if (!$this->shouldSaveLog($logType)) {
-            return;
+        $params = [
+            'myObject' => $event->object
+        ];
+        if ($this->shouldSaveLog($logType)) {
+            $this->commitLog($logType, $params);
         }
-        $this->commitLog($logType, $data);
     }
 }
 ```
@@ -118,6 +120,8 @@ In some cases, several events will happen at the same time and you need to contr
 You can start/stop the recording of any recorder with `Activity::getRecorder('my-recorder')->stopRecording()` at any point.  
 You can also empty a recorder log queue (which will only be saved at the end of the request) : `Activity::getRecorder('my-recorder')->emptyQueue()`
 
+You'll find a list of recorders defined by the system in the class `Ryssbowh\Activity\events\RegisterRecordersEvent`.
+
 ### Log types
 
 Define a new log type :
@@ -127,13 +131,18 @@ use Ryssbowh\Activity\base\logs\ActivityLog;
 class SomethingCreated extends ActivityLog
 {
     /**
-     * @inheritDoc
+     * This is optional, but shows you how to set data on your log
+     *
+     * @param mixed $object
      */
-    public function getDbData(): array
+    public function setMyObject($object): array
     {
-        return array_merge(parent::getDbData(), [
-            'my-data' => 'my-value'
-        ]);
+        $this->target_uid = $object->uid;
+        $this->target_name = $object->name;
+        $this->target_class = get_class($object);
+        $this->data = [
+            'my-field' => $object->field
+        ];
     }
 }
 ```

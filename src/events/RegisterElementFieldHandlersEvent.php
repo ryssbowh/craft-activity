@@ -8,6 +8,7 @@ use Ryssbowh\Activity\models\fieldHandlers\elements\Categories;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Date;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Entries;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Lightswitch;
+use Ryssbowh\Activity\models\fieldHandlers\elements\LinkField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\ListField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\ListsField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Matrix;
@@ -40,6 +41,7 @@ class RegisterElementFieldHandlersEvent extends Event
             Date::class,
             Entries::class,
             Lightswitch::class,
+            LinkField::class,
             ListField::class,
             ListsField::class,
             Matrix::class,
