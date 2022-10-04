@@ -1,15 +1,17 @@
 {% import "activity/includes/macros" as macros %}
 
 {% macro arrayValue(titles, ids) %}
-    {% set value = [] %}
-    {% for index, id in ids %}
-        {% set elem = craft.variants.id(id).anyStatus().one() %}
-        {% if elem %}
-            {% set value = value|merge([elem.title]) %}
-        {% else %}
-            {% set value = value|merge([titles[index]]) %}
-        {% endif %}
-    {% endfor %}
+    {% set value = ids %}
+    {% if craft.app.plugins.getPlugin('commerce') %}
+        {% for index, id in ids %}
+            {% set elem = craft.variants.id(id).anyStatus().one() %}
+            {% if elem %}
+                {% set value = value|merge([elem.title]) %}
+            {% else %}
+                {% set value = value|merge([titles[index]]) %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     <code>{{ value ? value|join(', ') : 'null' }}</code>
 {% endmacro %}
 
