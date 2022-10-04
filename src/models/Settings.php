@@ -103,6 +103,9 @@ class Settings extends Model
      */
     public function isTypeIgnored(string $handle): bool
     {
-        return in_array($handle, $this->ignoreTypes);
+        return (in_array($handle, $this->ignoreTypes) or ($this->ignoreApplyingYaml and \Craft::$app->projectConfig->isApplyingYamlChanges) or 
+            ($this->ignoreConsoleRequests and \Craft::$app->request->isConsoleRequest) or
+            ($this->ignoreCpRequests and \Craft::$app->request->isCpRequest) or
+            ($this->ignoreSiteRequests and \Craft::$app->request->isSiteRequest));
     }
 }

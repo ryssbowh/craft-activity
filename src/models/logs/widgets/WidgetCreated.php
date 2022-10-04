@@ -8,20 +8,15 @@ use craft\base\Widget;
 class WidgetCreated extends ActivityLog
 {
     /**
-     * @var Widget
+     * Set widget
+     *
+     * @param Widget $widget
      */
-    public $widget;
-
-    /**
-     * @inheritDoc
-     */
-    public function getDbData(): array
+    public function setWidget(Widget $widget)
     {
-        return array_merge(parent::getDbData(), [
-            'target_uid' => $this->widget->id,
-            'target_class' => get_class($this->widget),
-            'target_name' => $this->widget->title
-        ]);
+        $this->target_uid = $widget->id;
+        $this->target_class = get_class($widget);
+        $this->target_name = $widget->title;
     }
 
     /**

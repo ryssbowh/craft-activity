@@ -19,6 +19,9 @@ class ActivityExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getFunctions()
     {
         return [
@@ -26,6 +29,12 @@ class ActivityExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * Get the template used to describe a field handler class
+     * 
+     * @param  string $handlerClass
+     * @return ?string
+     */
     public function handlerTemplate(string $handlerClass): ?string
     {
         if (!$handlerClass or !class_exists($handlerClass)) {

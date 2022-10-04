@@ -106,9 +106,11 @@ abstract class ElementsRecorder extends Recorder
         }
         $this->commitLog($type, [
             'element' => $element,
-            'lft' => $element->lft,
-            'rgt' => $element->rgt,
-            'level' => $element->level
+            'data' => [
+                'lft' => $element->lft,
+                'rgt' => $element->rgt,
+                'level' => $element->level
+            ]
         ]);
     }
 

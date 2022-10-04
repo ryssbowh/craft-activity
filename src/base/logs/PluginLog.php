@@ -29,17 +29,8 @@ abstract class PluginLog extends SettingsLog
     public function setPlugin(Plugin $plugin)
     {
         $this->_plugin = $plugin;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getDbData(): array
-    {
-        return array_merge(parent::getDbData(), [
-            'target_class' => $this->plugin->handle,
-            'target_name' => $this->plugin->name
-        ]);
+        $this->target_class = $plugin->handle;
+        $this->target_name = $plugin->name;
     }
 
     /**

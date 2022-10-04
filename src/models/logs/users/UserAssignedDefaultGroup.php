@@ -7,18 +7,15 @@ use Ryssbowh\Activity\base\logs\UserLog;
 class UserAssignedDefaultGroup extends UserLog
 {
     /**
-     * @var string
+     * Group setter
+     * 
+     * @param string $group
      */
-    public $group = '';
-
-    /**
-     * @inheritDoc
-     */
-    public function getDbData(): array
+    public function setGroup(string $group)
     {
-        return array_merge(parent::getDbData(), [
-            'data' => $this->group,
-        ]);
+        $this->data = [
+            'group' => $group
+        ];
     }
 
     /**

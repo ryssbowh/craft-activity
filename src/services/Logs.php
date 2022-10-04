@@ -3,6 +3,7 @@
 namespace Ryssbowh\Activity\services;
 
 use Ryssbowh\Activity\Activity;
+use Ryssbowh\Activity\base\logs\ActivityLog as BaseActivityLog;
 use Ryssbowh\Activity\exceptions\ActivityChangedFieldException;
 use Ryssbowh\Activity\exceptions\ActivityLogException;
 use Ryssbowh\Activity\models\ChangedField;
@@ -20,41 +21,40 @@ class Logs extends Component
     const REQUEST_SITE = 'site';
     const REQUEST_YAML = 'yaml';
     const REQUEST_CONSOLE = 'console';
+    
     /**
      * Saves a log
      * 
-     * @param  array $data
-     * @param  array $changedFields
+     * @param  BaseActivityLog $log
      * @throws ActivityLogException
      * @return bool
      */
-    public function saveLog(array $data, array $changedFields = [], ?string $request = null): bool
+    public function saveLog(BaseActivityLog $log): bool
     {
-        if (!isset($data['type'])) {
-            throw ActivityLogException::noType();
+        if (!$user = $log->user) {
+            $user = \Craft::$app->user->identity;
         }
-        $user = \Craft::$app->user->identity;
-        $currentSite = \Craft::$app->sites->currentSite;
-        if ($request === null) {
-            $request = \Craft::$app->request->isConsoleRequest ? self::REQUEST_CONSOLE : (\Craft::$app->request->isCpRequest ? self::REQUEST_CP : self::REQUEST_SITE);
-            if (\Craft::$app->projectConfig->isApplyingYamlChanges) {
-                $request = self::REQUEST_YAML;
-            }
+        if (!$site = $log->site) {
+            $site = \Craft::$app->sites->currentSite;
+        }
+        $request = $log->request;
+        if (!$request) {
+            $request = $this->getCurrentRequest();
         }
         $record = new ActivityLog([
-            'user_id' => ($data['user_id'] ?? null) ? $data['user_id'] : ($user ? $user->id : 0),
-            'user_name' => ($data['user_name'] ?? null) ? $data['user_name'] : ($user ? $user->friendlyName : ''),
-            'type' => $data['type'],
-            'target_class' => $data['target_class'] ?? null,
-            'target_uid' => $data['target_uid'] ?? null,
-            'target_name' => $data['target_name'] ?? null,
-            'site_name' => $currentSite->name,
-            'site_id' => $currentSite->id,
+            'user_id' => $user ? $user->id : 0,
+            'user_name' => $user ? $user->friendlyName : '',
+            'type' => $log->handle,
+            'target_class' => $log->target_class,
+            'target_uid' => $log->target_uid,
+            'target_name' => $log->target_name,
+            'site_name' => $site ? $site->name : '',
+            'site_id' => $site ? $site->id : null,
             'request' => $request,
-            'data' => $data['data'] ?? null
+            'data' => $log->data
         ]);
         if ($record->save(false)) {
-            foreach ($changedFields as $name => $array) {
+            foreach ($log->changedFields as $name => $array) {
                 $field = new ActivityChangedField([
                     'log_id' => $record->id,
                     'name' => $name,
@@ -65,8 +65,21 @@ class Logs extends Component
             }
             return true;
         }
-        \Craft::warning('Unable to save activity record ' . $data['type'], __METHOD__);
+        \Craft::warning('Unable to save activity record ' . $log->handle, __METHOD__);
         return false;
+    }
+
+    /**
+     * Get current request descriptor
+     * 
+     * @return string
+     */
+    public function getCurrentRequest(): string
+    {
+        if (\Craft::$app->projectConfig->isApplyingYamlChanges) {
+            return self::REQUEST_YAML;
+        }
+        return \Craft::$app->request->isConsoleRequest ? self::REQUEST_CONSOLE : (\Craft::$app->request->isCpRequest ? self::REQUEST_CP : self::REQUEST_SITE);
     }
 
     /**

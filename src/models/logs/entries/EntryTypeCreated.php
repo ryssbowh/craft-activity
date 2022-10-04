@@ -17,19 +17,6 @@ class EntryTypeCreated extends ConfigModelLog
     /**
      * @inheritDoc
      */
-    public function getDbData(): array
-    {
-        return array_merge(parent::getDbData(), [
-            'data' => ['section' => [
-                'name' => $this->section->name,
-                'id' => $this->section->id
-            ]]
-        ]);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getTitle(): string
     {
         return \Craft::t('activity', 'Created entry type {name} in section {section}', [
@@ -46,6 +33,12 @@ class EntryTypeCreated extends ConfigModelLog
     public function setSection(Section $section)
     {
         $this->_section = $section;
+        $this->data = [
+            'section' => [
+                'name' => $section->name,
+                'id' => $section->id
+            ]
+        ];
     }
 
     /**

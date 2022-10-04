@@ -15,22 +15,6 @@ abstract class ElementLog extends ActivityLog
     /**
      * @inheritDoc
      */
-    public function getDbData(): array
-    {
-        return array_merge(parent::getDbData(), [
-            'target_uid' => $this->element->uid,
-            'target_class' => get_class($this->element),
-            'target_name' => $this->element->{$this->titleField},
-            'data' => [
-                'site_id' => $this->element->site->id,
-                'site_name' => $this->element->site->name
-            ]
-        ]);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getTitle(): string
     {
         $title = $this->_getTitle() . ' {title}';
@@ -60,6 +44,13 @@ abstract class ElementLog extends ActivityLog
     public function setElement(Element $element)
     {
         $this->_element = $element;
+        $this->target_uid = $element->uid;
+        $this->target_class = get_class($element);
+        $this->target_name = $element->{$this->titleField};
+        $this->data = [
+            'site_id' => $element->site->id,
+            'site_name' => $element->site->name
+        ];
     }
 
     /**

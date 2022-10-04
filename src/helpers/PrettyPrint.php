@@ -19,7 +19,13 @@ class PrettyPrint
         return $value;
     }
 
-    public static function string($value)
+    /**
+     * Get a string pretty print
+     * 
+     * @param  mixed $value
+     * @return string
+     */
+    public static function string($value): string
     {
         if ($value) {
             return $value;
@@ -33,7 +39,7 @@ class PrettyPrint
      * @param  mixed $value
      * @return string
      */
-    public static function boolean($value)
+    public static function boolean($value): string
     {
         return $value ? 'true' : 'false';
     }
@@ -44,7 +50,7 @@ class PrettyPrint
      * @param mixed $value
      * @return string
      */
-    public static function NULL($value)
+    public static function NULL($value): string
     {
         return 'null';
     }
@@ -55,7 +61,7 @@ class PrettyPrint
      * @param mixed $value
      * @return string
      */
-    public static function array($value)
+    public static function array($value): string
     {
         $string = '[';
         foreach ($value as $index => $val) {

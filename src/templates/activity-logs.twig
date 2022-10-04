@@ -12,7 +12,7 @@
                 {{ 'Site'|t('activity') }}
             {% elseif log.request == 'yaml' %}
                 {{ 'Yaml config'|t('activity') }}
-            {% else %}
+            {% elseif log.request =='console' %}
                 {{ 'Console'|t('activity') }}
             {% endif %}
         </td>

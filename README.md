@@ -46,7 +46,7 @@ Install through plugin store or with composer : `composer require rysbowh/craft-
 
 ## Dashboard
 
-The dashboard is on the main menu, under "Activity".
+The dashboard is on the main menu, under "User Activity".
 
 You can filter activity by users, type of activity and date range. The hot reload option will reload the activity automatically every 5 seconds.
 
@@ -64,9 +64,10 @@ Description of columns :
 ## Settings
 
 This plugin has some extensive settings to control the activity you want recorded. Lots of events can be ignored (cp, frontend, console, project config), or you can ignore only some log types.  
-Logs can be deleted when they become too old, and be deleted along with the user that created them.
 
 By default the routes logs are ignored (because we can't track their changes), and the "update slugs and uris", "elements are propagated" and "elements are resaved" logs are ignored which should be what you need in most cases. Turning on those logs can create lots of useless records as they are triggered by the system.
+
+Logs can be deleted when they become too old, and be deleted along with the user that created them.
 
 ## Extend
 
@@ -111,7 +112,10 @@ Event::on(Recorders::class, Recorders::EVENT_REGISTER, function (Event $event) {
 ```
 You'll then be able to get your recorder instance at any point in the application with `Activity::getRecorder('my-recorder')`
 
-In some cases, several events will happen at the same time and you need to control wether your recorder (or others) record or not. You can start/stop the recording of any recorder with `Activity::getRecorder('my-recorder')->stopRecording = true` at any point.
+In some cases, several events will happen at the same time and you need to control wether your recorder (or others) record or not. 
+
+You can start/stop the recording of any recorder with `Activity::getRecorder('my-recorder')->stopRecording()` at any point.  
+You can also empty a recorder log queue (which will only be saved at the end of the request) : `Activity::getRecorder('my-recorder')->emptyQueue()`
 
 ### Log types
 
@@ -154,7 +158,7 @@ The system typically defines handlers for things like arrays, where the label of
 
 Field handlers can completely override how the changes made to a field are saved, a good example would be entry types field layouts, where calculating changes can be a bit complex.
 
-Each field handler has a target which defines when it's triggered.
+Each field handler has a target which defines which target(s) it can handle.
 
 #### Project Config fields
 
@@ -280,5 +284,5 @@ This plugin requires Craft 3.7 or above.
 
 ## Roadmap
 
-- Track each individual field config
+- Track individual field config
 - Reverting system

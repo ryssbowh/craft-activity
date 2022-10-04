@@ -46,10 +46,16 @@ abstract class Recorder extends Component
             \Craft::$app->errorHandler->logException($e);
             return false;
         }
-        $log = new $class($params);
-        if (!$log->request and \Craft::$app->projectConfig->isApplyingYamlChanges) {
-            $log->request = Logs::REQUEST_YAML;
+        if (!($params['request'] ?? false)) {
+            $params['request'] = Activity::$plugin->logs->getCurrentRequest();
         }
+        if (!($params['site'] ?? false)) {
+            $params['site'] = \Craft::$app->sites->currentSite;
+        }
+        if (!($params['user'] ?? false)) {
+            $params['user'] = \Craft::$app->user->identity;
+        }
+        $log = new $class($params);
         if ($saveNow) {
             return $log->save();
         }
@@ -121,13 +127,7 @@ abstract class Recorder extends Component
     protected function shouldSaveLog(string $type): bool
     {
         $settings = Activity::$plugin->settings;
-        if (!$this->isRecording or 
-            $settings->isTypeIgnored($type) or 
-            ($settings->ignoreApplyingYaml and \Craft::$app->projectConfig->isApplyingYamlChanges) or 
-            ($settings->ignoreConsoleRequests and \Craft::$app->request->isConsoleRequest) or
-            ($settings->ignoreCpRequests and \Craft::$app->request->isCpRequest) or
-            ($settings->ignoreSiteRequests and \Craft::$app->request->isSiteRequest)
-        ) {
+        if (!$this->isRecording or $settings->isTypeIgnored($type)) {
             return false;
         }
         return true;

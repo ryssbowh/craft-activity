@@ -117,25 +117,6 @@ abstract class ActivityLog extends Model
     }
 
     /**
-     * Get data to be saved in database
-     * 
-     * @return array
-     */
-    public function getDbData(): array
-    {
-        return [
-            'user_id' => $this->user ? $this->user->id : null,
-            'user_name' => $this->user ? $this->user->friendlyName : null,
-            'type' => $this->handle,
-            'target_name' => $this->target_name,
-            'target_uid' => $this->target_uid,
-            'target_name' => $this->target_name,
-            'site_id' => $this->site ? $this->site->id : null,
-            'site_name' => $this->site ? $this->site->name : null,
-        ];
-    }
-
-    /**
      * User getter
      * 
      * @return ?User
@@ -151,9 +132,9 @@ abstract class ActivityLog extends Model
     /**
      * User setter
      * 
-     * @param User $user
+     * @param ?User $user
      */
-    public function setUser(User $user)
+    public function setUser(?User $user)
     {
         $this->_user = $user;
     }
@@ -175,7 +156,9 @@ abstract class ActivityLog extends Model
             }
             return '<a href="' . $this->user->cpEditUrl . ' " target="_blank">' . $status . $this->user->friendlyName . '</a>';
         }
-        return $this->user . ' ' . \Craft::t('activity', '(deleted)');
+        return \Craft::t('activity', '{user} (deleted)', [
+            'user' => $this->user_name
+        ]);
     }
 
     /**
@@ -202,6 +185,16 @@ abstract class ActivityLog extends Model
     }
 
     /**
+     * Site setter
+     * 
+     * @param Site $site
+     */
+    public function setSite(Site $site)
+    {
+        $this->_site = $site;
+    }
+
+    /**
      * Site name getter
      * 
      * @return string
@@ -211,7 +204,9 @@ abstract class ActivityLog extends Model
         if ($this->site) {
             return $this->site->name;
         }
-        return $this->site_name . ' ' . \Craft::t('activity', '(deleted)');
+        return \Craft::t('activity', '{site} (deleted)', [
+            'site' => $this->site_name
+        ]);
     }
 
     /**
@@ -219,22 +214,7 @@ abstract class ActivityLog extends Model
      */
     public function save()
     {
-        Activity::$plugin->logs->saveLog($this->getDbData(), $this->changedFields, $this->request);
-    }
-
-    /**
-     * Get the templates to output dirty fields
-     * 
-     * @return array
-     */
-    public function dirtyFieldTemplates(): array
-    {
-        return [
-            'previewTargets' => 'activity/includes/dirty-preview-targets',
-            'siteSettings' => 'activity/includes/dirty-site-settings',
-            'fieldLayouts' => 'activity/includes/dirty-field-layout',
-            'permissions' => 'activity/includes/dirty-permissions'
-        ];
+        Activity::$plugin->logs->saveLog($this);
     }
 
     /**

@@ -5,17 +5,17 @@ namespace Ryssbowh\Activity\models\logs\users;
 use Ryssbowh\Activity\base\logs\UserLog;
 
 class UserLocked extends UserLog
-{   
+{       
     /**
-     * @var int
+     * Attempts setter
+     * 
+     * @param int $attempts
      */
-    public $attempts;
-
-    public function getDbData(): array
+    public function setAttempts(int $attempts)
     {
-        return array_merge_recursive(parent::getDbData(), [
-            'data' => ['attempts' => $this->attempts]
-        ]);
+        $this->data = [
+            'attempts' => $attempts
+        ];
     }
 
     /**
