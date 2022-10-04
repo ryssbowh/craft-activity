@@ -24,27 +24,7 @@ class Settings extends Model
     /**
      * @var boolean
      */
-    public bool $ignoreConsoleRequests = false;
-
-    /**
-     * @var boolean
-     */
-    public bool $ignoreCpRequests = false;
-        
-    /**
-     * @var boolean
-     */
-    public bool $ignoreSiteRequests = false;
-
-    /**
-     * @var boolean
-     */
     public bool $ignorePropagate = true;
-
-    /**
-     * @var boolean
-     */
-    public bool $ignoreApplyingYaml = false;
 
     /**
      * @var boolean
@@ -79,33 +59,33 @@ class Settings extends Model
     /**
      * @var array
      */
-    public $ignoreTypes = ['routeSaved', 'routeDeleted'];
+    public $ignoreRules = [
+        ['type' => 'routeDeleted', 'active' => 1, 'request' => ''],
+        ['type' => 'routeSaved', 'active' => 1, 'request' => '']
+    ];
 
     /**
-     * @inheritDoc
-     */
-    public function defineRules(): array
-    {
-        return [
-            ['ignoreTypes', function () {
-                if (!$this->ignoreTypes) {
-                    $this->ignoreTypes = [];
-                }
-            }, 'skipOnEmpty' => false]
-        ];
-    }
-
-    /**
-     * Is a log type ignored
+     * Is a log type ignored by the set of rules
      * 
      * @param  string  $handle
      * @return boolean
      */
     public function isTypeIgnored(string $handle): bool
     {
-        return (in_array($handle, $this->ignoreTypes) or ($this->ignoreApplyingYaml and \Craft::$app->projectConfig->isApplyingYamlChanges) or 
-            ($this->ignoreConsoleRequests and \Craft::$app->request->isConsoleRequest) or
-            ($this->ignoreCpRequests and \Craft::$app->request->isCpRequest) or
-            ($this->ignoreSiteRequests and \Craft::$app->request->isSiteRequest));
+        if (!$this->ignoreRules) {
+            return false;
+        }
+        foreach ($this->ignoreRules as $rule) {
+            if ($rule['active'] and ($rule['type'] == $handle or !$rule['type'])) {
+                if (!$rule['request'] or 
+                    ($rule['request'] == 'yaml' and \Craft::$app->projectConfig->isApplyingYamlChanges) or 
+                    ($rule['request'] == 'console' and \Craft::$app->request->isConsoleRequest) or
+                    ($rule['request'] == 'cp' and \Craft::$app->request->isCpRequest) or
+                    ($rule['request'] == 'site' and \Craft::$app->request->isSiteRequest)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

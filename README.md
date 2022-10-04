@@ -64,7 +64,7 @@ Description of columns :
 
 ## Settings
 
-This plugin has some extensive settings to control the activity you want recorded. Lots of events can be ignored (cp, frontend, console, project config), or you can ignore only some log types.  
+This plugin has some extensive settings to control the activity you want recorded. A rule system allows you to ignore some activity based on its type and the type of request (cp, console, site, yaml config)
 
 By default the routes logs are ignored (because we can't track their changes), and the "update slugs and uris", "elements are propagated" and "elements are resaved" logs are ignored which should be what you need in most cases. Turning on those logs can create lots of useless records as they are triggered by the system.
 
@@ -282,6 +282,8 @@ This plugin requires Craft 3.7 or above.
 - Routes changes can't be tracked
 - Widgets changes can't be tracked
 - Each individual fields config isn't tracked
+- Tags aren't tracked, seems useless since there's no tag management utility in Craft
+- The system doesn't track every single config field (such as for fields for example), if you choose to ignore activity when no changes are done, activity won't be recorded even if changes are made to a field that isn't tracked.
 
 ## Roadmap
 

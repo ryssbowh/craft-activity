@@ -39,39 +39,6 @@
     <div class="tab-content" id="main">
         {{
             forms.lightswitchField({
-                label: 'Ignore activity for console requests'|t('activity'),
-                name: 'ignoreConsoleRequests',
-                on: settings.ignoreConsoleRequests,
-                fieldClass: 'first'
-            })
-        }}
-
-        {{
-            forms.lightswitchField({
-                label: 'Ignore activity for cp requests'|t('activity'),
-                name: 'ignoreCpRequests',
-                on: settings.ignoreCpRequests,
-            })
-        }}
-
-        {{
-            forms.lightswitchField({
-                label: 'Ignore activity for site requests'|t('activity'),
-                name: 'ignoreSiteRequests',
-                on: settings.ignoreSiteRequests,
-            })
-        }}
-
-        {{
-            forms.lightswitchField({
-                label: 'Ignore activity when Yaml changes are being applied'|t('activity'),
-                name: 'ignoreApplyingYaml',
-                on: settings.ignoreApplyingYaml,
-            })
-        }}
-
-        {{
-            forms.lightswitchField({
                 label: 'Deleting a user will delete all its activity'|t('activity'),
                 name: 'deleteLogsWithUser',
                 on: settings.deleteLogsWithUser
@@ -90,15 +57,41 @@
             })
         }}
 
-        <input type="hidden" name="ignoreTypes" value="">
-        {{
-            forms.checkboxSelectField({
-                label: 'Ignore the following activity:'|t('activity'),
-                name: 'ignoreTypes',
-                options: types,
-                values: settings.ignoreTypes
-            })
-        }}
+        <div class="field">
+            <div class="heading">
+                <label for="ignore-rules">{{ 'Ignore rules'|t('activity') }}</label>
+            </div>
+            {{ forms.editableTable({
+                rows: settings.ignoreRules,
+                name: 'ignoreRules',
+                id: 'ignore-rules',
+                cols: {
+                    type: {
+                        name: 'type',
+                        type: 'select',
+                        heading: 'Log type'|t('activity'),
+                        options: {'': 'All'|t('app')}|merge(types)
+                    },
+                    request: {
+                        name: 'request',
+                        type: 'select',
+                        heading: 'Request'|t('activity'),
+                        options: {
+                            '': 'All'|t('app'),
+                            cp: 'Control Panel'|t('activity'),
+                            site: 'Site'|t('activity'),
+                            console: 'Console'|t('activity'),
+                            yaml: 'Yaml config'|t('activity'),
+                        }
+                    },
+                    active: {
+                        name: 'active',
+                        type: 'lightswitch',
+                        heading: 'Active'|t('app')
+                    }
+                }
+            }) }}
+        </div>
     </div>
 
     <div class="tab-content hidden" id="elements">
