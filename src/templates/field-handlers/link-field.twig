@@ -10,7 +10,7 @@
             {% set elem = craft.assets.id(data.id).anyStatus().one() %}
         {% elseif data.type == 'category' %}
             {% set elem = craft.categories.id(data.id).anyStatus().one() %}
-        {% elseif data.type == 'product' and craft.app.plugins.getPlugin('commerce') %}
+        {% elseif data.type == 'product' and craft.app.plugins.isPluginEnabled('commerce') %}
             {% set elem = craft.products.id(data.id).anyStatus().one() %}
         {% endif %}
         {% if elem %}
