@@ -44,7 +44,9 @@ class Types extends Component
             ->all();
         $types = [];
         foreach ($query as $res) {
-            $types[$res['type']] = $this->getTypeClassByHandle($res['type']);
+            try {
+                $types[$res['type']] = $this->getTypeClassByHandle($res['type']);
+            } catch (ActivityTypeException $e) {}
         }
         return $types;
     }

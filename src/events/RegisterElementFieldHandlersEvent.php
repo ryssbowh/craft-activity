@@ -13,13 +13,11 @@ use Ryssbowh\Activity\models\fieldHandlers\elements\ListField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\ListsField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Matrix;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
-use Ryssbowh\Activity\models\fieldHandlers\elements\Products;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Redactor;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Seo;
 use Ryssbowh\Activity\models\fieldHandlers\elements\SuperTable;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Tags;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Users;
-use Ryssbowh\Activity\models\fieldHandlers\elements\Variants;
 use yii\base\Event;
 
 class RegisterElementFieldHandlersEvent extends Event
@@ -46,13 +44,11 @@ class RegisterElementFieldHandlersEvent extends Event
             ListsField::class,
             Matrix::class,
             Plain::class,
-            Products::class,
             Redactor::class,
             Seo::class,
             SuperTable::class,
             Tags::class,
-            Users::class,
-            Variants::class
+            Users::class
         ]);
     }
 
