@@ -10,6 +10,7 @@ use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use craft\base\Element;
 use craft\elements\Entry;
 use craft\services\Elements;
+use craft\services\Revisions;
 use craft\services\Sections;
 use yii\base\Event;
 
@@ -63,6 +64,17 @@ class Entries extends ElementsRecorder
         });
         Event::on(Entry::class, Entry::EVENT_AFTER_MOVE_IN_STRUCTURE, function ($event) {
             Activity::getRecorder('entries')->onMoved($event->sender);
+        });
+        Event::on(Revisions::class, Revisions::EVENT_BEFORE_REVERT_TO_REVISION, function (Event $event) {
+            if ($event->source instanceof Entry) {
+                Activity::getRecorder('entries')->beforeReverted($event->revision, $event->source);
+            }
+        });
+        Event::on(Revisions::class, Revisions::EVENT_AFTER_REVERT_TO_REVISION, function (Event $event) {
+            if ($event->source instanceof Entry) {
+                Activity::getRecorder('entries')->emptyQueue();
+                Activity::getRecorder('entries')->onReverted($event->source, $event->revisionNum);
+            }
         });
     }
 

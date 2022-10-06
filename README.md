@@ -6,7 +6,7 @@ All Craft fields tracking is supported, as well as [Redactor](https://plugins.cr
 
 A non exhaustive list of things this plugin can track :
 - Elements
-  - Entries (created, saved, deleted, restored, moved)
+  - Entries (created, saved, deleted, restored, moved, reverted to revision)
   - Assets (created, saved, deleted, restored)
   - Users (created, saved, deleted, restored)
   - Globals (saved)
@@ -62,6 +62,10 @@ Description of columns :
   - Yaml config : This request is for when someone applies yaml config, regardless of whether it's done through the control panel or console
 - Activity
 - Date
+
+## Users
+
+The latest activity will be displayed on each user edit page in the Control Panel.
 
 ## Settings
 
@@ -283,6 +287,10 @@ In this example an exception would be thrown as Matrix fields already have a han
 ## Requirements
 
 This plugin requires Craft 3.7 or above.
+
+## Documentation
+
+See the class reference [here](https://ryssbowh.github.io/docs/craft-activity1/namespaces/ryssbowh-activity.html)
 
 ## Known issues
 

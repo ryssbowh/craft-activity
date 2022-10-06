@@ -37,6 +37,17 @@ abstract class ElementsRecorder extends Recorder
     }
 
     /**
+     * Before an element is reverted to a revision, saves old field values
+     * 
+     * @param Element $revision
+     * @param Element $element
+     */
+    public function beforeReverted(Element $revision, Element $element)
+    {
+        $this->oldFields[$element->id] = $this->getFieldsValues($revision);
+    }
+
+    /**
      * Saves a log when an element is saved
      * 
      * @param Element $element
@@ -112,6 +123,33 @@ abstract class ElementsRecorder extends Recorder
                 'level' => $element->level
             ]
         ]);
+    }
+
+    /**
+     * Save a log when an element is reverted to a revision
+     * 
+     * @param  Element $element
+     * @param  int     $revisionNum
+     */
+    public function onReverted(Element $element, int $revisionNum)
+    {
+        $type = $this->getActivityHandle() . 'Reverted';
+        if (!$this->shouldSaveElementLog($type, $element)) {
+            return;
+        }
+        $params = [
+            'element' => $element,
+            'revisionNum' => $revisionNum
+        ];
+        if (Activity::$plugin->settings->trackElementFieldsChanges) {
+            $oldFields = $element->firstSave ? [] : $this->oldFields[$element->id] ?? [];
+            $changed = $this->getDirtyFields($this->getFieldsValues($element), $oldFields);
+            if (Activity::$plugin->settings->ignoreNoElementChanges and !$changed) {
+                return;
+            }
+            $params['changedFields'] = $changed;
+        }
+        $this->commitLog($type, $params);
     }
 
     /**

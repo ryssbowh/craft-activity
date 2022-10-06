@@ -47,10 +47,8 @@ abstract class ElementLog extends ActivityLog
         $this->target_uid = $element->uid;
         $this->target_class = get_class($element);
         $this->target_name = $element->{$this->titleField};
-        $this->data = [
-            'site_id' => $element->site->id,
-            'site_name' => $element->site->name
-        ];
+        $this->data['site_id'] = $element->site->id;
+        $this->data['site_name'] = $element->site->name;
     }
 
     /**
