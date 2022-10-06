@@ -82,41 +82,38 @@ class Seo extends ElementFieldHandler
     {
         $dirty = [];
         foreach (['title', 'description', 'keywords'] as $key) {
-            if ($oldValue[$key] !== $newValue[$key]) {
-                $dirty[$key] = [
-                    'f' => $oldValue[$key],
-                    't' => $newValue[$key]
-                ];
+            if ($rDirty = $this->getDirtyValue($key, $oldValue, $newValue)) {
+                $dirty[$key] = $rDirty;
             }
         }
         foreach (['facebook', 'twitter'] as $key) {
             foreach (['title', 'description'] as $key2) {
-                if ($oldValue[$key][$key2] !== $newValue[$key][$key2]) {
-                    $dirty[$key][$key2] = [
-                        'f' => $oldValue[$key][$key2],
-                        't' => $newValue[$key][$key2]
-                    ];
+                if ($rDirty = $this->getDirtyValue($key2, $oldValue[$key] ?? [], $newValue[$key] ?? [])) {
+                    $dirty[$key][$key2] = $rDirty;
                 }
             }
-            if ($oldValue[$key]['image']['id'] !== $newValue[$key]['image']['id']) {
-                $iDirty = [];
-                if ($oldValue[$key]['image']['id']) {
-                    $iDirty['f'] = $oldValue[$key]['image']['id'];
-                    $iDirty['ff'] = $oldValue[$key]['image']['id'];
-                }
-                if ($newValue[$key]['image']['id']) {
-                    $iDirty['t'] = $newValue[$key]['image']['id'];
-                    $iDirty['tf'] = $newValue[$key]['image']['id'];
-                }
-                $dirty[$key]['image'] = $iDirty;
+            if (!array_key_exists('id', $oldValue[$key]['image'] ?? [])) {
+                $dirty[$key]['image'] = [
+                    't' => $newValue[$key]['image']['id'],
+                    'tf' => $newValue[$key]['image']['title']
+                ];
+            } else if (!array_key_exists('id', $newValue[$key]['image'] ?? [])) {
+                $dirty[$key]['image'] = [
+                    'f' => $oldValue[$key]['image']['id'],
+                    'ff' => $oldValue[$key]['title']
+                ];
+            } else if ($oldValue[$key]['image']['id'] !== $newValue[$key]['image']['id']) {
+                $dirty[$key]['image'] = [
+                    'f' => $oldValue[$key]['image']['id'],
+                    'ff' => $oldValue[$key]['image']['title'],
+                    't' => $newValue[$key]['image']['id'],
+                    'tf' => $newValue[$key]['image']['title']
+                ];
             }
         }
         foreach (['canonical', 'noindex', 'nofollow', 'noarchive', 'nosnippet', 'notranslate', 'noimageindex'] as $key) {
-            if ($oldValue['advanced'][$key] !== $newValue['advanced'][$key]) {
-                $dirty['advanced'][$key] = [
-                    'f' => $oldValue['advanced'][$key],
-                    't' => $newValue['advanced'][$key]
-                ];
+            if ($rDirty = $this->getDirtyValue($key, $oldValue['advanced'] ?? [], $newValue['advanced'] ?? [])) {
+                $dirty['advanced'][$key] = $rDirty;
             }
         }
         if ($dirty) {
@@ -174,5 +171,24 @@ class Seo extends ElementFieldHandler
                 'description' => (string)$this->rawValue->social['facebook']->description
             ]
         ];
+    }
+
+    protected function getDirtyValue(string $key, array $oldValue, array $newValue): ?array
+    {
+        if (!array_key_exists($key, $oldValue)) {
+            return [
+                't' => $newValue[$key]
+            ];
+        } else if (!array_key_exists($key, $newValue)) {
+            return [
+                'f' => $oldValue[$key]
+            ];
+        } else if ($oldValue[$key] !== $newValue[$key]) {
+            return [
+                'f' => $oldValue[$key],
+                't' => $newValue[$key]
+            ];
+        }
+        return null;
     }
 }

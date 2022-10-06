@@ -127,12 +127,14 @@
         {% for key in ['noindex', 'nofollow', 'noarchive', 'nosnippet', 'notranslate', 'noimageindex'] %}
             {% set value = field.data.advanced[key] ?? false %}
             {% if value %}
+                {% set hasFrom = 'f' in value|keys %}
+                {% set hasTo = 't' in value|keys %}
                 <li>
-                    {% if value.t is same as(true) and value.f is same as(false) %}
+                    {% if hasTo and value.t is same as(true) %}
                         {{ '{field} was checked'|t('activity', {
                             field: key|t('activity'),
                         })|raw }}
-                    {% else %}
+                    {% elseif hasTo and value.t is same as(false) %}
                         {{ '{field} was unchecked'|t('activity', {
                             field: key|t('activity'),
                         })|raw }}

@@ -81,14 +81,38 @@ class LinkField extends ElementFieldHandler
     {
         $dirty = [];
         foreach (['ariaLabel', 'customText', 'newWindow', 'title'] as $key) {
-            if ($oldValue[$key] !== $newValue[$key]) {
+            if (!array_key_exists($key, $oldValue)) {
+                $dirty[$key] = [
+                    't' => $newValue[$key]
+                ];
+            } else if (!array_key_exists($key, $newValue)) {
+                $dirty[$key] = [
+                    'f' => $oldValue[$key]
+                ];
+            } else if ($oldValue[$key] !== $newValue[$key]) {
                 $dirty[$key] = [
                     'f' => $oldValue[$key],
                     't' => $newValue[$key]
                 ];
             }
         }
-        if ($newValue['value']['id'] != $oldValue['value']['id'] or $newValue['value']['type'] != $oldValue['value']['type']) {
+        if (!array_key_exists('value', $oldValue)) {
+            $dirty['value'] = [
+                't' => [
+                    'id' => $newValue['value']['id'],
+                    'title' => $newValue['value']['title'],
+                    'type' => $newValue['value']['type']
+                ]
+            ];
+        } else if (!array_key_exists('value', $newValue)) {
+            $dirty['value'] = [
+                'f' => [
+                    'id' => $oldValue['value']['id'],
+                    'title' => $oldValue['value']['title'],
+                    'type' => $oldValue['value']['type']
+                ]
+            ];
+        } else if ($newValue['value']['id'] != $oldValue['value']['id'] or $newValue['value']['type'] != $oldValue['value']['type']) {
             $dirty['value'] = [
                 'f' => [
                     'id' => $oldValue['value']['id'],
