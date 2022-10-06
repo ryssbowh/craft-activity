@@ -30,6 +30,7 @@ use Ryssbowh\Activity\models\logs\entries\EntryCreated;
 use Ryssbowh\Activity\models\logs\entries\EntryDeleted;
 use Ryssbowh\Activity\models\logs\entries\EntryMoved;
 use Ryssbowh\Activity\models\logs\entries\EntryRestored;
+use Ryssbowh\Activity\models\logs\entries\EntryReverted;
 use Ryssbowh\Activity\models\logs\entries\EntrySaved;
 use Ryssbowh\Activity\models\logs\entries\EntryTypeCreated;
 use Ryssbowh\Activity\models\logs\entries\EntryTypeDeleted;
@@ -134,6 +135,7 @@ class RegisterTypesEvent extends Event
             new EntryTypeCreated,
             new EntryTypeSaved,
             new EntryTypeDeleted,
+            new EntryReverted,
             new EmailSent,
             new EmailFailed,
             new FieldCreated,

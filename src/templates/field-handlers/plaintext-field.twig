@@ -1,0 +1,39 @@
+{% import "activity/includes/macros" as macros %}
+
+{% macro textFromValue(field) %}
+    {% if field.data.f|length > 50 %}
+        <a href="#" class="js-view-field-value" data-id="{{ field.id }}" data-data="f">view</a>
+    {% else %}
+        {{ macros.elementFromValue(field.data) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro textToValue(field) %}
+    {% if field.data.t|length > 50 %}
+        <a href="#" class="js-view-field-value" data-id="{{ field.id }}" data-data="t">view</a>
+    {% else %}
+        {{ macros.elementToValue(field.data) }}
+    {% endif %}
+{% endmacro %}
+
+{% set hasFrom = 'f' in field.data|keys %}
+{% set hasTo = 't' in field.data|keys %}
+<li>
+    {% if hasFrom and hasTo %}
+        {{ "Field {field} was changed from {from} to {to}"|t('activity', {
+            field: field.data.name,
+            from: _self.textFromValue(field),
+            to: _self.textToValue(field),
+        })|raw }}
+    {% elseif hasTo %}
+        {{ "Field {field} was set to {to}"|t('activity', {
+            field: field.data.name,
+            to: _self.textToValue(field),
+        })|raw }}
+    {% elseif hasFrom %}
+        {{ "Field {field} value ({from}) was removed"|t('activity', {
+            field: field.data.name,
+            from: _self.textFromValue(field),
+        })|raw }}
+    {% endif %}
+</li>
