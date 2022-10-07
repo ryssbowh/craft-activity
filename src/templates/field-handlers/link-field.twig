@@ -19,7 +19,7 @@
         {% if data.type == 'site' %}
             {% set elem = craft.app.sites.getSiteById(data.id) %}
             {% if elem %}
-                {% set value = '<a href="' ~ cpUrl('sites/' ~ data.id) ~  '">' ~ elem.name ~ '</a>' %}
+                {% set value = '<a target="_blank" href="' ~ cpUrl('settings/sites/' ~ data.id) ~  '">' ~ elem.name ~ '</a>' %}
             {% endif %}
         {% elseif data.type == 'user' %}
             {% set elem = craft.users.id(data.id).anyStatus().one() %}
