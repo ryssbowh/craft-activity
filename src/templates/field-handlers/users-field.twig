@@ -5,12 +5,12 @@
     {% for index, id in ids %}
         {% set elem = craft.users.id(id).anyStatus().one() %}
         {% if elem %}
-            {% set value = value|merge([elem.friendlyName]) %}
+            {% set value = value|merge([macros.htmlElementValue(elem, 'friendlyName')]) %}
         {% else %}
             {% set value = value|merge([titles[index]]) %}
         {% endif %}
     {% endfor %}
-    <code>{{ value ? value|join(', ') : 'null' }}</code>
+    {{ value ? value|join(', ')|raw : 'null' }}</code>
 {% endmacro %}
 
 {% macro toValue(data) %}

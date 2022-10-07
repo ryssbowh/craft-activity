@@ -24,6 +24,17 @@
     {% endif %}
 {% endmacro %}
 
+{% macro htmlElementValue(element, title = 'title') %}
+    {% set html = '<a href="' ~ element.cpEditUrl ~'" target="_blank">' %}
+    {% if element.trashed %}
+        {% set html = html ~ '<span class="status trashed"></span>' ~ element[title] %}
+    {% else %}
+        {% set html = html ~ '<span class="status ' ~ element.status ~ '"></span>' ~ element[title] %}
+    {% endif %}
+    {% set html = html ~ '</a>' %}
+    {{ html|raw }}
+{% endmacro %}
+
 {% macro elementValue(value) %}
     {% if value is iterable %}
         {% set value = value|join(', ') %}

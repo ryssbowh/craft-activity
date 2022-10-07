@@ -1,7 +1,7 @@
 {% import "activity/includes/macros" as macros %}
 
 {% macro linkValue(data) %}
-    {% set value = data.id %}
+    {% set value = '<code>' ~ data.id ~ '</code>' %}
     {% if data.id %}
         {% set elem = false %}
         {% if data.type == 'entry' %}
@@ -14,21 +14,21 @@
             {% set elem = craft.products.id(data.id).anyStatus().one() %}
         {% endif %}
         {% if elem %}
-            {% set value = elem.title %}
+            {% set value = macros.htmlElementValue(elem) %}
         {% endif %}
         {% if data.type == 'site' %}
             {% set elem = craft.app.sites.getSiteById(data.id) %}
             {% if elem %}
-                {% set value = elem.name %}
+                {% set value = '<a href="' ~ cpUrl('sites/' ~ data.id) ~  '">' ~ elem.name ~ '</a>' %}
             {% endif %}
         {% elseif data.type == 'user' %}
             {% set elem = craft.users.id(data.id).anyStatus().one() %}
             {% if elem %}
-                {% set value = elem.friendlyName %}
+                {% set value = macros.htmlElementValue(elem, 'friendlyName') %}
             {% endif %}
         {% endif %}
     {% endif %}
-    <code>{{ value }}</code>
+    {{ value|raw }}
 {% endmacro %}
 
 <li>
