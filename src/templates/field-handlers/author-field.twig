@@ -1,0 +1,46 @@
+{% import "activity/includes/macros" as macros %}
+
+{% macro authorValue(id, name) %}
+    {% set user = craft.users.id(id).anyStatus().trashed(null).one() %}
+    {% if user %}
+        <a href="{{ user.cpEditUrl }}" target="_blank">
+            {% if user.trashed %}
+                <span class="status trashed"></span>{{ user.friendlyName }}
+            {% else %}
+                <span class="status {{ user.status }}"></span>{{ user.friendlyName }}
+            {% endif %}
+        </a>
+    {% else %}
+        {{ name }}
+    {% endif %}
+{% endmacro %}
+
+{% macro authorFromValue(field) %}
+    {{ _self.authorValue(field.data.f, field.data.ff) }}
+{% endmacro %}
+
+{% macro authorToValue(field) %}
+    {{ _self.authorValue(field.data.t, field.data.tf) }}
+{% endmacro %}
+
+{% set hasFrom = 'f' in field.data|keys %}
+{% set hasTo = 't' in field.data|keys %}
+<li>
+    {% if hasFrom and hasTo %}
+        {{ "Field {field} was changed from {from} to {to}"|t('activity', {
+            field: field.data.name,
+            from: _self.authorFromValue(field),
+            to: _self.authorToValue(field),
+        })|raw }}
+    {% elseif hasTo %}
+        {{ "Field {field} was set to {to}"|t('activity', {
+            field: field.data.name,
+            to: _self.authorToValue(field),
+        })|raw }}
+    {% elseif hasFrom %}
+        {{ "Field {field} value ({from}) was removed"|t('activity', {
+            field: field.data.name,
+            from: _self.authorFromValue(field),
+        })|raw }}
+    {% endif %}
+</li>

@@ -23,4 +23,12 @@ class Author extends ElementFieldHandler
     {
         return true;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getTemplate(): ?string
+    {
+        return 'activity/field-handlers/author-field';
+    }
 }
