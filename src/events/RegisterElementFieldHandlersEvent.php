@@ -17,6 +17,7 @@ use Ryssbowh\Activity\models\fieldHandlers\elements\PlainText;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Redactor;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Seo;
 use Ryssbowh\Activity\models\fieldHandlers\elements\SuperTable;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Table;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Tags;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Users;
 use yii\base\Event;
@@ -50,6 +51,7 @@ class RegisterElementFieldHandlersEvent extends Event
             Seo::class,
             SuperTable::class,
             Tags::class,
+            Table::class,
             Users::class
         ]);
     }

@@ -1,0 +1,40 @@
+{% import "activity/includes/macros" as macros %}
+
+<li>
+    {% if field.data.rows %}
+        {{ 'Field {field} was changed'|t('activity', {
+            field: field.data.name
+        }) }}
+        <ul>
+            {% for index, row in field.data.rows %}
+                {% if row.mode == 'changed' %}
+                    <li>{{ 'Row {row} was changed'|t('activity', {row: index + 1}) }}</li>
+                    <ul>
+                        {% for rfield in row.data ?? [] %}
+                            {{ macros.elementField(rfield) }}
+                        {% endfor %}
+                    </ul>
+                {% elseif row.mode == 'removed' %}
+                    <li>{{ 'Row {row} was removed'|t('activity', {row: index + 1}) }}</li>
+                    <ul>
+                        {% for rfield in row.data ?? [] %}
+                            {{ macros.elementField(rfield) }}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <li>{{ 'Row {row} was added'|t('activity', {row: index + 1}) }}</li>
+                    <ul>
+                        {% for rfield in row.data ?? [] %}
+                            {{ macros.elementField(rfield) }}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        {{ 'Field {field} was set to {value}'|t('activity', {
+            field: field.data.name,
+            value: '<code>null</code>'
+        })|raw }}
+    {% endif %}
+</li>
