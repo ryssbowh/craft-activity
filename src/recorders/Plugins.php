@@ -24,114 +24,163 @@ class Plugins extends Recorder
      */
     public function init()
     {
-        Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_INSTALL_PLUGIN, function ($event) {
-            Activity::getRecorder('plugins')->onInstalled($event->plugin);
+        \Craft::$app->projectConfig->onUpdate(CraftPlugins::CONFIG_PLUGINS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('plugins')->onChanged($event);
         });
-        Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_UNINSTALL_PLUGIN, function ($event) {
-            Activity::getRecorder('plugins')->onUninstalled($event->plugin);
+        \Craft::$app->projectConfig->onAdd(CraftPlugins::CONFIG_PLUGINS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('plugins')->onInstalled($event);
         });
-        Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_ENABLE_PLUGIN, function ($event) {
-            Activity::getRecorder('plugins')->onEnabled($event->plugin);
+        \Craft::$app->projectConfig->onRemove(CraftPlugins::CONFIG_PLUGINS_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('plugins')->onUninstalled($event);
         });
-        Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_DISABLE_PLUGIN, function ($event) {
-            Activity::getRecorder('plugins')->onDisabled($event->plugin);
-        });
-        Event::on(CraftPlugins::class, CraftPlugins::EVENT_BEFORE_SAVE_PLUGIN_SETTINGS, function ($event) {
-            Activity::getRecorder('plugins')->beforeSettingsSaved($event->plugin);
-        });
-        Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_SAVE_PLUGIN_SETTINGS, function ($event) {
-            Activity::getRecorder('plugins')->onSettingsSaved($event->plugin);
-        });
+        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_INSTALL_PLUGIN, function ($event) {
+        //     Activity::getRecorder('plugins')->onInstalled($event->plugin);
+        // });
+        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_UNINSTALL_PLUGIN, function ($event) {
+        //     Activity::getRecorder('plugins')->onUninstalled($event->plugin);
+        // });
+        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_ENABLE_PLUGIN, function ($event) {
+        //     Activity::getRecorder('plugins')->onEnabled($event->plugin);
+        // });
+        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_DISABLE_PLUGIN, function ($event) {
+        //     Activity::getRecorder('plugins')->onDisabled($event->plugin);
+        // });
+        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_BEFORE_SAVE_PLUGIN_SETTINGS, function ($event) {
+        //     Activity::getRecorder('plugins')->beforeSettingsSaved($event->plugin);
+        // });
+        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_SAVE_PLUGIN_SETTINGS, function ($event) {
+        //     Activity::getRecorder('plugins')->onSettingsSaved($event->plugin);
+        // });
+    }
+
+    public function onChanged(Event $event)
+    {
+        $handle = $event->tokenMatches[0];
+        $dirtySettings = $this->getDirtyConfig(CraftPlugins::CONFIG_PLUGINS_KEY . '.' . $handle . '.settings', $event->newValue['settings'] ?? [], $event->oldValue['settings'] ?? []);
+        if ($dirtySettings) {
+            $this->onSettingsChanged($handle, $dirtySettings);
+        }
+        if ($event->oldValue['enabled'] and !$event->newValue['enabled']) {
+            $this->onDisabled($handle);
+        }
+        if (!$event->oldValue['enabled'] and $event->newValue['enabled']) {
+            $this->onEnabled($handle);
+        }
+        if ($event->oldValue['edition'] != $event->newValue['edition']) {
+            $this->onEditionChanged($handle, $event->newValue['edition'], $event->oldValue['edition']);
+        }
     }
 
     /**
      * Save a log when a plugin is installed
      * 
-     * @param Plugin $plugin
+     * @param Event $event
      */
-    public function onInstalled(Plugin $plugin)
+    public function onInstalled(Event $event)
     {
+        $handle = $event->tokenMatches[0];
         if (!$this->shouldSaveLog('pluginInstalled')) {
             return;
         }
+        $info = \Craft::$app->plugins->getPluginInfo($handle);
         $this->commitLog('pluginInstalled', [
-            'plugin' => $plugin
+            'target_class' => $handle,
+            'target_name' => $info['name']
         ]);
     }
 
     /**
      * Save a log when a plugin is uninstalled
      * 
-     * @param Plugin $plugin
+     * @param Event $event
      */
-    public function onUninstalled(Plugin $plugin)
+    public function onUninstalled(Event $event)
     {
-        if ($plugin->handle == 'activity' or !$this->shouldSaveLog('pluginUninstalled')) {
+        $handle = $event->tokenMatches[0];
+        if ($handle == 'activity' or !$this->shouldSaveLog('pluginUninstalled')) {
             return;
         }
+        $info = \Craft::$app->plugins->getPluginInfo($handle);
         $this->commitLog('pluginUninstalled', [
-            'plugin' => $plugin
+            'target_class' => $handle,
+            'target_name' => $info['name']
         ]);
     }
 
     /**
      * Save a log when a plugin is enabled
-     * 
-     * @param Plugin $plugin
+     *
+     * @param string $handle
      */
-    public function onEnabled(Plugin $plugin)
+    public function onEnabled(string $handle)
     {
         if (!$this->shouldSaveLog('pluginEnabled')) {
             return;
         }
+        $info = \Craft::$app->plugins->getPluginInfo($handle);
         $this->commitLog('pluginEnabled', [
-            'plugin' => $plugin
+            'target_class' => $handle,
+            'target_name' => $info['name']
         ]);
     }
 
     /**
      * Save a log when a plugin is disabled
      * 
-     * @param Plugin $plugin
+     * @param string $handle
      */
-    public function onDisabled(Plugin $plugin)
+    public function onDisabled(string $handle)
     {
         if (!$this->shouldSaveLog('pluginDisabled')) {
             return;
         }
+        $info = \Craft::$app->plugins->getPluginInfo($handle);
         $this->commitLog('pluginDisabled', [
-            'plugin' => $plugin
+            'target_class' => $handle,
+            'target_name' => $info['name']
+        ]);
+    }
+
+    /**
+     * Save a log when a plugin edition is changed
+     * 
+     * @param string $handle
+     * @param string $oldEdition
+     * @param string $newEdition
+     */
+    public function onEditionChanged(string $handle, string $newEdition, string $oldEdition)
+    {
+        if (!$this->shouldSaveLog('pluginEditionChanged')) {
+            return;
+        }
+        $info = \Craft::$app->plugins->getPluginInfo($handle);
+        $this->commitLog('pluginEditionChanged', [
+            'target_class' => $handle,
+            'target_name' => $info['name'],
+            'data' => [
+                'old' => $oldEdition,
+                'new' => $newEdition
+            ]
         ]);
     }
 
     /**
      * Save a log when a plugin settings are saved
      * 
-     * @param Plugin $plugin
+     * @param string $handle
+     * @param array  $dirty
      */
-    public function onSettingsSaved(Plugin $plugin)
+    public function onSettingsChanged(string $handle, array $dirty)
     {
         if (!$this->shouldSaveLog('pluginSettingsChanged')) {
             return;
         }
-        $settings = \Craft::$app->projectConfig->get(CraftPlugins::CONFIG_PLUGINS_KEY . '.' . $plugin->handle . '.settings');
+        $info = \Craft::$app->plugins->getPluginInfo($handle);
         $this->commitLog('pluginSettingsChanged', [
-            'plugin' => $plugin,
-            'changedFields' => $this->getDirtyConfig(CraftPlugins::CONFIG_PLUGINS_KEY . '.' . $plugin->handle . '.settings', $settings, $this->settings[$plugin->handle] ?? [])
+            'target_class' => $handle,
+            'target_name' => $info['name'],
+            'changedFields' => $dirty
         ]);
-    }
-
-    /**
-     * Save a old plugin settings before they're saved
-     * 
-     * @param Plugin $plugin
-     */
-    public function beforeSettingsSaved(Plugin $plugin)
-    {
-        if (!$this->shouldSaveLog('pluginSettingsChanged')) {
-            return;
-        }
-        $this->settings[$plugin->handle] = \Craft::$app->projectConfig->get(CraftPlugins::CONFIG_PLUGINS_KEY . '.' . $plugin->handle . '.settings');
     }
 
     /**
@@ -140,5 +189,23 @@ class Plugins extends Recorder
     protected function getTrackedFieldNames()
     {
         return '*';
+    }
+
+    /**
+     * Populate the latest logs created properly with the plugin instance. 
+     * When the plugin was installed/enabled, the plugin instance couldn't be retrieved
+     * 
+     * @param string $handle
+     */
+    protected function populateLatestLogs(string $handle)
+    {
+        Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_INSTALL_PLUGIN, function ($event) use ($handle) {
+            $plugin = \Craft::$app->plugins->getPlugin($handle);
+            foreach (Activity::getRecorder('plugins')->queue as $log) {
+                if ($log->target_class == $handle) {
+                    $log->plugin = $plugin;
+                }
+            }
+        });
     }
 }

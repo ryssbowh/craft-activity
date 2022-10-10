@@ -22,18 +22,6 @@ abstract class PluginLog extends SettingsLog
     }
 
     /**
-     * Plugin setter
-     * 
-     * @param Plugin $plugin
-     */
-    public function setPlugin(Plugin $plugin)
-    {
-        $this->_plugin = $plugin;
-        $this->target_class = $plugin->handle;
-        $this->target_name = $plugin->name;
-    }
-
-    /**
      * Get the plugin name
      * 
      * @return string

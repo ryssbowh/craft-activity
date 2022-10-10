@@ -28,6 +28,7 @@ abstract class Recorder extends Component
         foreach ($this->logQueue as $log) {
             $log->save();
         }
+        $this->emptyQueue();
     }
 
     /**
@@ -38,7 +39,7 @@ abstract class Recorder extends Component
      * @param  bool $saveNow
      * @return bool
      */
-    protected function commitLog(string $type, array $params, bool $saveNow = false): bool
+    protected function commitLog(string $type, array $params = [], bool $saveNow = false): bool
     {
         try {
             $class = Activity::$plugin->types->getTypeClassByHandle($type);
