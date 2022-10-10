@@ -3,59 +3,41 @@
 namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\base\recorders\Recorder;
+use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\services\Routes as CraftRoutes;
 use yii\base\Event;
 
-class Routes extends Recorder
+class Routes extends ConfigModelRecorder
 {
     /**
      * @inheritDoc
      */
     public function init()
     {
-        Event::on(CraftRoutes::class, CraftRoutes::EVENT_AFTER_SAVE_ROUTE, function ($event) {
-            Activity::getRecorder('routes')->onSaved($event->uriParts, $event->template, $event->siteUid);
+        \Craft::$app->projectConfig->onAdd(CraftRoutes::CONFIG_ROUTES_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('routes')->onAdd($event);
         });
-        Event::on(CraftRoutes::class, CraftRoutes::EVENT_AFTER_DELETE_ROUTE, function ($event) {
-            Activity::getRecorder('routes')->onDeleted();
+        \Craft::$app->projectConfig->onUpdate(CraftRoutes::CONFIG_ROUTES_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('routes')->onUpdate($event);
         });
-    }
-        
-    /**
-     * Save a log when a route is saved
-     * 
-     * @param array  $uriParts
-     * @param string $template
-     * @param string $siteUid
-     */
-    public function onSaved(array $uriParts, string $template, ?string $siteUid)
-    {
-        if (!$this->shouldSaveLog('routeSaved')) {
-            return;
-        }
-        $site = null;
-        if ($siteUid) {
-            $site = \Craft::$app->sites->getSiteByUid($siteUid);
-        }
-        $this->commitLog('routeSaved', [
-            'changedFields' => [[
-                'uriParts' => $uriParts,
-                'template' => $template,
-                'siteUid' => $siteUid,
-                'siteName' => $site ? $site->name : \Craft::t('app', 'Global')
-            ]]
-        ]);
+        \Craft::$app->projectConfig->onRemove(CraftRoutes::CONFIG_ROUTES_KEY . '.{uid}', function (Event $event) {
+            Activity::getRecorder('routes')->onRemove($event);
+        });
     }
 
     /**
-     * Save a log when a route is deleted
+     * @inheritDoc
      */
-    public function onDeleted()
+    protected function getActivityHandle(): string
     {
-        if (!$this->shouldSaveLog('routeDeleted')) {
-            return;
-        }
-        $this->commitLog('routeDeleted', []);
+        return 'route';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getTrackedFieldNames(): array
+    {
+        return ['siteUid', 'uriParts', 'template'];
     }
 }

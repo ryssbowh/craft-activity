@@ -11,10 +11,12 @@ use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Permissions;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\PreviewTargets;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\SectionPropagationMethod;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\SectionType;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Site;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\SiteGroup;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\SiteSettings;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\TitleTranslationMethod;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\TransportType;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\UriParts;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\UserGroup;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Volume;
 use yii\base\Event;
@@ -38,6 +40,8 @@ class RegisterProjectConfigfieldHandlersEvent extends Event
             UserGroup::class,
             PreviewTargets::class,
             SiteSettings::class,
+            Site::class,
+            UriParts::class,
             SectionType::class,
             FieldLayout::class,
             SectionPropagationMethod::class,

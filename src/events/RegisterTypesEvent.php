@@ -50,10 +50,12 @@ use Ryssbowh\Activity\models\logs\globals\GlobalSetCreated;
 use Ryssbowh\Activity\models\logs\globals\GlobalSetDeleted;
 use Ryssbowh\Activity\models\logs\globals\GlobalSetSaved;
 use Ryssbowh\Activity\models\logs\plugins\PluginDisabled;
+use Ryssbowh\Activity\models\logs\plugins\PluginEditionChanged;
 use Ryssbowh\Activity\models\logs\plugins\PluginEnabled;
 use Ryssbowh\Activity\models\logs\plugins\PluginInstalled;
 use Ryssbowh\Activity\models\logs\plugins\PluginSettingsChanged;
 use Ryssbowh\Activity\models\logs\plugins\PluginUninstalled;
+use Ryssbowh\Activity\models\logs\routes\RouteCreated;
 use Ryssbowh\Activity\models\logs\routes\RouteDeleted;
 use Ryssbowh\Activity\models\logs\routes\RouteSaved;
 use Ryssbowh\Activity\models\logs\settings\AssetSettingsChanged;
@@ -155,8 +157,10 @@ class RegisterTypesEvent extends Event
             new PluginInstalled,
             new PluginUninstalled,
             new PluginSettingsChanged,
+            new PluginEditionChanged,
             new RouteSaved,
             new RouteDeleted,
+            new RouteCreated,
             new SectionDeleted,
             new SectionCreated,
             new SectionSaved,
