@@ -1,0 +1,21 @@
+dateModified: 1634885634
+email:
+  fromEmail: test@test.com
+  fromName: Craft
+  replyToEmail: test@test.com
+  template: ''
+  transportSettings:
+    encryptionMethod: $EMAIL_ENCRYPTION
+    host: $EMAIL_HOST
+    password: $EMAIL_PASSWORD
+    port: $EMAIL_PORT
+    timeout: '10'
+    useAuthentication: $EMAIL_AUTHENTICATION
+    username: $EMAIL_USERNAME
+  transportType: craft\mail\transportadapters\Smtp
+system:
+  edition: pro
+  live: true
+  name: Craft
+  schemaVersion: 3.7.33
+  timeZone: Europe/London

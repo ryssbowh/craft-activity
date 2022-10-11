@@ -19,6 +19,15 @@
     "require": {
         "craftcms/cms": "^3.7"
     },
+    "require-dev": {
+        "codeception/codeception": "^4.0",
+        "codeception/module-asserts": "^1.0.0",
+        "codeception/module-phpbrowser": "^1.0.0",
+        "codeception/module-yii2": "^1.0.0",
+        "codeception/stub": "^3.0",
+        "vlucas/phpdotenv": "^3.0",
+        "symfony/var-dumper": "^5.3"
+    },
     "autoload": {
         "psr-4": {
             "Ryssbowh\\Activity\\": "src/"
@@ -31,5 +40,11 @@
         "developerUrl": "https://github.com/ryssbowh",
         "documentationUrl": "https://github.com/ryssbowh/craft-activity",
         "class": "Ryssbowh\\Activity\\Activity"
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        }
     }
 }

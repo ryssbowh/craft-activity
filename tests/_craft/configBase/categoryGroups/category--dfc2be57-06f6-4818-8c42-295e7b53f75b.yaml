@@ -1,0 +1,40 @@
+fieldLayouts:
+  f7a77773-3bad-4b7b-89ab-9f5e032330a4:
+    tabs:
+      -
+        elements:
+          -
+            autocapitalize: true
+            autocomplete: false
+            autocorrect: true
+            class: null
+            disabled: false
+            id: null
+            instructions: null
+            label: null
+            max: null
+            min: null
+            name: null
+            orientation: null
+            placeholder: null
+            readonly: false
+            requirable: false
+            size: null
+            step: null
+            tip: null
+            title: null
+            type: craft\fieldlayoutelements\TitleField
+            warning: null
+            width: 100
+        name: Content
+        sortOrder: 1
+handle: category
+name: Category
+siteSettings:
+  add58190-e8f2-483f-8f55-6be4dc9e80e7:
+    hasUrls: true
+    template: null
+    uriFormat: 'category/{slug}'
+structure:
+  maxLevels: null
+  uid: 076ae321-2923-4ae8-99a8-ec56576ce636

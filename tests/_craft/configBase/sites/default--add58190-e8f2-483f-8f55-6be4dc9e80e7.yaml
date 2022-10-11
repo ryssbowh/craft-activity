@@ -1,0 +1,9 @@
+baseUrl: $PRIMARY_SITE_URL
+enabled: true
+handle: default
+hasUrls: true
+language: en-GB
+name: Craft37
+primary: true
+siteGroup: 0e6d88ae-42c5-4c3f-9e0e-65d93b893273
+sortOrder: 1
