@@ -60,8 +60,6 @@ class Settings extends Model
      * @var array
      */
     public $ignoreRules = [
-        ['type' => 'routeDeleted', 'active' => 1, 'request' => ''],
-        ['type' => 'routeSaved', 'active' => 1, 'request' => ''],
         ['type' => 'entryMoved', 'active' => 1, 'request' => ''],
         ['type' => 'categoryMoved', 'active' => 1, 'request' => '']
     ];
