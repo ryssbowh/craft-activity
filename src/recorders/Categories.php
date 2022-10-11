@@ -7,9 +7,7 @@ use Ryssbowh\Activity\base\recorders\ElementsRecorder;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use craft\base\Element;
 use craft\elements\Category;
-use craft\services\Categories as CraftCategories;
 use craft\services\Elements;
-use craft\services\Sites;
 use yii\base\Event;
 
 class Categories extends ElementsRecorder

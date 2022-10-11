@@ -71,7 +71,7 @@ The latest activity will be displayed on each user edit page in the Control Pane
 
 This plugin has some extensive settings to control the activity you want recorded. A rule system allows you to ignore some activity based on its type and the type of request (cp, console, site, yaml config)
 
-By default the routes logs are ignored (because we can't track their changes), and the "update slugs and uris", "elements are propagated" and "elements are resaved" logs are ignored which should be what you need in most cases. Turning on those logs can create lots of useless records as they are triggered by the system.
+By default the "update slugs and uris", "elements are propagated" and "elements are resaved" logs are ignored which should be what you need in most cases. Turning on those logs can create lots of useless records as they are triggered by the system.
 
 Logs can be deleted when they become too old, and be deleted along with the user that created them.
 
@@ -296,7 +296,6 @@ See the class reference [here](https://ryssbowh.github.io/docs/craft-activity1/n
 
 - Drafts aren't managed at the moment as provisional drafts cannot be ignored which creates lots of useless logs. May implement this in the future.
 - Hard delete events can't be ignored
-- Routes changes can't be tracked
 - Widgets changes can't be tracked
 - Each individual fields config isn't tracked
 - Tags aren't tracked, seems useless since there's no tag management utility in Craft

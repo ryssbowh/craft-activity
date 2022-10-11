@@ -144,7 +144,7 @@ class FieldLayout extends DefaultHandler
         $fieldLayout = ProjectConfig::unpackAssociativeArrays($fieldLayout);
         $values = [];
         $fieldLayout = reset($fieldLayout);
-        foreach ($fieldLayout['tabs'] as $tab) {
+        foreach ($fieldLayout['tabs'] ?? [] as $tab) {
             foreach ($tab['elements'] as $element) {
                 if ($element['type'] == CustomField::class) {
                     $field = \Craft::$app->fields->getFieldByUid($element['fieldUid']);

@@ -6,6 +6,9 @@ use craft\base\Plugin;
 
 abstract class PluginLog extends SettingsLog
 {
+    /**
+     * @var Plugin
+     */
     protected $_plugin;
 
     /**

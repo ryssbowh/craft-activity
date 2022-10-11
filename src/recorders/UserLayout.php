@@ -28,8 +28,8 @@ class UserLayout extends ConfigModelRecorder
 
     public function onUpdate(ConfigEvent $event)
     {
-        $event->oldValue = ['fieldLayouts' => $event->oldValue];
-        $event->newValue = ['fieldLayouts' => $event->newValue];
+        $event->oldValue = ['fieldLayouts' => $event->oldValue ?? []];
+        $event->newValue = ['fieldLayouts' => $event->newValue ?? []];
         $event->path = Users::CONFIG_USERS_KEY;
         parent::onUpdate($event);
     }

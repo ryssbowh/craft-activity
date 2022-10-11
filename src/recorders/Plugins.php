@@ -33,24 +33,6 @@ class Plugins extends Recorder
         \Craft::$app->projectConfig->onRemove(CraftPlugins::CONFIG_PLUGINS_KEY . '.{uid}', function (Event $event) {
             Activity::getRecorder('plugins')->onUninstalled($event);
         });
-        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_INSTALL_PLUGIN, function ($event) {
-        //     Activity::getRecorder('plugins')->onInstalled($event->plugin);
-        // });
-        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_UNINSTALL_PLUGIN, function ($event) {
-        //     Activity::getRecorder('plugins')->onUninstalled($event->plugin);
-        // });
-        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_ENABLE_PLUGIN, function ($event) {
-        //     Activity::getRecorder('plugins')->onEnabled($event->plugin);
-        // });
-        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_DISABLE_PLUGIN, function ($event) {
-        //     Activity::getRecorder('plugins')->onDisabled($event->plugin);
-        // });
-        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_BEFORE_SAVE_PLUGIN_SETTINGS, function ($event) {
-        //     Activity::getRecorder('plugins')->beforeSettingsSaved($event->plugin);
-        // });
-        // Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_SAVE_PLUGIN_SETTINGS, function ($event) {
-        //     Activity::getRecorder('plugins')->onSettingsSaved($event->plugin);
-        // });
     }
 
     public function onChanged(Event $event)
@@ -189,23 +171,5 @@ class Plugins extends Recorder
     protected function getTrackedFieldNames()
     {
         return '*';
-    }
-
-    /**
-     * Populate the latest logs created properly with the plugin instance. 
-     * When the plugin was installed/enabled, the plugin instance couldn't be retrieved
-     * 
-     * @param string $handle
-     */
-    protected function populateLatestLogs(string $handle)
-    {
-        Event::on(CraftPlugins::class, CraftPlugins::EVENT_AFTER_INSTALL_PLUGIN, function ($event) use ($handle) {
-            $plugin = \Craft::$app->plugins->getPlugin($handle);
-            foreach (Activity::getRecorder('plugins')->queue as $log) {
-                if ($log->target_class == $handle) {
-                    $log->plugin = $plugin;
-                }
-            }
-        });
     }
 }

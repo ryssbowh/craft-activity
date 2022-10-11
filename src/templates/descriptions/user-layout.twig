@@ -1,5 +1,7 @@
 {% if log.changedFields %}
-    {% include "activity/includes/dirty-field-layout" with {
-        field: log.changedFields.0
-    } %}
+    <ul>
+        {% include "activity/field-handlers/field-layout" with {
+            field: log.changedFields.0
+        } %}
+    </ul>
 {% endif %}
