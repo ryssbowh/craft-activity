@@ -42,6 +42,8 @@ A non exhaustive list of things this plugin can track :
 
 User activity and the fields changed will remain viewable even when the object recorded for no longer exists.
 
+**This plugin will not work if you've opt out of [Project Config](https://craftcms.com/docs/3.x/project-config.html) on which it's based**
+
 ## Installation
 
 Install through plugin store or with composer : `composer require rysbowh/craft-activity:^0.1`

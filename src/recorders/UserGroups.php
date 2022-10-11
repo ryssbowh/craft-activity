@@ -52,6 +52,7 @@ class UserGroups extends ConfigModelRecorder
                 $path = explode('.', $this->triggered->path);
                 $this->triggered->tokenMatches = [$path[2]];
                 $this->triggered->newValue['permissions'] = $event->newValue[$path[2]]['permissions'];
+                $this->emptyQueue();
                 if ($this->mode == 'add') {
                     parent::onAdd($this->triggered);
                 } else {
@@ -77,6 +78,8 @@ class UserGroups extends ConfigModelRecorder
         } else {
             $uid = $event->tokenMatches[0];
             $event->newValue['permissions'] = $this->triggered->newValue[$uid]['permissions'];
+        }
+        if (!$this->queue) {
             parent::onUpdate($event);
         }
     }
@@ -90,6 +93,8 @@ class UserGroups extends ConfigModelRecorder
             $uid = $event->tokenMatches[0];
             $event->newValue['permissions'] = $this->triggered->newValue[$uid]['permissions'];
             $this->added = true;
+        }
+        if (!$this->queue) {
             parent::onAdd($event);
         }
     }
