@@ -16,7 +16,7 @@ class Date extends ElementFieldHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->format = $this->format ?? 'Y-m-d H:i:s';

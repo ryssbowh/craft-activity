@@ -11,7 +11,7 @@ class EmailSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate('email', function(Event $event) {
             Activity::getRecorder('emailSettings')->onChanged('email', 'emailSettingsChanged', $event->oldValue, $event->newValue);

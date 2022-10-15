@@ -2,14 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\Sites;
+use craft\services\ProjectConfig;
 
 class SiteGroup extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $this->fancyValue = $this->getGroupName($this->value);
     }
@@ -28,7 +28,7 @@ class SiteGroup extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Sites::CONFIG_SITES_KEY . '.{uid}.siteGroup'
+            ProjectConfig::PATH_SITES . '.{uid}.siteGroup'
         ];
     }
 

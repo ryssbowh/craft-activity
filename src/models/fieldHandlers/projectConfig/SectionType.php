@@ -2,14 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\Sections;
+use craft\services\ProjectConfig;
 
 class SectionType extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->fancyValue = $this->getTypes()[$this->value] ?? $this->value;
@@ -21,7 +21,7 @@ class SectionType extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Sections::CONFIG_SECTIONS_KEY . '.{uid}.type'
+            ProjectConfig::PATH_SECTIONS . '.{uid}.type'
         ];
     }
 

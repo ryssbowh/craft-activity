@@ -10,6 +10,7 @@ use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use craft\base\Element;
 use craft\elements\Entry;
 use craft\services\Elements;
+use craft\services\ProjectConfig;
 use craft\services\Revisions;
 use craft\services\Sections;
 use yii\base\Event;
@@ -19,7 +20,7 @@ class Entries extends ElementsRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         if (Activity::$plugin->settings->ignoreResave) {
             Event::on(Elements::class, Elements::EVENT_BEFORE_RESAVE_ELEMENT, function (Event $event) {
@@ -37,10 +38,10 @@ class Entries extends ElementsRecorder
             });
         }
         //------------Do not record entry changes when sections/entry types are being created/removed
-        \Craft::$app->projectConfig->onAdd(Sections::CONFIG_SECTIONS_KEY. '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_SECTIONS. '.{uid}', function (Event $event) {
             Activity::getRecorder('entries')->stopRecording();
         });
-        \Craft::$app->projectConfig->onUpdate(Sections::CONFIG_SECTIONS_KEY. '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_SECTIONS. '.{uid}', function (Event $event) {
             Activity::getRecorder('entries')->stopRecording();
         });
         Event::on(Sections::class, Sections::EVENT_BEFORE_APPLY_ENTRY_TYPE_DELETE, function (Event $event) {
@@ -66,14 +67,14 @@ class Entries extends ElementsRecorder
             Activity::getRecorder('entries')->onMoved($event->sender);
         });
         Event::on(Revisions::class, Revisions::EVENT_BEFORE_REVERT_TO_REVISION, function (Event $event) {
-            if ($event->source instanceof Entry) {
-                Activity::getRecorder('entries')->beforeReverted($event->revision, $event->source);
+            if ($event->canonical instanceof Entry) {
+                Activity::getRecorder('entries')->beforeReverted($event->revision, $event->canonical);
             }
         });
         Event::on(Revisions::class, Revisions::EVENT_AFTER_REVERT_TO_REVISION, function (Event $event) {
-            if ($event->source instanceof Entry) {
+            if ($event->canonical instanceof Entry) {
                 Activity::getRecorder('entries')->emptyQueue();
-                Activity::getRecorder('entries')->onReverted($event->source, $event->revisionNum);
+                Activity::getRecorder('entries')->onReverted($event->canonical, $event->revisionNum);
             }
         });
     }

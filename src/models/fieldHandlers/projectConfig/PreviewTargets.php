@@ -4,8 +4,8 @@ namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use craft\helpers\Json;
-use craft\helpers\ProjectConfig;
-use craft\services\Sections;
+use craft\helpers\ProjectConfig as ProjectConfigHelper;
+use craft\services\ProjectConfig;
 
 class PreviewTargets extends DefaultHandler
 {
@@ -17,7 +17,7 @@ class PreviewTargets extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->value = $this->buildValues($this->value);
@@ -29,7 +29,7 @@ class PreviewTargets extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Sections::CONFIG_SECTIONS_KEY . '.{uid}.previewTargets'
+            ProjectConfig::PATH_SECTIONS . '.{uid}.previewTargets'
         ];
     }
 
@@ -79,7 +79,7 @@ class PreviewTargets extends DefaultHandler
      */
     protected function buildValues(array $targets): array
     {
-        $targets = ProjectConfig::unpackAssociativeArrays($targets);
+        $targets = ProjectConfigHelper::unpackAssociativeArrays($targets);
         $values = [];
         foreach ($targets as $target) {
             $value = [

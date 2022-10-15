@@ -17,7 +17,7 @@ class Seo extends ElementFieldHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->value = $this->buildValues();

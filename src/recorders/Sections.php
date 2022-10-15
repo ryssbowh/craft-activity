@@ -4,7 +4,7 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
-use craft\services\Sections as CraftSections;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class Sections extends ConfigModelRecorder
@@ -12,15 +12,15 @@ class Sections extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(CraftSections::CONFIG_SECTIONS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_SECTIONS . '.{uid}', function (Event $event) {
             Activity::getRecorder('sections')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(CraftSections::CONFIG_SECTIONS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_SECTIONS . '.{uid}', function (Event $event) {
             Activity::getRecorder('sections')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove(CraftSections::CONFIG_SECTIONS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove(ProjectConfig::PATH_SECTIONS . '.{uid}', function (Event $event) {
             Activity::getRecorder('sections')->onRemove($event);
         });
     }

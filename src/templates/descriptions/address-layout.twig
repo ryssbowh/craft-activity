@@ -1,0 +1,7 @@
+{% if log.changedFields %}
+    <ul>
+        {% include "activity/field-handlers/field-layout" with {
+            field: log.changedFields.0
+        } %}
+    </ul>
+{% endif %}

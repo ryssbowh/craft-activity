@@ -12,7 +12,7 @@ class Backup extends Recorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         Event::on(Connection::class, Connection::EVENT_AFTER_CREATE_BACKUP, function ($event) {
             Activity::getRecorder('backup')->onBackup($event->file);

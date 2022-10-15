@@ -12,7 +12,7 @@ class Application extends Recorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate('system.edition', function(Event $event) {
             Activity::getRecorder('application')->onEditionChanged($event->oldValue, $event->newValue);

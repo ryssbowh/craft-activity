@@ -2,14 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\Categories;
+use craft\services\ProjectConfig;
 
 class DefaultCategoryPlacement extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->fancyValue = $this->getPlacements()[$this->value] ?? $this->value;
@@ -21,7 +21,7 @@ class DefaultCategoryPlacement extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Categories::CONFIG_CATEGORYROUP_KEY . '.{uid}.defaultPlacement'
+            ProjectConfig::PATH_CATEGORY_GROUPS . '.{uid}.defaultPlacement'
         ];
     }
 

@@ -4,7 +4,7 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
-use craft\services\Globals;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class GlobalSets extends ConfigModelRecorder
@@ -12,15 +12,15 @@ class GlobalSets extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(Globals::CONFIG_GLOBALSETS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_GLOBAL_SETS . '.{uid}', function (Event $event) {
             Activity::getRecorder('globalSets')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(Globals::CONFIG_GLOBALSETS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_GLOBAL_SETS . '.{uid}', function (Event $event) {
             Activity::getRecorder('globalSets')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove(Globals::CONFIG_GLOBALSETS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove(ProjectConfig::PATH_GLOBAL_SETS . '.{uid}', function (Event $event) {
             Activity::getRecorder('globalSets')->onRemove($event);
         });
     }

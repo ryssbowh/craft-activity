@@ -13,7 +13,7 @@ class Dashboard extends Recorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         Event::on(CraftDashboard::class, CraftDashboard::EVENT_AFTER_SAVE_WIDGET, function ($event) {
             Activity::getRecorder('dashboard')->onWidgetSaved($event->widget, $event->isNew);

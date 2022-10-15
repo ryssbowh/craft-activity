@@ -11,7 +11,7 @@ class AssetSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate('assets', function(Event $event) {
             Activity::getRecorder('assetSettings')->onChanged('assets', 'assetSettingsChanged', $event->oldValue ?? [], $event->newValue ?? []);

@@ -4,8 +4,7 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
-use craft\services\Categories;
-use craft\services\Sites;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class CategoryGroups extends ConfigModelRecorder
@@ -13,15 +12,15 @@ class CategoryGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(Categories::CONFIG_CATEGORYROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_CATEGORY_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('categoryGroups')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(Categories::CONFIG_CATEGORYROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_CATEGORY_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('categoryGroups')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove(Categories::CONFIG_CATEGORYROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove(ProjectConfig::PATH_CATEGORY_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('categoryGroups')->onRemove($event);
         });
     }

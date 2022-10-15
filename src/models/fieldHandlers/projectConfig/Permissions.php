@@ -3,7 +3,7 @@
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
-use craft\services\UserGroups;
+use craft\services\ProjectConfig;
 
 class Permissions extends DefaultHandler
 {
@@ -26,7 +26,7 @@ class Permissions extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            UserGroups::CONFIG_USERPGROUPS_KEY . '.{uid}.permissions'
+            ProjectConfig::PATH_USER_GROUPS . '.{uid}.permissions'
         ];
     }
 

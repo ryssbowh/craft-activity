@@ -13,7 +13,7 @@ class Mailer extends Recorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         Event::on(CraftMailer::class, CraftMailer::EVENT_AFTER_SEND, function(Event $event) {
             Activity::getRecorder('mailer')->onSend($event->message, $event->isSuccessful);

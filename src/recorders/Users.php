@@ -16,7 +16,7 @@ class Users extends ElementsRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         Event::on(User::class, User::EVENT_BEFORE_SAVE, function ($event) {
             Activity::getRecorder('users')->beforeSaved($event->sender);

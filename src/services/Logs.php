@@ -76,7 +76,7 @@ class Logs extends Component
      */
     public function getCurrentRequest(): string
     {
-        if (\Craft::$app->projectConfig->isApplyingYamlChanges) {
+        if (\Craft::$app->projectConfig->isApplyingExternalChanges) {
             return self::REQUEST_YAML;
         }
         return \Craft::$app->request->isConsoleRequest ? self::REQUEST_CONSOLE : (\Craft::$app->request->isCpRequest ? self::REQUEST_CP : self::REQUEST_SITE);

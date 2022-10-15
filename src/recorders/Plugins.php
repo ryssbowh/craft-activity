@@ -6,7 +6,7 @@ use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\Recorder;
 use Ryssbowh\Activity\traits\ProjectConfigFields;
 use craft\base\Plugin;
-use craft\services\Plugins as CraftPlugins;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class Plugins extends Recorder
@@ -22,15 +22,15 @@ class Plugins extends Recorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(CraftPlugins::CONFIG_PLUGINS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_PLUGINS . '.{uid}', function (Event $event) {
             Activity::getRecorder('plugins')->onChanged($event);
         });
-        \Craft::$app->projectConfig->onAdd(CraftPlugins::CONFIG_PLUGINS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_PLUGINS . '.{uid}', function (Event $event) {
             Activity::getRecorder('plugins')->onInstalled($event);
         });
-        \Craft::$app->projectConfig->onRemove(CraftPlugins::CONFIG_PLUGINS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove(ProjectConfig::PATH_PLUGINS . '.{uid}', function (Event $event) {
             Activity::getRecorder('plugins')->onUninstalled($event);
         });
     }
@@ -38,7 +38,7 @@ class Plugins extends Recorder
     public function onChanged(Event $event)
     {
         $handle = $event->tokenMatches[0];
-        $dirtySettings = $this->getDirtyConfig(CraftPlugins::CONFIG_PLUGINS_KEY . '.' . $handle . '.settings', $event->newValue['settings'] ?? [], $event->oldValue['settings'] ?? []);
+        $dirtySettings = $this->getDirtyConfig(ProjectConfig::PATH_PLUGINS . '.' . $handle . '.settings', $event->newValue['settings'] ?? [], $event->oldValue['settings'] ?? []);
         if ($dirtySettings) {
             $this->onSettingsChanged($handle, $dirtySettings);
         }

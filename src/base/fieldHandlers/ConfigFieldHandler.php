@@ -39,7 +39,7 @@ abstract class ConfigFieldHandler extends FieldHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         if ($this->model) {

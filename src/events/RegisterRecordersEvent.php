@@ -4,9 +4,9 @@ namespace Ryssbowh\Activity\events;
 
 use Ryssbowh\Activity\base\recorders\Recorder;
 use Ryssbowh\Activity\exceptions\ActivityRecorderException;
+use Ryssbowh\Activity\recorders\AddressLayout;
 use Ryssbowh\Activity\recorders\Application;
 use Ryssbowh\Activity\recorders\AssetSettings;
-use Ryssbowh\Activity\recorders\AssetTransforms;
 use Ryssbowh\Activity\recorders\Assets;
 use Ryssbowh\Activity\recorders\Backup;
 use Ryssbowh\Activity\recorders\Categories;
@@ -17,9 +17,11 @@ use Ryssbowh\Activity\recorders\Entries;
 use Ryssbowh\Activity\recorders\EntryTypes;
 use Ryssbowh\Activity\recorders\FieldGroups;
 use Ryssbowh\Activity\recorders\Fields;
+use Ryssbowh\Activity\recorders\FileSystems;
 use Ryssbowh\Activity\recorders\GeneralSettings;
 use Ryssbowh\Activity\recorders\GlobalSets;
 use Ryssbowh\Activity\recorders\Globals;
+use Ryssbowh\Activity\recorders\ImageTransforms;
 use Ryssbowh\Activity\recorders\Mailer;
 use Ryssbowh\Activity\recorders\Plugins;
 use Ryssbowh\Activity\recorders\Routes;
@@ -48,12 +50,12 @@ class RegisterRecordersEvent extends Event
     {
         parent::init();
         $this->addMany([
+            'addressLayout' => new AddressLayout,
             'sites' => new Sites,
             'siteGroups' => new SiteGroups,
             'application' => new Application,
             'assets' => new Assets,
             'assetSettings' => new AssetSettings,
-            'assetTransforms' => new AssetTransforms,
             'backup' => new Backup,
             'categories' => new Categories,
             'categoryGroups' => new CategoryGroups,
@@ -63,8 +65,10 @@ class RegisterRecordersEvent extends Event
             'emailSettings' => new EmailSettings,
             'fieldGroups' => new FieldGroups,
             'fields' => new Fields,
+            'fileSystems' => new FileSystems,
             'globals' => new Globals,
             'globalSets' => new GlobalSets,
+            'imageTransforms' => new ImageTransforms,
             'mailer' => new Mailer,
             'plugins' => new Plugins,
             'routes' => new Routes,

@@ -26,6 +26,11 @@
     margin-top: 2px;
 }
 
+#action-buttons .delete.icon::before {
+    color: white;
+    margin-bottom: 5px;
+}
+
 #toolbar {
     align-items: baseline;
 }

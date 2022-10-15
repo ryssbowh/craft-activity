@@ -12,7 +12,7 @@ class GeneralSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate('system', function(Event $event) {
             Activity::getRecorder('generalSettings')->onChanged('system', 'generalSettingsChanged', $event->oldValue, $event->newValue);

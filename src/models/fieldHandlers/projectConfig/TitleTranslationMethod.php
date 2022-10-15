@@ -2,16 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\Fields;
-use craft\services\Sections;
-use craft\services\Volumes;
+use craft\services\ProjectConfig;
 
 class TitleTranslationMethod extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->fancyValue = $this->getMethods()[$this->value] ?? $this->value;
@@ -23,9 +21,9 @@ class TitleTranslationMethod extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Volumes::CONFIG_VOLUME_KEY . '.{uid}.titleTranslationMethod',
-            Sections::CONFIG_ENTRYTYPES_KEY . '.{uid}.titleTranslationMethod',
-            Fields::CONFIG_FIELDS_KEY . '.{uid}.translationMethod'
+            ProjectConfig::PATH_VOLUMES . '.{uid}.titleTranslationMethod',
+            ProjectConfig::PATH_ENTRY_TYPES . '.{uid}.titleTranslationMethod',
+            ProjectConfig::PATH_FIELDS . '.{uid}.translationMethod'
         ];
     }
 

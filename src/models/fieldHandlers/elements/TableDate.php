@@ -9,7 +9,7 @@ class TableDate extends ElementFieldHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $datetime = \DateTime::createFromFormat('Y-m-d H:i:s', $this->value);
         if ($datetime) {

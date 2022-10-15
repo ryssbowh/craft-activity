@@ -4,7 +4,7 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
-use craft\services\Sites;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class SiteGroups extends ConfigModelRecorder
@@ -12,15 +12,15 @@ class SiteGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(Sites::CONFIG_SITEGROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_SITE_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('siteGroups')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(Sites::CONFIG_SITEGROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_SITE_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('siteGroups')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove(Sites::CONFIG_SITEGROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove(ProjectConfig::PATH_SITE_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('siteGroups')->onRemove($event);
         });
     }

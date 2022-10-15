@@ -40,12 +40,9 @@ class VolumeCreated extends ConfigModelLog
         return [
             'handle' => \Craft::t('app', 'Handle'),
             'name' => \Craft::t('app', 'Name'),
-            'url' => \Craft::t('app', 'Base URL'),
-            'hasUrls' => \Craft::t('app', 'Assets in this volume have public URLs'),
-            'type' => \Craft::t('app', 'Type'),
-            'settings.path' => \Craft::t('app', 'File System Path'),
-            'titleTranslationMethod' => \Craft::t('app', 'Title Translation Method'),
-            'titleTranslationKeyFormat' => \Craft::t('app', 'Title Translation Key Format'),
+            'fs' => \Craft::t('app', 'Asset Filesystem'),
+            'transformFs' => \Craft::t('app', 'Transform Filesystem'),
+            'transformSubpath' => \Craft::t('app', 'Transform Subpath'),
         ];
     }
 }

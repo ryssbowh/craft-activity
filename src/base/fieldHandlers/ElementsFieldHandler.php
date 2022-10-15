@@ -7,7 +7,7 @@ abstract class ElementsFieldHandler extends ElementFieldHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $handle = $this->field->handle;

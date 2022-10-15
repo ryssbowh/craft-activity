@@ -2,14 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\Fields;
+use craft\services\ProjectConfig;
 
 class FieldType extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->fancyValue = $this->value::displayName();
@@ -21,7 +21,7 @@ class FieldType extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Fields::CONFIG_FIELDS_KEY . '.{uid}.type'
+            ProjectConfig::PATH_FIELDS . '.{uid}.type'
         ];
     }
 

@@ -2,12 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
+use craft\services\ProjectConfig;
+
 class Volume extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         if ($this->value) {
             $this->fancyValue = $this->getVolumeName($this->value);
@@ -28,7 +30,7 @@ class Volume extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            'users.photoVolumeUid',
+            ProjectConfig::PATH_USERS . '.photoVolumeUid',
             'assets.tempVolumeUid'
         ];
     }

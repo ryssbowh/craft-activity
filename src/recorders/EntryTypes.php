@@ -5,7 +5,7 @@ namespace Ryssbowh\Activity\recorders;
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\events\ConfigEvent;
-use craft\services\Sections;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class EntryTypes extends ConfigModelRecorder
@@ -13,15 +13,15 @@ class EntryTypes extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(Sections::CONFIG_ENTRYTYPES_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_ENTRY_TYPES . '.{uid}', function (Event $event) {
             Activity::getRecorder('entryTypes')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(Sections::CONFIG_ENTRYTYPES_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_ENTRY_TYPES . '.{uid}', function (Event $event) {
             Activity::getRecorder('entryTypes')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove(Sections::CONFIG_ENTRYTYPES_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove(ProjectConfig::PATH_ENTRY_TYPES . '.{uid}', function (Event $event) {
             Activity::getRecorder('entryTypes')->onRemove($event);
         });
     }

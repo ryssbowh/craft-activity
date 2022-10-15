@@ -2,14 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\Routes;
+use craft\services\ProjectConfig;
 
 class UriParts extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $parts = [];
         foreach ($this->value as $value) {
@@ -32,7 +32,7 @@ class UriParts extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Routes::CONFIG_ROUTES_KEY . '.{uid}.uriParts'
+            ProjectConfig::PATH_ROUTES . '.{uid}.uriParts'
         ];
     }
 

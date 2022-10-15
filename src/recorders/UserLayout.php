@@ -5,7 +5,7 @@ namespace Ryssbowh\Activity\recorders;
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\events\ConfigEvent;
-use craft\services\Users;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class UserLayout extends ConfigModelRecorder
@@ -13,15 +13,15 @@ class UserLayout extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(Users::CONFIG_USERLAYOUT_KEY, function(Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_USER_FIELD_LAYOUTS, function(Event $event) {
             Activity::getRecorder('userLayout')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(Users::CONFIG_USERLAYOUT_KEY, function(Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_USER_FIELD_LAYOUTS, function(Event $event) {
             Activity::getRecorder('userLayout')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(Users::CONFIG_USERLAYOUT_KEY, function(Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_USER_FIELD_LAYOUTS, function(Event $event) {
             Activity::getRecorder('userLayout')->onUpdate($event);
         });
     }
@@ -30,7 +30,7 @@ class UserLayout extends ConfigModelRecorder
     {
         $event->oldValue = ['fieldLayouts' => $event->oldValue ?? []];
         $event->newValue = ['fieldLayouts' => $event->newValue ?? []];
-        $event->path = Users::CONFIG_USERS_KEY;
+        $event->path = ProjectConfig::PATH_USERS;
         parent::onUpdate($event);
     }
 

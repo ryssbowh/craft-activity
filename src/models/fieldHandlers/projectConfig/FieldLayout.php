@@ -4,13 +4,8 @@ namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use craft\fieldlayoutelements\CustomField;
-use craft\helpers\ProjectConfig;
-use craft\services\Categories;
-use craft\services\Globals;
-use craft\services\Sections;
-use craft\services\Tags;
-use craft\services\Users;
-use craft\services\Volumes;
+use craft\helpers\ProjectConfig as ProjectConfigHelper;
+use craft\services\ProjectConfig;
 
 class FieldLayout extends DefaultHandler
 {
@@ -22,7 +17,7 @@ class FieldLayout extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->value = $this->buildValues($this->value);
@@ -34,12 +29,13 @@ class FieldLayout extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Sections::CONFIG_ENTRYTYPES_KEY . '.{uid}.fieldLayouts',
-            Categories::CONFIG_CATEGORYROUP_KEY . '.{uid}.fieldLayouts',
-            Globals::CONFIG_GLOBALSETS_KEY . '.{uid}.fieldLayouts',
-            Tags::CONFIG_TAGGROUP_KEY . '.{uid}.fieldLayouts',
-            Volumes::CONFIG_VOLUME_KEY . '.{uid}.fieldLayouts',
-            Users::CONFIG_USERS_KEY . '.fieldLayouts',
+            ProjectConfig::PATH_ENTRY_TYPES . '.{uid}.fieldLayouts',
+            ProjectConfig::PATH_CATEGORY_GROUPS . '.{uid}.fieldLayouts',
+            ProjectConfig::PATH_GLOBAL_SETS . '.{uid}.fieldLayouts',
+            ProjectConfig::PATH_TAG_GROUPS . '.{uid}.fieldLayouts',
+            ProjectConfig::PATH_VOLUMES . '.{uid}.fieldLayouts',
+            ProjectConfig::PATH_USER_FIELD_LAYOUTS,
+            ProjectConfig::PATH_ADDRESS_FIELD_LAYOUTS,
         ];
     }
 
@@ -141,7 +137,7 @@ class FieldLayout extends DefaultHandler
      */
     protected function buildValues(array $fieldLayout): array
     {
-        $fieldLayout = ProjectConfig::unpackAssociativeArrays($fieldLayout);
+        $fieldLayout = ProjectConfigHelper::unpackAssociativeArrays($fieldLayout);
         $values = [];
         $fieldLayout = reset($fieldLayout);
         foreach ($fieldLayout['tabs'] ?? [] as $tab) {

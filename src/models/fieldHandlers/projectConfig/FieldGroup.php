@@ -2,14 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\Fields;
+use craft\services\ProjectConfig;
 
 class FieldGroup extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $this->fancyValue = $this->getGroupName($this->value);
     }
@@ -28,7 +28,7 @@ class FieldGroup extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Fields::CONFIG_FIELDS_KEY . '.{uid}.fieldGroup'
+            ProjectConfig::PATH_FIELDS . '.{uid}.fieldGroup'
         ];
     }
 

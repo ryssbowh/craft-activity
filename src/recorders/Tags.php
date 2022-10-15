@@ -4,7 +4,7 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
-use craft\services\Tags as CraftTags;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class Tags extends ConfigModelRecorder
@@ -12,15 +12,15 @@ class Tags extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(CraftTags::CONFIG_TAGGROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_TAG_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('tags')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(CraftTags::CONFIG_TAGGROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_TAG_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('tags')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove(CraftTags::CONFIG_TAGGROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove(ProjectConfig::PATH_TAG_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('tags')->onRemove($event);
         });
     }

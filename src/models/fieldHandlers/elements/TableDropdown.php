@@ -14,7 +14,7 @@ class TableDropdown extends ElementFieldHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         foreach  ($this->options as $option) {
             if ($option['value'] == $this->value) {

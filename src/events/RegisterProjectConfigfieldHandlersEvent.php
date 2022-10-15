@@ -7,6 +7,8 @@ use Ryssbowh\Activity\models\fieldHandlers\projectConfig\DefaultCategoryPlacemen
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldGroup;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldLayout;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldType;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FileSystem;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FsType;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Permissions;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\PreviewTargets;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\SectionPropagationMethod;
@@ -50,7 +52,9 @@ class RegisterProjectConfigfieldHandlersEvent extends Event
             FieldGroup::class,
             FieldType::class,
             SiteGroup::class,
-            Permissions::class
+            Permissions::class,
+            FileSystem::class,
+            FsType::class
         ]);
     }
 

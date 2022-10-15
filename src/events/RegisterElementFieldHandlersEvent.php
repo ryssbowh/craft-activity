@@ -12,6 +12,7 @@ use Ryssbowh\Activity\models\fieldHandlers\elements\LinkField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\ListField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\ListsField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Matrix;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Money;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use Ryssbowh\Activity\models\fieldHandlers\elements\PlainText;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Redactor;
@@ -45,6 +46,7 @@ class RegisterElementFieldHandlersEvent extends Event
             ListField::class,
             ListsField::class,
             Matrix::class,
+            Money::class,
             Plain::class,
             PlainText::class,
             Redactor::class,

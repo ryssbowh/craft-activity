@@ -5,12 +5,16 @@ namespace Ryssbowh\Activity\events;
 use Ryssbowh\Activity\base\logs\ActivityLog;
 use Ryssbowh\Activity\exceptions\ActivityTypeException;
 use Ryssbowh\Activity\models\logs\CraftEditionChanged;
+use Ryssbowh\Activity\models\logs\addresses\AddressLayoutSaved;
 use Ryssbowh\Activity\models\logs\assets\AssetCreated;
 use Ryssbowh\Activity\models\logs\assets\AssetDeleted;
 use Ryssbowh\Activity\models\logs\assets\AssetSaved;
-use Ryssbowh\Activity\models\logs\assets\AssetTransformCreated;
-use Ryssbowh\Activity\models\logs\assets\AssetTransformDeleted;
-use Ryssbowh\Activity\models\logs\assets\AssetTransformSaved;
+use Ryssbowh\Activity\models\logs\assets\FilesystemCreated;
+use Ryssbowh\Activity\models\logs\assets\FilesystemDeleted;
+use Ryssbowh\Activity\models\logs\assets\FilesystemSaved;
+use Ryssbowh\Activity\models\logs\assets\ImageTransformCreated;
+use Ryssbowh\Activity\models\logs\assets\ImageTransformDeleted;
+use Ryssbowh\Activity\models\logs\assets\ImageTransformSaved;
 use Ryssbowh\Activity\models\logs\assets\VolumeCreated;
 use Ryssbowh\Activity\models\logs\assets\VolumeDeleted;
 use Ryssbowh\Activity\models\logs\assets\VolumeSaved;
@@ -110,12 +114,10 @@ class RegisterTypesEvent extends Event
     {
         parent::init();
         $this->addMany([
+            new AddressLayoutSaved,
             new AssetCreated,
             new AssetSaved,
             new AssetDeleted,
-            new AssetTransformCreated,
-            new AssetTransformSaved,
-            new AssetTransformDeleted,
             new AssetSettingsChanged,
             new BackupCreated,
             new BackupRestored,
@@ -146,12 +148,18 @@ class RegisterTypesEvent extends Event
             new FieldGroupCreated,
             new FieldGroupSaved,
             new FieldGroupDeleted,
+            new FilesystemCreated,
+            new FilesystemSaved,
+            new FilesystemDeleted,
             new GeneralSettingsChanged,
             new GlobalSetCreated,
             new GlobalSetSaved,
             new GlobalSetDeleted,
             new GlobalSaved,
             new GlobalDeleted,
+            new ImageTransformCreated,
+            new ImageTransformSaved,
+            new ImageTransformDeleted,
             new PluginDisabled,
             new PluginEnabled,
             new PluginInstalled,

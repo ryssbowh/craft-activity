@@ -4,9 +4,8 @@ namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use craft\errors\SiteNotFoundException;
-use craft\helpers\ProjectConfig;
-use craft\services\Categories;
-use craft\services\Sections;
+use craft\helpers\ProjectConfig as ProjectConfigHelper;
+use craft\services\ProjectConfig;
 
 class SiteSettings extends DefaultHandler
 {
@@ -18,7 +17,7 @@ class SiteSettings extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->value = $this->buildValues($this->value);
@@ -30,8 +29,8 @@ class SiteSettings extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Sections::CONFIG_SECTIONS_KEY . '.{uid}.siteSettings',
-            Categories::CONFIG_CATEGORYROUP_KEY . '.{uid}.siteSettings'
+            ProjectConfig::PATH_SECTIONS . '.{uid}.siteSettings',
+            ProjectConfig::PATH_CATEGORY_GROUPS . '.{uid}.siteSettings'
         ];
     }
 
@@ -81,7 +80,7 @@ class SiteSettings extends DefaultHandler
      */
     protected function buildValues(array $siteSettings): array
     {
-        $siteSettings = ProjectConfig::unpackAssociativeArrays($siteSettings);
+        $siteSettings = ProjectConfigHelper::unpackAssociativeArrays($siteSettings);
         $values = [];
         foreach ($siteSettings as $siteUid => $settings) {
             try {

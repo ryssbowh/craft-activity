@@ -4,7 +4,7 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
-use craft\services\Fields;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class FieldGroups extends ConfigModelRecorder
@@ -12,15 +12,15 @@ class FieldGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(Fields::CONFIG_FIELDGROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_FIELD_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('fieldGroups')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(Fields::CONFIG_FIELDGROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_FIELD_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('fieldGroups')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove(Fields::CONFIG_FIELDGROUP_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove(ProjectConfig::PATH_FIELD_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('fieldGroups')->onRemove($event);
         });
     }

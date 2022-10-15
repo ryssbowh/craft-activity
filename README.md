@@ -11,7 +11,9 @@ A non exhaustive list of things this plugin can track :
   - Users (created, saved, deleted, restored)
   - Globals (saved)
   - Categories (created, saved, deleted, restored, moved)
+- Address layout changed
 - Volumes (created, saved, deleted)
+- Filesystems (created, saved, deleted)
 - Asset transforms (created, saved, deleted)
 - Backups (created, restored)
 - Category groups (created, saved, deleted)
@@ -44,9 +46,11 @@ User activity and the fields changed will remain viewable even when the object r
 
 **This plugin will not work if you've opt out of [Project Config](https://craftcms.com/docs/3.x/project-config.html) on which it's based**
 
+This plugin also exists for Craft 3 : https://github.com/ryssbowh/craft-activity/tree/v1
+
 ## Installation
 
-Install through plugin store or with composer : `composer require rysbowh/craft-activity:^0.1`
+Install through plugin store or with composer : `composer require rysbowh/craft-activity:^0.2`
 
 ## Dashboard
 
@@ -298,6 +302,7 @@ See the class reference [here](https://ryssbowh.github.io/docs/craft-activity1/n
 
 - Drafts aren't managed at the moment as provisional drafts cannot be ignored which creates lots of useless logs. May implement this in the future.
 - Hard delete events can't be ignored
+- Filesystems handles changes will create 2 logs : one for deletion, one for creation
 - Widgets changes can't be tracked
 - Each individual fields config isn't tracked
 - Tags aren't tracked, seems useless since there's no tag management utility in Craft
@@ -307,4 +312,3 @@ See the class reference [here](https://ryssbowh.github.io/docs/craft-activity1/n
 ## Roadmap
 
 - Track individual field config
-- Reverting system

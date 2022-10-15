@@ -2,14 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\Users;
+use craft\services\ProjectConfig;
 
 class UserGroup extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $this->fancyValue = \Craft::t('app', 'None');
         if ($this->value) {
@@ -31,7 +31,7 @@ class UserGroup extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Users::CONFIG_USERS_KEY . '.defaultGroup'
+            ProjectConfig::PATH_USER_GROUPS
         ];
     }
 

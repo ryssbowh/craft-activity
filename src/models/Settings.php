@@ -78,7 +78,7 @@ class Settings extends Model
         foreach ($this->ignoreRules as $rule) {
             if ($rule['active'] and ($rule['type'] == $handle or !$rule['type'])) {
                 if (!$rule['request'] or 
-                    ($rule['request'] == 'yaml' and \Craft::$app->projectConfig->isApplyingYamlChanges) or 
+                    ($rule['request'] == 'yaml' and \Craft::$app->projectConfig->isApplyingExternalChanges) or 
                     ($rule['request'] == 'console' and \Craft::$app->request->isConsoleRequest) or
                     ($rule['request'] == 'cp' and \Craft::$app->request->isCpRequest) or
                     ($rule['request'] == 'site' and \Craft::$app->request->isSiteRequest)) {

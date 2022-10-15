@@ -16,7 +16,7 @@ class Globals extends ElementsRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         if (Activity::$plugin->settings->ignoreResave) {
             Event::on(Elements::class, Elements::EVENT_BEFORE_RESAVE_ELEMENT, function (Event $event) {

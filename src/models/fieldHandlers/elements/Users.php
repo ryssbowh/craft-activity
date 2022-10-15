@@ -10,7 +10,7 @@ class Users extends ElementsFieldHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $handle = $this->field->handle;

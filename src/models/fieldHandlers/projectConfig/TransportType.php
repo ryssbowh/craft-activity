@@ -9,7 +9,7 @@ class TransportType extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $this->fancyValue = $this->getTypes()[$this->value];
     }

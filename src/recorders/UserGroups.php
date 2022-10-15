@@ -4,10 +4,8 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
-use craft\db\Query;
-use craft\db\Table;
 use craft\events\ConfigEvent;
-use craft\services\UserGroups as CraftUserGroups;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class UserGroups extends ConfigModelRecorder
@@ -19,21 +17,21 @@ class UserGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(CraftUserGroups::CONFIG_USERPGROUPS_KEY, function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_USER_GROUPS, function (Event $event) {
             Activity::getRecorder('userGroups')->onGroupsChanged($event);
         });
-        \Craft::$app->projectConfig->onAdd(CraftUserGroups::CONFIG_USERPGROUPS_KEY, function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_USER_GROUPS, function (Event $event) {
             Activity::getRecorder('userGroups')->onGroupsChanged($event);
         });
-        \Craft::$app->projectConfig->onUpdate(CraftUserGroups::CONFIG_USERPGROUPS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_USER_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('userGroups')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(CraftUserGroups::CONFIG_USERPGROUPS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_USER_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('userGroups')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove(CraftUserGroups::CONFIG_USERPGROUPS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove(ProjectConfig::PATH_USER_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('userGroups')->onRemove($event);
         });
     }
@@ -47,7 +45,7 @@ class UserGroups extends ConfigModelRecorder
      */
     public function onGroupsChanged(ConfigEvent $event)
     {
-        if (!\Craft::$app->projectConfig->isApplyingYamlChanges) {
+        if (!\Craft::$app->projectConfig->isApplyingExternalChanges) {
             if ($this->triggered and $this->mode) {
                 $path = explode('.', $this->triggered->path);
                 $this->triggered->tokenMatches = [$path[2]];
@@ -68,7 +66,7 @@ class UserGroups extends ConfigModelRecorder
 
     public function onUpdate(ConfigEvent $event)
     {
-        if (!\Craft::$app->projectConfig->isApplyingYamlChanges) {
+        if (!\Craft::$app->projectConfig->isApplyingExternalChanges) {
             if ($this->triggered === null) {
                 //This event is triggered twice, once for the group, once for the permissions
                 //the first one has the data we need
@@ -86,7 +84,7 @@ class UserGroups extends ConfigModelRecorder
 
     public function onAdd(ConfigEvent $event)
     {
-        if (!\Craft::$app->projectConfig->isApplyingYamlChanges) {
+        if (!\Craft::$app->projectConfig->isApplyingExternalChanges) {
             $this->triggered = $event;
             $this->mode = 'add';
         } else if (!$this->added) {

@@ -2,14 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\Routes;
+use craft\services\ProjectConfig;
 
 class Site extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         $this->fancyValue = $this->getSiteName($this->value);
     }
@@ -28,7 +28,7 @@ class Site extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Routes::CONFIG_ROUTES_KEY . '.{uid}.siteUid'
+            ProjectConfig::PATH_ROUTES . '.{uid}.siteUid'
         ];
     }
 

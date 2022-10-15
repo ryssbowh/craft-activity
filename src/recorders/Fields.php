@@ -4,7 +4,7 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
-use craft\services\Fields as CraftFields;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class Fields extends ConfigModelRecorder
@@ -12,15 +12,15 @@ class Fields extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(CraftFields::CONFIG_FIELDS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_FIELDS . '.{uid}', function (Event $event) {
             Activity::getRecorder('fields')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd(CraftFields::CONFIG_FIELDS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_FIELDS . '.{uid}', function (Event $event) {
             Activity::getRecorder('fields')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove(CraftFields::CONFIG_FIELDS_KEY . '.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove(ProjectConfig::PATH_FIELDS . '.{uid}', function (Event $event) {
             Activity::getRecorder('fields')->onRemove($event);
         });
     }

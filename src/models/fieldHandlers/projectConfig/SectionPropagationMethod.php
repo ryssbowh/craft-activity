@@ -2,14 +2,14 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\Sections;
+use craft\services\ProjectConfig;
 
 class SectionPropagationMethod extends DefaultHandler
 {
     /**
      * @inheritDoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->fancyValue = $this->getMethods()[$this->value] ?? $this->value;
@@ -21,7 +21,7 @@ class SectionPropagationMethod extends DefaultHandler
     public static function getTargets(): array
     {
         return [
-            Sections::CONFIG_SECTIONS_KEY . '.{uid}.propagationMethod'
+            ProjectConfig::PATH_SECTIONS . '.{uid}.propagationMethod'
         ];
     }
 

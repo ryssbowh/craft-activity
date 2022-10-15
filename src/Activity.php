@@ -30,12 +30,12 @@ class Activity extends Plugin
     /**
      * @inheritdoc
      */
-    public $hasCpSettings = true;
+    public bool $hasCpSettings = true;
 
     /**
      * @inheritDoc
      */
-    public $hasCpSection = true;
+    public bool $hasCpSection = true;
 
     /**
      * inheritDoc
@@ -114,7 +114,7 @@ class Activity extends Plugin
     /**
      * @inheritdoc
      */
-    public function getSettingsResponse()
+    public function getSettingsResponse(): mixed
     {
         $types = [];
         foreach ($this->types->getTypes() as $handle => $class) {
@@ -164,12 +164,15 @@ class Activity extends Plugin
     protected function registerPermissions()
     {
         Event::on(UserPermissions::class, UserPermissions::EVENT_REGISTER_PERMISSIONS, function (Event $event) {
-            $event->permissions[\Craft::t('activity', 'Activity')] = [
-                'viewActivityLogs' => [
-                    'label' => \Craft::t('activity', 'View activity records')
-                ],
-                'deleteActivityLogs' => [
-                    'label' => \Craft::t('activity', 'Delete activity records')
+            $event->permissions[] = [
+                'heading' => \Craft::t('activity', 'Activity'),
+                'permissions' => [
+                    'viewActivityLogs' => [
+                        'label' => \Craft::t('activity', 'View activity records')
+                    ],
+                    'deleteActivityLogs' => [
+                        'label' => \Craft::t('activity', 'Delete activity records')
+                    ]
                 ]
             ];
         });
