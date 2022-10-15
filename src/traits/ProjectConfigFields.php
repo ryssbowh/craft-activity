@@ -42,7 +42,7 @@ trait ProjectConfigFields
                 if (!$skip) {
                     $class = Activity::$plugin->fieldHandlers->getForProjectConfigPath($path);
                     $handlers[$baseName] = new $class([
-                        'value' => $value
+                        'value' => $this->typeValue($baseName, $value)
                     ]);
                 }
             }
@@ -83,6 +83,45 @@ trait ProjectConfigFields
             ];
         }
         return $dirty;
+    }
+
+    /**
+     * Type a value by path
+     * 
+     * @param  string $path
+     * @param  mixed $value
+     * @return mixed
+     */
+    protected function typeValue(string $path, mixed $value): mixed
+    {
+        $typing = $this->getTrackedFieldTypings()[$path] ?? null;
+        switch ($typing) {
+            case 'bool':
+                return (bool)$value;
+            case 'int':
+                return (int)$value;
+            case 'float':
+                return (float)$value;
+            case 'string':
+                return (string)$value;
+        }
+        return $value;
+    }
+
+    /**
+     * Get fields typing, must return an array :
+     *
+     * [
+     *     'field.path' => 'bool'
+     * ]
+     *
+     * Valid typings are 'string', 'int', 'float' and 'bool'
+     * 
+     * @return array
+     */
+    protected function getTrackedFieldTypings(): array
+    {
+        return [];
     }
 
     /**
