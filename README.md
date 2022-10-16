@@ -297,7 +297,7 @@ This plugin requires Craft 3.7 or above.
 
 ## Documentation
 
-See the class reference [here](https://ryssbowh.github.io/docs/craft-activity1/namespaces/ryssbowh-activity.html)
+See the class reference [here](https://ryssbowh.github.io/docs/craft-activity2/namespaces/ryssbowh-activity.html)
 
 ## Known issues
 
