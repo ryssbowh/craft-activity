@@ -99,8 +99,10 @@ class Permissions extends DefaultHandler
     {
         $labelled = [];
         foreach ($perms as $perm) {
-            list($section, $label) = $this->findPermission($perm);
-            $labelled[$perm] = $section . ': ' . $label;
+            if ($array = $this->findPermission($perm)) {
+                list($section, $label) = $array;
+                $labelled[$perm] = $section . ': ' . $label;
+            }
         }
         return $labelled;
     }
@@ -109,9 +111,9 @@ class Permissions extends DefaultHandler
      * Find a permission and its section
      * 
      * @param  string $perm
-     * @return array
+     * @return ?array
      */
-    protected function findPermission(string $perm): array
+    protected function findPermission(string $perm): ?array
     {
         $allPerms = \Craft::$app->userPermissions->getAllPermissions();
         foreach ($allPerms as $array) {
@@ -119,6 +121,7 @@ class Permissions extends DefaultHandler
                 return [$array['heading'], $label];
             }
         }
+        return null;
     }
 
     /**
