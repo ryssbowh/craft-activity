@@ -1,5 +1,9 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.0.0 - 2022-10-16
+### Changed
+- Reinstated field typings
+
 ## 0.1.2 - 2022-10-12
 ### Fixed
 - Fixed matrix field description

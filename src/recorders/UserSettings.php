@@ -25,4 +25,14 @@ class UserSettings extends ProjectConfigRecorder
     {
         return ['allowPublicRegistration', 'defaultGroup', 'photoSubpath', 'photoVolumeUid', 'requireEmailVerification', 'suspendByDefault', 'validateOnPublicRegistration'];
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getTrackedFieldTypings(): array
+    {
+        return [
+            'defaultGroup' => 'string'
+        ];
+    }
 }
