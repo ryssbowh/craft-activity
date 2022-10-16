@@ -26,6 +26,7 @@ A non exhaustive list of things this plugin can track :
 - Sites (created, saved, deleted)
 - Tag groups (created, saved, deleted)
 - Users
+  - permissions changed
   - activated, self activated
   - assigned groups
   - used invalid token
@@ -34,7 +35,7 @@ A non exhaustive list of things this plugin can track :
   - suspended, unsuspended
   - email verified
   - failed to login
-- User groups (created, saved, deleted, permissions)
+- User groups (created, saved, deleted, permissions changed)
 - User layout changed
 - Widgets (created, saved, deleted)
 - Emails (sent, failed)
@@ -299,6 +300,7 @@ See the class reference [here](https://ryssbowh.github.io/docs/craft-activity1/n
 - Drafts aren't managed at the moment as provisional drafts cannot be ignored which creates lots of useless logs. May implement this in the future.
 - Hard delete events can't be ignored
 - Widgets changes can't be tracked
+- User specific permissions can't be tracked, there's no event for it in Craft
 - Each individual fields config isn't tracked
 - Tags aren't tracked, seems useless since there's no tag management utility in Craft
 - Elements moved activity is ignored by default
@@ -307,4 +309,3 @@ See the class reference [here](https://ryssbowh.github.io/docs/craft-activity1/n
 ## Roadmap
 
 - Track individual field config
-- Reverting system

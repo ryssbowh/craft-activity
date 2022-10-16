@@ -5,6 +5,8 @@
 - Reinstated field typings
 ### Fixed
 - User group permissions logs
+### Added
+- User permissions log
 
 ## 0.1.2 - 2022-10-12
 ### Fixed
