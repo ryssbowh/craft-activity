@@ -1,7 +1,9 @@
+defaultPlacement: end
 fieldLayouts:
-  f7a77773-3bad-4b7b-89ab-9f5e032330a4:
+  8ef151be-9ccd-42f5-8128-56bdb9f42485:
     tabs:
       -
+        elementCondition: null
         elements:
           -
             autocapitalize: true
@@ -9,6 +11,7 @@ fieldLayouts:
             autocorrect: true
             class: null
             disabled: false
+            elementCondition: null
             id: null
             instructions: null
             label: null
@@ -24,17 +27,20 @@ fieldLayouts:
             tip: null
             title: null
             type: craft\fieldlayoutelements\TitleField
+            uid: ffc58da8-9a16-4357-a5e0-ed2d4774801e
+            userCondition: null
             warning: null
             width: 100
         name: Content
-        sortOrder: 1
+        uid: 2c640bdf-de7e-4440-88e4-4deaad94a17b
+        userCondition: null
 handle: category
 name: Category
 siteSettings:
-  add58190-e8f2-483f-8f55-6be4dc9e80e7:
+  add58190-e8f2-483f-8f55-6be4dc9e80e7: # Craft40
     hasUrls: true
     template: null
-    uriFormat: 'category/{slug}'
+    uriFormat: 'test/{slug}'
 structure:
   maxLevels: null
-  uid: 076ae321-2923-4ae8-99a8-ec56576ce636
+  uid: 9e9df0e6-65cb-4698-ae89-6bbb6ed156e9

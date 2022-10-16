@@ -91,7 +91,7 @@ class ElementsTest extends BaseTest
     {
         $this->resetActivity();
         $global = \Craft::$app->globals->getSetByHandle('global');
-        $global->setFieldValue('category', []);
+        $global->setFieldValue('plainText', 'test');
         $this->assertTrue(\Craft::$app->elements->saveElement($global));
         $this->assertLogCount(1);
         $this->assertLatestLog('globalSaved');

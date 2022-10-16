@@ -1,26 +1,26 @@
 <?php
 
-use craft\models\AssetTransform;
+use craft\models\ImageTransform;
 
 class TransformsTest extends BaseTest
 {
-    public function testAssetTransforms()
+    public function testImageTransforms()
     {
         $this->resetActivity();
-        $transform = new AssetTransform([
+        $transform = new ImageTransform([
             'name' => 'test',
             'handle' => 'test',
             'width' => 500
         ]);
-        $this->assertTrue(\Craft::$app->assetTransforms->saveTransform($transform));
+        $this->assertTrue(\Craft::$app->imageTransforms->saveTransform($transform));
         $this->assertLogCount(1);
-        $this->assertLatestLog('assetTransformCreated');
+        $this->assertLatestLog('imageTransformCreated');
         $transform->width = 600;
-        $this->assertTrue(\Craft::$app->assetTransforms->saveTransform($transform));
+        $this->assertTrue(\Craft::$app->imageTransforms->saveTransform($transform));
         $this->assertLogCount(2);
-        $this->assertLatestLog('assetTransformSaved');
-        $this->assertTrue(\Craft::$app->assetTransforms->deleteTransform($transform));
+        $this->assertLatestLog('imageTransformSaved');
+        $this->assertTrue(\Craft::$app->imageTransforms->deleteTransform($transform));
         $this->assertLogCount(3);
-        $this->assertLatestLog('assetTransformDeleted');
+        $this->assertLatestLog('imageTransformDeleted');
     }
 }

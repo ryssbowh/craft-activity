@@ -1,11 +1,13 @@
-dateModified: 1634885634
+assets:
+  tempVolumeUid: c935455f-deec-494d-804a-1653b824f9af # Public
+dateModified: 1665891745
 email:
-  fromEmail: test@test.com
+  fromEmail: blondin.boris@gmx.com
   fromName: Craft
-  replyToEmail: test@test.com
+  replyToEmail: blondin.boris@gmx.com
   template: ''
   transportSettings:
-    encryptionMethod: $EMAIL_ENCRYPTION
+    encryptionMethod: tls
     host: $EMAIL_HOST
     password: $EMAIL_PASSWORD
     port: $EMAIL_PORT
@@ -13,9 +15,18 @@ email:
     useAuthentication: $EMAIL_AUTHENTICATION
     username: $EMAIL_USERNAME
   transportType: craft\mail\transportadapters\Smtp
+fs:
+  default:
+    hasUrls: false
+    name: Thing
+    settings:
+      path: private
+    type: craft\fs\Local
+    url: null
 system:
   edition: pro
   live: true
-  name: Craft
-  schemaVersion: 3.7.33
+  name: Craft40
+  retryDuration: null
+  schemaVersion: 4.0.0.9
   timeZone: Europe/London

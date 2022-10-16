@@ -1,0 +1,24 @@
+fieldLayouts:
+  68c84d6f-1f36-477f-b978-123a3d47e0fa:
+    tabs:
+      -
+        elementCondition: null
+        elements:
+        -
+            elementCondition: null
+            fieldUid: e62c6607-e845-4656-98e9-e021b18067be
+            instructions: null
+            label: null
+            required: false
+            tip: null
+            type: craft\fieldlayoutelements\CustomField
+            uid: 3d96efc0-85b3-4dc1-bf91-45da1b309776
+            userCondition: null
+            warning: null
+            width: 100
+        name: 'Tab 1'
+        uid: efa20622-ff27-4072-819a-abc825afc4ab
+        userCondition: null
+handle: global
+name: Global
+sortOrder: 0

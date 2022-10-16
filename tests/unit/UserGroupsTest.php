@@ -8,19 +8,18 @@ class UserGroupsTest extends BaseTest
     {
         $this->resetActivity();
         $group = new UserGroup([
-            'name' => 'Test 2',
-            'handle' => 'test2'
+            'name' => 'Test',
+            'handle' => 'test'
         ]);
         $this->assertTrue(\Craft::$app->userGroups->saveGroup($group));
-        $this->assertLogCount(1);
-        $this->assertLatestLog('userGroupCreated');
+        $this->assertLogCount(2);
+        $this->assertLatestLog(['userGroupPermissionsSaved', 'userGroupCreated']);
         $group->name = 'Test 2';
         $this->assertTrue(\Craft::$app->userGroups->saveGroup($group));
-        $this->saveLogs();
-        $this->assertLogCount(2);
-        $this->assertLatestLog('userGroupSaved');
+        $this->assertLogCount(4);
+        $this->assertLatestLog(['userGroupPermissionsSaved', 'userGroupSaved']);
         $this->assertTrue(\Craft::$app->userGroups->deleteGroup($group));
-        $this->assertLogCount(3);
+        $this->assertLogCount(5);
         $this->assertLatestLog('userGroupDeleted');
     }
 }

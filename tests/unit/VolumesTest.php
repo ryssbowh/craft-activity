@@ -1,7 +1,6 @@
 <?php
 
-use craft\base\Volume;
-use craft\volumes\Temp;
+use craft\models\Volume;
 use yii\base\Event;
 
 class VolumesTest extends BaseTest
@@ -9,20 +8,10 @@ class VolumesTest extends BaseTest
     public function testVolumes()
     {
         $this->resetActivity();
-        Event::on(Volume::class, Volume::EVENT_DEFINE_RULES, function ($e) {
-            //Removing the path rule to avoid the error "Local volumes cannot be located within system directories"
-            $rules = [];
-            foreach ($e->rules as $rule) {
-                if ($rule[0][0] != 'path') {
-                    $rules[] = $rule;
-                }
-            }
-            $e->rules = $rules;
-        });
-        $volume = \Craft::$app->volumes->createVolume([
-            'type' => Temp::class,
+        $volume = new Volume([
             'name' => 'Test',
-            'handle' => 'test'
+            'handle' => 'test',
+            'fs' => \Craft::$app->fs->getFilesystemByHandle('default')
         ]);
         $this->assertTrue(\Craft::$app->volumes->saveVolume($volume));
         $this->assertLogCount(1);

@@ -2,6 +2,7 @@ fieldLayouts:
   090f683c-6b2a-439d-b701-ba6a5a38ce16:
     tabs:
       -
+        elementCondition: null
         elements:
           -
             autocapitalize: true
@@ -9,6 +10,7 @@ fieldLayouts:
             autocorrect: true
             class: null
             disabled: false
+            elementCondition: null
             id: null
             instructions: null
             label: null
@@ -24,35 +26,18 @@ fieldLayouts:
             tip: null
             title: null
             type: craft\fieldlayoutelements\TitleField
-            warning: null
-            width: 100
-          -
-            fieldUid: 81a78bb9-50b1-4929-b623-e68e16009193 # Checkboxes
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
-            warning: null
-            width: 100
-          -
-            fieldUid: 36852d23-0bd3-408a-a747-ef28bdfe7463 # Colour
-            instructions: null
-            label: null
-            required: false
-            tip: null
-            type: craft\fieldlayoutelements\CustomField
+            uid: 740060c5-f24d-432e-85ba-47ef456bbb1c
+            userCondition: null
             warning: null
             width: 100
         name: Content
-        sortOrder: 1
+        uid: 7d12912f-bc58-46bf-9fc3-0654fd3d71bd
+        userCondition: null
+fs: default
 handle: public
-hasUrls: true
 name: Public
-settings:
-  path: '@webroot/files'
 sortOrder: 4
-titleTranslationKeyFormat: '{handle}'
-titleTranslationMethod: none
-type: craft\volumes\Local
-url: '@web/files'
+titleTranslationKeyFormat: null
+titleTranslationMethod: site
+transformFs: default
+transformSubpath: truc

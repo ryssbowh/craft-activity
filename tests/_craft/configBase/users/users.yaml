@@ -1,7 +1,7 @@
-allowPublicRegistration: true
+allowPublicRegistration: false
+deactivateByDefault: false
 defaultGroup: ''
 photoSubpath: null
-photoVolumeUid: 7c68cfff-6e3b-4e8a-bdd9-cf954ceb6da8 # Test
-requireEmailVerification: true
-suspendByDefault: false
+photoVolumeUid: c935455f-deec-494d-804a-1653b824f9af # Public
+requireEmailVerification: false
 validateOnPublicRegistration: false

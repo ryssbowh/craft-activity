@@ -17,7 +17,7 @@ class RoutesTest extends BaseTest
         $this->assertIsString($uid);
         $this->assertLogCount(1);
         $this->assertLatestLog('routeCreated');
-        \Craft::$app->getRoutes()->saveRoute([], '', null, $uid);
+        \Craft::$app->getRoutes()->saveRoute([], 'test', null, $uid);
         $this->assertLogCount(2);
         $this->assertLatestLog('routeSaved');
         $this->assertTrue(\Craft::$app->getRoutes()->deleteRouteByUid($uid));

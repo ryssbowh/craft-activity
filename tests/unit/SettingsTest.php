@@ -29,7 +29,7 @@ class SettingsTest extends BaseTest
     public function testChangingUserSettings()
     {
         $this->resetActivity();
-        \Craft::$app->projectConfig->set('users.requireEmailVerification', false);
+        \Craft::$app->projectConfig->set('users.requireEmailVerification', true);
         $this->assertLogCount(1);
         $this->assertLatestLog('userSettingsChanged');
     }
