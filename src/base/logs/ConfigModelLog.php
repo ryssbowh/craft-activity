@@ -91,16 +91,6 @@ abstract class ConfigModelLog extends ActivityLog
     }
 
     /**
-     * Get the typings for the fields
-     * 
-     * @return array
-     */
-    protected function getFieldTypings(): array
-    {
-        return [];
-    }
-
-    /**
      * Load the model
      * 
      * @return ?Model
