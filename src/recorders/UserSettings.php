@@ -4,6 +4,7 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ProjectConfigRecorder;
+use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class UserSettings extends ProjectConfigRecorder
@@ -13,7 +14,7 @@ class UserSettings extends ProjectConfigRecorder
      */
     public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate('users', function(Event $event) {
+        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_USERS, function (Event $event) {
             Activity::getRecorder('userSettings')->onChanged('users', 'userSettingsChanged', $event->oldValue, $event->newValue);
         });
     }
