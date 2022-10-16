@@ -77,6 +77,7 @@ use Ryssbowh\Activity\models\logs\users\UserCreated;
 use Ryssbowh\Activity\models\logs\users\UserDeleted;
 use Ryssbowh\Activity\models\logs\users\UserGroupCreated;
 use Ryssbowh\Activity\models\logs\users\UserGroupDeleted;
+use Ryssbowh\Activity\models\logs\users\UserGroupPermissionsSaved;
 use Ryssbowh\Activity\models\logs\users\UserGroupSaved;
 use Ryssbowh\Activity\models\logs\users\UserInvalidToken;
 use Ryssbowh\Activity\models\logs\users\UserLayoutSaved;
@@ -193,6 +194,7 @@ class RegisterTypesEvent extends Event
             new UserGroupCreated,
             new UserGroupSaved,
             new UserGroupDeleted,
+            new UserGroupPermissionsSaved,
             new UserLayoutSaved,
             new VolumeCreated,
             new VolumeSaved,
