@@ -1,5 +1,9 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.0.1 - 2022-10-16
+### Fixed
+- Fixed issue in permissions handler
+
 ## 1.0.0 - 2022-10-16
 ### Changed
 - Reinstated field typings
