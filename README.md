@@ -49,8 +49,6 @@ User activity and the fields changed will remain viewable even when the object r
 
 **This plugin will not work if you've opt out of [Project Config](https://craftcms.com/docs/3.x/project-config.html) on which it's based**
 
-This plugin also exists for Craft 3 : https://github.com/ryssbowh/craft-activity/tree/v1
-
 ## Installation
 
 Install through plugin store or with composer : `composer require rysbowh/craft-activity:^2.0`
