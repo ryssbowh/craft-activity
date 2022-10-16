@@ -16,7 +16,7 @@ A non exhaustive list of things this plugin can track :
 - Address layout changed
 - Volumes (created, saved, deleted)
 - Filesystems (created, saved, deleted)
-- Asset transforms (created, saved, deleted)
+- Image transforms (created, saved, deleted)
 - Backups (created, restored)
 - Category groups (created, saved, deleted)
 - Entry types (created, saved, deleted)
