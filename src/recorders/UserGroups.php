@@ -10,21 +10,13 @@ use yii\base\Event;
 
 class UserGroups extends ConfigModelRecorder
 {
-    protected $triggered;
-    protected $mode;
-    protected $added = false;
+    protected $inited;
 
     /**
      * @inheritDoc
      */
     public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_USER_GROUPS, function (Event $event) {
-            Activity::getRecorder('userGroups')->onGroupsChanged($event);
-        });
-        \Craft::$app->projectConfig->onAdd(ProjectConfig::PATH_USER_GROUPS, function (Event $event) {
-            Activity::getRecorder('userGroups')->onGroupsChanged($event);
-        });
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_USER_GROUPS . '.{uid}', function (Event $event) {
             Activity::getRecorder('userGroups')->onUpdate($event);
         });
@@ -37,63 +29,32 @@ class UserGroups extends ConfigModelRecorder
     }
 
     /**
-     * Little fiddling with the data :
-     * If we're applying project config need to save the event for the specific events (onAdd, onUpdate) to use it later.
-     * If we're not, the specific events have been triggered already and the data is there to use
-     * 
-     * @param ConfigEvent $event
+     * @inheritDoc
      */
-    public function onGroupsChanged(ConfigEvent $event)
+    public function onAdd(ConfigEvent $event)
     {
-        if (!\Craft::$app->projectConfig->isApplyingExternalChanges) {
-            if ($this->triggered and $this->mode) {
-                $path = explode('.', $this->triggered->path);
-                $this->triggered->tokenMatches = [$path[2]];
-                $this->triggered->newValue['permissions'] = $event->newValue[$path[2]]['permissions'];
-                $this->emptyQueue();
-                if ($this->mode == 'add') {
-                    parent::onAdd($this->triggered);
-                } else {
-                    parent::onUpdate($this->triggered);
-                }
-                $this->triggered = null;
-                $this->mode = null;
-            }
-        } else {
-            $this->triggered = $event;
+        if (!$this->queueHasLogForUid($event->tokenMatches[0], 'userGroupCreated')) {
+            parent::onAdd($event);
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function onUpdate(ConfigEvent $event)
     {
-        if (!\Craft::$app->projectConfig->isApplyingExternalChanges) {
-            if ($this->triggered === null) {
-                //This event is triggered twice, once for the group, once for the permissions
-                //the first one has the data we need
-                $this->triggered = $event;
-                $this->mode = 'update';
-            }
-        } else {
-            $uid = $event->tokenMatches[0];
-            $event->newValue['permissions'] = $this->triggered->newValue[$uid]['permissions'];
-        }
-        if (!$this->queue) {
+        if (!$this->queueHasLogForUid($event->tokenMatches[0], 'userGroupSaved')) {
             parent::onUpdate($event);
         }
     }
 
-    public function onAdd(ConfigEvent $event)
+    /**
+     * @inheritDoc
+     */
+    public function onRemove(ConfigEvent $event)
     {
-        if (!\Craft::$app->projectConfig->isApplyingExternalChanges) {
-            $this->triggered = $event;
-            $this->mode = 'add';
-        } else if (!$this->added) {
-            $uid = $event->tokenMatches[0];
-            $event->newValue['permissions'] = $this->triggered->newValue[$uid]['permissions'];
-            $this->added = true;
-        }
-        if (!$this->queue) {
-            parent::onAdd($event);
+        if (!$this->queueHasLogForUid($event->tokenMatches[0], 'userGroupDeleted')) {
+            parent::onRemove($event);
         }
     }
 
@@ -110,7 +71,7 @@ class UserGroups extends ConfigModelRecorder
      */
     protected function getTrackedFieldNames(): array
     {
-        return ['name', 'handle', 'description', 'permissions'];
+        return ['name', 'handle', 'description'];
     }
 
     /**

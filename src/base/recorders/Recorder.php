@@ -3,6 +3,7 @@
 namespace Ryssbowh\Activity\base\recorders;
 
 use Ryssbowh\Activity\Activity;
+use Ryssbowh\Activity\base\logs\ActivityLog;
 use Ryssbowh\Activity\exceptions\ActivityTypeException;
 use Ryssbowh\Activity\services\Logs;
 use craft\base\Component;
@@ -29,6 +30,46 @@ abstract class Recorder extends Component
             $log->save();
         }
         $this->emptyQueue();
+    }
+
+    /**
+     * Does a log related to an uid and type exists in the queue
+     * 
+     * @param  string $uid
+     * @param  string $type
+     * @return bool
+     */
+    public function queueHasLogForUid(string $uid, string $type): bool
+    {
+        return $this->getQueuedLogByUid($uid, $type) !== null;
+    }
+
+    /**
+     * Get a queued log for an uid and type
+     * 
+     * @param  string $uid
+     * @param  string $type
+     * @return ?ActivityLog
+     */
+    public function getQueuedLogByUid(string $uid, string $type): ?ActivityLog
+    {
+        $logs = array_filter($this->logQueue, function ($log) use ($uid, $type) {
+            return ($uid == $log->target_uid and $log->handle == $type);
+        });
+        return $logs[0] ?? null;
+    }
+
+    /**
+     * Remove a queued log by uid and type
+     * 
+     * @param string $uid
+     * @param string $type
+     */
+    public function removeQueuedLogsByUid(string $uid, string $type)
+    {
+        $this->logQueue = array_filter($this->logQueue, function ($log) use ($uid, $type) {
+            return ($uid != $log->target_uid and $log->handle != $type);
+        });
     }
 
     /**

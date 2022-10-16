@@ -30,6 +30,7 @@ use Ryssbowh\Activity\recorders\SiteGroups;
 use Ryssbowh\Activity\recorders\Sites;
 use Ryssbowh\Activity\recorders\Tags;
 use Ryssbowh\Activity\recorders\UserGroups;
+use Ryssbowh\Activity\recorders\UserGroupsPermissions;
 use Ryssbowh\Activity\recorders\UserLayout;
 use Ryssbowh\Activity\recorders\UserSettings;
 use Ryssbowh\Activity\recorders\Users;
@@ -78,6 +79,7 @@ class RegisterRecordersEvent extends Event
             'users' => new Users,
             'userLayout' => new UserLayout,
             'userGroups' => new UserGroups,
+            'userGroupsPermissions' => new UserGroupsPermissions,
             'userSettings' => new UserSettings,
             'volumes' => new Volumes
         ]);
