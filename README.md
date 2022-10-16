@@ -53,7 +53,7 @@ This plugin also exists for Craft 3 : https://github.com/ryssbowh/craft-activity
 
 ## Installation
 
-Install through plugin store or with composer : `composer require rysbowh/craft-activity:^0.2`
+Install through plugin store or with composer : `composer require rysbowh/craft-activity:^2.0`
 
 ## Dashboard
 
@@ -295,7 +295,7 @@ In this example an exception would be thrown as Matrix fields already have a han
 
 ## Requirements
 
-This plugin requires Craft 3.7 or above.
+This plugin requires Craft 4.0 or above.
 
 ## Documentation
 
