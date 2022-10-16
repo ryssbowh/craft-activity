@@ -212,9 +212,9 @@ abstract class ActivityLog extends Model
     /**
      * Save this log in database
      */
-    public function save()
+    public function save(): bool
     {
-        Activity::$plugin->logs->saveLog($this);
+        return Activity::$plugin->logs->saveLog($this);
     }
 
     /**
