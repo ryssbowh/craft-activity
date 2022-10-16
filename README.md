@@ -1,4 +1,6 @@
-# Craft activity (Craft 3)
+# Craft activity (Craft 4)
+
+See the Craft 3 version [here](https://github.com/ryssbowh/craft-activity/tree/v1)
 
 Record user activity in Craft, this plugin can record and keep track of changed fields for pretty much any event that happens in the frontend/control panel/console whether it's an element or some config that's being changed.
 
