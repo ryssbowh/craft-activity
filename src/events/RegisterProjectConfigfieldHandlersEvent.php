@@ -19,6 +19,7 @@ use Ryssbowh\Activity\models\fieldHandlers\projectConfig\TransportType;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\UriParts;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\UserGroup;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Volume;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\VolumeType;
 use yii\base\Event;
 
 class RegisterProjectConfigfieldHandlersEvent extends Event
@@ -50,7 +51,8 @@ class RegisterProjectConfigfieldHandlersEvent extends Event
             FieldGroup::class,
             FieldType::class,
             SiteGroup::class,
-            Permissions::class
+            Permissions::class,
+            VolumeType::class
         ]);
     }
 
