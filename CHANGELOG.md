@@ -3,6 +3,8 @@
 ## 1.0.0 - 2022-10-16
 ### Changed
 - Reinstated field typings
+### Fixed
+- User group permissions logs
 
 ## 0.1.2 - 2022-10-12
 ### Fixed
