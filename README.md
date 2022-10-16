@@ -86,6 +86,9 @@ Logs can be deleted when they become too old, and be deleted along with the user
 
 This plugin has been developed with the main focus of being easy to extend, you can define your own recorders, log types, field handlers and record any activity you like.
 
+Recorders are registered and instanciated when all plugins have been registered, they listen to Craft events and commit logs. A log is one action that happened on the system, they are saved in database along with the changed fields associated with them.  
+At the end of each request the logs commited in each recorder are saved in database.
+
 ### Recorders
 
 Define a new recorder :
@@ -97,7 +100,7 @@ use Ryssbowh\Activity\Activity;
 
 class MyRecorder extends Recorder
 {
-    public function init()
+    public function init(): void
     {
         Event::on(SomeClass::class, SomeClass::EVENT_SOME_EVENT, function (Event $event) {
             Activity::getRecorder(''my-recorder')->somethingChanged($event);
@@ -313,3 +316,4 @@ See the class reference [here](https://ryssbowh.github.io/docs/craft-activity2/n
 ## Roadmap
 
 - Track individual field config
+- Track layout field rules
