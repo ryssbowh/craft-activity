@@ -28,6 +28,7 @@ A non exhaustive list of things this plugin can track :
 - Sites (created, saved, deleted)
 - Tag groups (created, saved, deleted)
 - Users
+  - permissions changed
   - activated, self activated
   - assigned groups
   - used invalid token
@@ -36,7 +37,7 @@ A non exhaustive list of things this plugin can track :
   - suspended, unsuspended
   - email verified
   - failed to login
-- User groups (created, saved, deleted, permissions)
+- User groups (created, saved, deleted, permissions changed)
 - User layout changed
 - Widgets (created, saved, deleted)
 - Emails (sent, failed)

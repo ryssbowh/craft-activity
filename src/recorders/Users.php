@@ -5,14 +5,19 @@ namespace Ryssbowh\Activity\recorders;
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ElementsRecorder;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Permissions;
 use craft\base\Element;
 use craft\controllers\UsersController;
 use craft\elements\User;
 use craft\services\Users as CraftUsers;
+use yii\base\Application;
 use yii\base\Event;
 
 class Users extends ElementsRecorder
 {
+    protected $permissions = [];
+    protected $endRequestInitiated = false;
+
     /**
      * @inheritDoc
      */
@@ -64,6 +69,15 @@ class Users extends ElementsRecorder
                 Activity::getRecorder('users')->onInvalidToken($event->user);
             }
         });
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function onSaved(Element $user)
+    {
+        $this->saveOldPermissions($user);
+        parent::onSaved($user);
     }
 
     /**
@@ -246,6 +260,52 @@ class Users extends ElementsRecorder
             'user' => $user,
             'group' => $group->name
         ]);
+    }
+
+    public function saveNewPermissions()
+    {
+        $type = 'userPermissionsSaved';
+        foreach ($this->permissions as $userId => $oldPerms) {
+            $user = User::find()->id($userId)->anyStatus()->one();
+            if (!$this->shouldSaveElementLog($type, $user)) {
+                continue;
+            }
+            $newPerms = \Craft::$app->userPermissions->getPermissionsByUserId($userId);
+            $newHandler = new Permissions([
+                'value' => $newPerms
+            ]);
+            $oldHandler = new Permissions([
+                'value' => $oldPerms
+            ]);
+            $changed = $newHandler->getDirty($oldHandler);
+            if ($changed) {
+                $this->commitLog($type, [
+                    'element' => $user,
+                    'changedFields' => [
+                        'permissions' => [
+                            'handler' => get_class($newHandler),
+                            'data' => $newHandler->getDirty($oldHandler)
+                        ]
+                    ]
+                ], true);
+            }
+        }
+    }
+
+    /**
+     * Save the old permissions and listen to end of request event so the new permissions can be tracked
+     * 
+     * @param Element $user
+     */
+    protected function saveOldPermissions(Element $user)
+    {
+        $this->permissions[$user->id] = \Craft::$app->userPermissions->getPermissionsByUserId($user->id);
+        if (!$this->endRequestInitiated) {
+            Event::on(Application::class, Application::EVENT_AFTER_REQUEST, function (Event $event) {
+                Activity::getRecorder('users')->saveNewPermissions($event->sender);
+            });
+            $this->endRequestInitiated = true;
+        }
     }
 
     /**
