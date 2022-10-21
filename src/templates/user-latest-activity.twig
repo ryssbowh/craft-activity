@@ -2,13 +2,13 @@
 {% set logs = craft.activity.logs.getUserLogs(user) %}
 
 {% if logs %}
-    <div id="latest-activity">
-        <div class="meta read-only">
-            <h3>{{ 'Latest activity'|t('activity') }}</h3>
+    <fieldset id="latest-activity">
+        <legend class="h6">{{ 'Latest activity'|t('activity') }}</legend>
+        <div class="meta">
             {% for log in logs %}
                 <p>{{ log.title|raw }}</p>
             {% endfor %}
             <a target="_blank" href="{{ url('activity') }}?filters[users][]={{ user.id }}">{{ 'View all'|t('activity') }}</a>
         </div>
-    </div>
+    </fieldset>
 {% endif %}

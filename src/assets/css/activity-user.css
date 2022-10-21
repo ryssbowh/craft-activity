@@ -6,3 +6,7 @@
     margin-bottom: 5px;
     margin-top: 5px;
 }
+
+#latest-activity .meta {
+    padding: 10px var(--padding);
+}
