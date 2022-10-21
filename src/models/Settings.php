@@ -61,7 +61,8 @@ class Settings extends Model
      */
     public $ignoreRules = [
         ['type' => 'entryMoved', 'active' => 1, 'request' => ''],
-        ['type' => 'categoryMoved', 'active' => 1, 'request' => '']
+        ['type' => 'categoryMoved', 'active' => 1, 'request' => ''],
+        ['type' => 'userLoggedOut', 'active' => 1, 'request' => '']
     ];
 
     /**
