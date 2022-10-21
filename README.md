@@ -26,6 +26,7 @@ A non exhaustive list of things this plugin can track :
 - Sites (created, saved, deleted)
 - Tag groups (created, saved, deleted)
 - Users
+  - Logged in, out
   - permissions changed
   - activated, self activated
   - assigned groups
@@ -47,7 +48,7 @@ User activity and the fields changed will remain viewable even when the object r
 
 ## Installation
 
-Install through plugin store or with composer : `composer require rysbowh/craft-activity:^0.1`
+Install through plugin store or with composer : `composer require rysbowh/craft-activity:^1.0`
 
 ## Dashboard
 
