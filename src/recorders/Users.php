@@ -10,6 +10,7 @@ use craft\base\Element;
 use craft\controllers\UsersController;
 use craft\elements\User;
 use craft\services\Users as CraftUsers;
+use craft\web\User as WebUser;
 use yii\base\Application;
 use yii\base\Event;
 
@@ -68,6 +69,12 @@ class Users extends ElementsRecorder
             if ($event->user) {
                 Activity::getRecorder('users')->onInvalidToken($event->user);
             }
+        });
+        Event::on(WebUser::class, WebUser::EVENT_AFTER_LOGIN, function ($event) {
+            Activity::getRecorder('users')->onLoggedIn($event->identity);
+        });
+        Event::on(WebUser::class, WebUser::EVENT_AFTER_LOGOUT, function ($event) {
+            Activity::getRecorder('users')->onLoggedOut($event->identity);
         });
     }
 
@@ -262,6 +269,39 @@ class Users extends ElementsRecorder
         ]);
     }
 
+    /**
+     * Save a log when a user logs in
+     * 
+     * @param User $user
+     */
+    public function onLoggedIn(User $user)
+    {
+        if (!$this->shouldSaveLog('userLoggedIn')) {
+            return;
+        }
+        $this->commitLog('userLoggedIn', [
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Save a log when a user logs out
+     * 
+     * @param User $user
+     */
+    public function onLoggedOut(User $user)
+    {
+        if (!$this->shouldSaveLog('userLoggedOut')) {
+            return;
+        }
+        $this->commitLog('userLoggedOut', [
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Save new permissions at the end of request
+     */
     public function saveNewPermissions()
     {
         $type = 'userPermissionsSaved';

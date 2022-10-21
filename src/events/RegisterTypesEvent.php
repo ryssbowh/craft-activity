@@ -82,6 +82,8 @@ use Ryssbowh\Activity\models\logs\users\UserGroupSaved;
 use Ryssbowh\Activity\models\logs\users\UserInvalidToken;
 use Ryssbowh\Activity\models\logs\users\UserLayoutSaved;
 use Ryssbowh\Activity\models\logs\users\UserLocked;
+use Ryssbowh\Activity\models\logs\users\UserLoggedIn;
+use Ryssbowh\Activity\models\logs\users\UserLoggedOut;
 use Ryssbowh\Activity\models\logs\users\UserLoginFailed;
 use Ryssbowh\Activity\models\logs\users\UserPermissionsSaved;
 use Ryssbowh\Activity\models\logs\users\UserRegistered;
@@ -198,6 +200,8 @@ class RegisterTypesEvent extends Event
             new UserGroupPermissionsSaved,
             new UserLayoutSaved,
             new UserPermissionsSaved,
+            new UserLoggedIn,
+            new UserLoggedOut,
             new VolumeCreated,
             new VolumeSaved,
             new VolumeDeleted,

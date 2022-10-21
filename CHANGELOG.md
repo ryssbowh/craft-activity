@@ -1,5 +1,9 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.0.2 - 2022-10-21
+### Added
+- Logged in and logged out logs
+
 ## 1.0.1 - 2022-10-16
 ### Fixed
 - Fixed issue in permissions handler
