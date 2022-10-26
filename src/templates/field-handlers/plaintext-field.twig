@@ -2,7 +2,7 @@
 
 {% macro textFromValue(field) %}
     {% if field.data.f|length > 50 %}
-        <a href="#" class="js-view-field-value" data-id="{{ field.id }}" data-data="f">view</a>
+        <a href="#" class="js-view-field-value" data-id="{{ field.id }}" data-key="f">view</a>
     {% else %}
         {{ macros.elementFromValue(field.data) }}
     {% endif %}
@@ -10,7 +10,7 @@
 
 {% macro textToValue(field) %}
     {% if field.data.t|length > 50 %}
-        <a href="#" class="js-view-field-value" data-id="{{ field.id }}" data-data="t">view</a>
+        <a href="#" class="js-view-field-value" data-id="{{ field.id }}" data-key="t">view</a>
     {% else %}
         {{ macros.elementToValue(field.data) }}
     {% endif %}

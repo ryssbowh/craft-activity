@@ -14,7 +14,7 @@ use Ryssbowh\Activity\models\fieldHandlers\elements\ListsField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Matrix;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use Ryssbowh\Activity\models\fieldHandlers\elements\PlainText;
-use Ryssbowh\Activity\models\fieldHandlers\elements\Redactor;
+use Ryssbowh\Activity\models\fieldHandlers\elements\LongText;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Seo;
 use Ryssbowh\Activity\models\fieldHandlers\elements\SuperTable;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Table;
@@ -44,10 +44,10 @@ class RegisterElementFieldHandlersEvent extends Event
             LinkField::class,
             ListField::class,
             ListsField::class,
+            LongText::class,
             Matrix::class,
             Plain::class,
             PlainText::class,
-            Redactor::class,
             Seo::class,
             SuperTable::class,
             Tags::class,

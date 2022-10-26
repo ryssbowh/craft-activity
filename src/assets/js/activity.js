@@ -88,7 +88,7 @@ var Activity = Garnish.Base.extend({
     loadFieldValue: function (e) {
         e.preventDefault();
         let data = {
-            data: $(e.target).data('data'),
+            key: $(e.target).data('key'),
             id: $(e.target).data('id')
         };
         Craft.postActionRequest('activity/activity/field-value', data, (response, textStatus) => {

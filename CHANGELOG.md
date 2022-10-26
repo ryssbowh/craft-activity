@@ -1,5 +1,13 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.1.0 - 2022-10-26
+### Changed
+- Changed field handler `Redactor` to `LongText`
+### Added
+- [TinyMCE](https://plugins.craftcms.com/tinymce) field support
+### Fixed
+- Fixed redactor changed field throwing error when used inside a Matrix field. [#1](https://github.com/ryssbowh/craft-activity/issues/1)
+
 ## 1.0.2 - 2022-10-21
 ### Added
 - Logged in and logged out logs

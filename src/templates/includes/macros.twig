@@ -52,7 +52,7 @@
     {{ _self.elementValue(data.ff ?? data.f) }}
 {% endmacro %}
 
-{% macro elementField(field) %}
+{% macro elementField(field, data = {}) %}
     {% set template = handlerTemplate(field.handler) %}
     {% if template %}
         {% include template %}
