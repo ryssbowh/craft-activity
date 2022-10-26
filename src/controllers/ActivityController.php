@@ -88,11 +88,15 @@ class ActivityController extends Controller
     {
         $this->requirePermission('viewActivityLogs');
         $id = $this->request->getRequiredBodyParam('id');
-        $data = $this->request->getRequiredBodyParam('data');
+        $key = explode('.', ltrim($this->request->getRequiredBodyParam('key'), '.'));
         $field = Activity::$plugin->logs->getChangedFieldById($id);
+        $value = $field->data;
+        foreach ($key as $elem) {
+            $value = $value[$elem];
+        }
         return $this->asJson([
             'success' => true,
-            'data' => array_key_exists($data, $field->data) ? $field->data[$data] : ''
+            'data' => $value
         ]);
     }
 }

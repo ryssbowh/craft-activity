@@ -4,7 +4,12 @@ See the Craft 3 version [here](https://github.com/ryssbowh/craft-activity/tree/v
 
 Record user activity in Craft, this plugin can record and keep track of changed fields for pretty much any event that happens in the frontend/control panel/console whether it's an element or some config that's being changed.
 
-All Craft fields tracking is supported, as well as [Redactor](https://plugins.craftcms.com/redactor), [Super table](https://plugins.craftcms.com/super-table), [SEO](https://plugins.craftcms.com/seo) and [Typed Link](https://plugins.craftcms.com/typedlinkfield) fields.
+All Craft fields tracking is supported, as well as :
+- [Redactor](https://plugins.craftcms.com/redactor)
+- [Super table](https://plugins.craftcms.com/super-table)
+- [SEO](https://plugins.craftcms.com/seo)
+- [Typed Link](https://plugins.craftcms.com/typedlinkfield)
+- [TinyMCE](https://plugins.craftcms.com/tinymce)
 
 A non exhaustive list of things this plugin can track :
 - Elements

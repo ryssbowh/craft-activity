@@ -4,7 +4,7 @@ namespace Ryssbowh\Activity\models\fieldHandlers\elements;
 
 use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
 
-class Redactor extends ElementFieldHandler
+class LongText extends ElementFieldHandler
 {
     /**
      * @inheritDoc
@@ -12,7 +12,8 @@ class Redactor extends ElementFieldHandler
     public static function getTargets(): array
     {
         return [
-            'craft\\redactor\\Field'
+            'craft\\redactor\\Field',
+            'spicyweb\\tinymce\\fields\\TinyMCE'
         ];
     }
 
@@ -21,6 +22,6 @@ class Redactor extends ElementFieldHandler
      */
     public static function getTemplate(): ?string
     {
-        return 'activity/field-handlers/redactor-field';
+        return 'activity/field-handlers/longtext-field';
     }
 }

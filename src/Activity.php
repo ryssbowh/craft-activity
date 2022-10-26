@@ -26,6 +26,11 @@ class Activity extends Plugin
      * @var Themes
      */
     public static $plugin;
+
+    /**
+     * @inheritDoc
+     */
+    public string $schemaVersion = '2.1.0';
     
     /**
      * @inheritdoc

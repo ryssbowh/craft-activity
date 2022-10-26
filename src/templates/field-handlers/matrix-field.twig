@@ -15,8 +15,8 @@
                             {% elseif block.enabled.t ?? null is same as(false) and block.enabled.f ?? null is same as(true) %}
                                 <li>{{ 'Block was disabled'|t('activity') }}</li>
                             {% endif %}
-                            {% for mfield in block.fields ?? [] %}
-                                {{ macros.elementField(mfield) }}
+                            {% for handle, mfield in block.fields ?? [] %}
+                                {{ macros.elementField(mfield, {fieldId: field.id, key: 'blocks.' ~ row  ~ '.fields.' ~ handle ~ '.data' }) }}
                             {% endfor %}
                         </ul>
                     </li>
@@ -29,8 +29,8 @@
                             {% else %}
                                 <li>{{ 'Block was disabled'|t('activity') }}</li>
                             {% endif %}
-                            {% for mfield in block.fields ?? [] %}
-                                {{ macros.elementField(mfield) }}
+                            {% for handle, mfield in block.fields ?? [] %}
+                                {{ macros.elementField(mfield, {fieldId: field.id, key: 'blocks.' ~ row ~ '.fields.' ~ handle ~ '.data' }) }}
                             {% endfor %}
                         </ul>
                     </li>
@@ -43,8 +43,8 @@
                             {% else %}
                                 <li>{{ 'Block was disabled'|t('activity') }}</li>
                             {% endif %}
-                            {% for mfield in block.fields ?? [] %}
-                                {{ macros.elementField(mfield) }}
+                            {% for handle, mfield in block.fields ?? [] %}
+                                {{ macros.elementField(mfield, {fieldId: field.id, key: 'blocks.' ~ row ~ '.fields.' ~ handle ~ '.data' }) }}
                             {% endfor %}
                         </ul>
                     </li>
