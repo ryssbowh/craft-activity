@@ -23,9 +23,6 @@ abstract class ProjectConfigRecorder extends Recorder
             return;
         }
         $dirty = $this->getDirtyConfig($basePath, $newValue, $oldValue);
-        if (Activity::$plugin->settings->ignoreNoSettingsChanges and !$dirty) {
-            return;
-        }
         $dirty = $this->obfuscateDirtySettings($dirty);
         if (!$dirty) {
             return;

@@ -66,9 +66,6 @@ abstract class ConfigModelRecorder extends Recorder
         }
         if (Activity::$plugin->settings->trackConfigFieldsChanges) {
             $changed = $this->getDirtyConfig($path, $event->newValue ?? [], $event->oldValue ?? []);
-            if (Activity::$plugin->settings->ignoreNoConfigChanges and !$changed) {
-                return;
-            }
             $params['changedFields'] = $changed;
         }
         $params = $this->modifyParams($params, $event);

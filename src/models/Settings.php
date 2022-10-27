@@ -39,17 +39,7 @@ class Settings extends Model
     /**
      * @var boolean
      */
-    public bool $ignoreNoConfigChanges = false;
-
-    /**
-     * @var boolean
-     */
     public bool $ignoreNoElementChanges = false;
-
-    /**
-     * @var boolean
-     */
-    public bool $ignoreNoSettingsChanges = false;
 
     /**
      * @var string

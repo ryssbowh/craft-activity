@@ -1,5 +1,9 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.2.2 - unreleased
+### Removed
+- Removed settings related to no changes as Project Config is already doing this
+
 ## 2.1.1 - 2022-10-27
 ### Fixed
 - Filters not working [#1](https://github.com/ryssbowh/craft-activity/issues/1)

@@ -23,10 +23,6 @@
     config: {
         label: 'Config'|t('activity'),
         url: '#settings-config'
-    },
-    settings: {
-        label: 'Settings'|t('activity'),
-        url: '#settings-settings'
     }
 } %}
 
@@ -145,27 +141,6 @@
                 label: 'Track changes made in config'|t('activity'),
                 name: 'trackConfigFieldsChanges',
                 on: settings.trackConfigFieldsChanges
-            })
-        }}
-        {{
-            forms.lightswitchField({
-                label: 'Ignore config activity when no changes have been done'|t('activity'),
-                instructions: "This has no effect if config changes aren't tracked."|t('activity'),
-                name: 'ignoreNoConfigChanges',
-                warning: "This will also ignore activity when something has been changed on a field that is not tracked by the system"|t('activity'),
-                on: settings.ignoreNoConfigChanges
-            })
-        }}
-    </div>
-
-    <div class="tab-content hidden" id="settings">
-        <p>{{ 'These settings apply to yaml settings (general, assets, users etc)'|t('activity') }}</p>
-        {{
-            forms.lightswitchField({
-                label: 'Ignore settings activity when no changes have been done'|t('activity'),
-                name: 'ignoreNoSettingsChanges',
-                warning: "This will also ignore activity when something has been changed on a field that is not tracked by the system"|t('activity'),
-                on: settings.ignoreNoSettingsChanges
             })
         }}
     </div>
