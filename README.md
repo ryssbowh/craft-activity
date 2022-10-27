@@ -315,8 +315,6 @@ See the class reference [here](https://ryssbowh.github.io/docs/craft-activity2/n
 - Widgets changes can't be tracked
 - Each individual fields config isn't tracked
 - Tags aren't tracked, seems useless since there's no tag management utility in Craft
-- Elements moved activity is ignored by default
-- The system doesn't track every single config field (such as for fields for example), if you choose to ignore activity when no changes are done, activity won't be recorded even if changes are made to a field that isn't tracked.
 
 ## Roadmap
 
