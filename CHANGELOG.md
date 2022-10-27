@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.1.1 - 2022-10-27
+### Fixed
+- Filters not working [#1](https://github.com/ryssbowh/craft-activity/issues/1)
+- Issue with php 7.4 [#2](https://github.com/ryssbowh/craft-activity/issues/2)
+
 ## 2.1.0 - 2022-10-26
 ### Changed
 - Changed field handler `Redactor` to `LongText`

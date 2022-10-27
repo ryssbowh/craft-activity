@@ -25,9 +25,8 @@ var Activity = Garnish.Base.extend({
         this.$hotReload = $('#header .js-hot-reload');
         this.initAdminTable();
         this.addListener($('#header .btn.delete'), 'click', 'handleDeleteAll');
-        this.addListener($('#users-filter a'), 'click', 'handleChangeFilter');
-        this.addListener($('#type-filter a'), 'click', 'handleChangeFilter');
-        this.addListener($('#per-page a'), 'click', 'handleChangePager');
+        this.addListener($('.menu.activity-filter a'), 'click', 'handleChangeFilter');
+        this.addListener($('.activity-per-page a'), 'click', 'handleChangePager');
         this.addListener($('#reset-filters'), 'click', 'handleReset');
         this.initDatePickers();
         this.initPager();
@@ -53,6 +52,7 @@ var Activity = Garnish.Base.extend({
     handleReset: function (e) {
         e.preventDefault();
         this.$filters.find('a').removeClass('sel');
+        this.$filters.find('a.all').addClass('sel');
         this.$datepickers.val('');
         this.reloadRecords();
     },
@@ -258,7 +258,7 @@ var Activity = Garnish.Base.extend({
                 filters.filters[$(elem).attr('name')] = $(elem).val();
             }
         });
-        filters.perPage = $('#per-page a.sel').html();
+        filters.perPage = $('.activity-per-page a.sel').html();
         return filters;
     }
 });

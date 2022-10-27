@@ -11,7 +11,7 @@
 
 {% block toolbar %}
     <button type="button" data-icon="users" class="btn menubtn">{{ "Users"|t('app') }}</button>
-    <div class="menu activity-filter" id="users-filter" data-name="users">
+    <div class="menu activity-filter" data-name="users">
         <ul class="padded">
             <li>
                 <a class="all {% if not filters.users ?? [] %}sel{% endif %}">{{ "All users"|t('app') }}</a>
@@ -30,7 +30,7 @@
         </ul>
     </div>
     <button type="button" data-icon="settings" class="btn menubtn">{{ "Types"|t('activity') }}</button>
-    <div class="menu activity-filter" id="type-filter" data-name="types">
+    <div class="menu activity-filter" data-name="types">
         <ul class="padded">
             <li>
                 <a class="all {% if not filters.types ?? [] %}sel{% endif %}">{{ "All types"|t('activity') }}</a>
@@ -61,7 +61,7 @@
         </div>
     </div>
     <button type="button" class="btn menubtn">{{ "Per page"|t('activity') }}</button>
-    <div class="menu" id="per-page">
+    <div class="menu activity-per-page">
         <ul class="padded">
             <li><a class="{% if perPage == 10 %}sel{% endif %}">10</a></li>
             <li><a class="{% if perPage == 20 %}sel{% endif %}">20</a></li>
