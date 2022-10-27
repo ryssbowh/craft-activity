@@ -1,5 +1,9 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.1.1 - 2022-10-27
+### Fixed
+- Issue with php 7.4 [#2](https://github.com/ryssbowh/craft-activity/issues/2)
+
 ## 1.1.0 - 2022-10-26
 ### Changed
 - Changed field handler `Redactor` to `LongText`

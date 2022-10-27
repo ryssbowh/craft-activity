@@ -92,7 +92,7 @@ trait ProjectConfigFields
      * @param  mixed $value
      * @return mixed
      */
-    protected function typeValue(string $path, mixed $value): mixed
+    protected function typeValue(string $path, $value): mixed
     {
         $typing = $this->getTrackedFieldTypings()[$path] ?? null;
         switch ($typing) {
