@@ -10,7 +10,7 @@ class PlainText extends ElementFieldHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             PlainTextField::class

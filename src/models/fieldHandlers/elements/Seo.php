@@ -45,7 +45,7 @@ class Seo extends ElementFieldHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             'ether\seo\fields\SeoField'

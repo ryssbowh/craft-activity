@@ -26,7 +26,7 @@ class FieldLayout extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             ProjectConfig::PATH_ENTRY_TYPES . '.{uid}.fieldLayouts',

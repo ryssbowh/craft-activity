@@ -23,7 +23,7 @@ class Permissions extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             ProjectConfig::PATH_USER_GROUPS . '.{uid}.permissions'

@@ -18,7 +18,7 @@ class SectionPropagationMethod extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             ProjectConfig::PATH_SECTIONS . '.{uid}.propagationMethod'

@@ -10,7 +10,7 @@ class Categories extends ElementsFieldHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             CategoriesField::class
