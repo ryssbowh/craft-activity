@@ -22,7 +22,7 @@ class GeneralSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(): array
+    protected function _getTrackedFieldNames(): array
     {
         return ['live', 'name', 'retryDuration', 'timeZone'];
     }

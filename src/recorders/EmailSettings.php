@@ -21,7 +21,7 @@ class EmailSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(): array
+    protected function _getTrackedFieldNames(): array
     {
         return ['fromEmail', 'fromName', 'replyToEmail', 'template', 'transportType', 'transportSettings.encryptionMethod', 'transportSettings.host', 'transportSettings.password', 'transportSettings.port', 'transportSettings.timeout', 'transportSettings.useAuthentication', 'transportSettings.username', 'transportSettings.command'];
     }

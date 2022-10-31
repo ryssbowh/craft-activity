@@ -36,7 +36,7 @@ class Tags extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(): array
+    protected function _getTrackedFieldNames(): array
     {
         return ['name', 'handle', 'fieldLayouts'];
     }

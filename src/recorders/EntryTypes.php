@@ -47,7 +47,7 @@ class EntryTypes extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(): array
+    protected function _getTrackedFieldNames(): array
     {
         return ['name', 'handle', 'hasTitleField', 'titleTranslationMethod', 'titleFormat', 'fieldLayouts'];
     }
@@ -55,7 +55,7 @@ class EntryTypes extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldTypings(): array
+    protected function _getTrackedFieldTypings(): array
     {
         return [
             'hasTitleField' => 'bool'

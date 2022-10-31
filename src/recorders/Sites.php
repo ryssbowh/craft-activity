@@ -39,7 +39,7 @@ class Sites extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(): array
+    protected function _getTrackedFieldNames(): array
     {
         return ['name', 'handle', 'language', 'primary', 'hasUrls', 'baseUrl', 'enabled', 'siteGroup'];
     }
@@ -47,7 +47,7 @@ class Sites extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldTypings(): array
+    protected function _getTrackedFieldTypings(): array
     {
         return [
             'hasUrls' => 'bool',

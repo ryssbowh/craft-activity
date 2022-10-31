@@ -56,7 +56,7 @@ class FileSystems extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(): array
+    protected function _getTrackedFieldNames(): array
     {
         return ['name', 'handle', 'hasUrls', 'settings.path', 'type', 'url'];
     }

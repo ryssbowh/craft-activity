@@ -36,7 +36,7 @@ class Sections extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(): array
+    protected function _getTrackedFieldNames(): array
     {
         return ['name', 'handle', 'type', 'enableVersioning', 'siteSettings', 'previewTargets', 'propagationMethod', 'maxLevels'];
     }
@@ -44,7 +44,7 @@ class Sections extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldTypings(): array
+    protected function _getTrackedFieldTypings(): array
     {
         return [
             'enableVersioning' => 'bool'
