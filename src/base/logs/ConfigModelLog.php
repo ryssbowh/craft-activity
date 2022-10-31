@@ -2,11 +2,20 @@
 
 namespace Ryssbowh\Activity\base\logs;
 
+use Ryssbowh\Activity\events\RegisterFieldLabelsEvent;
 use craft\base\Model;
 use craft\helpers\Html;
+use yii\base\Event;
 
 abstract class ConfigModelLog extends ActivityLog
 {
+    const EVENT_REGISTER_FIELD_LABELS = 'register-field-labels';
+
+    /**
+     * @var array
+     */
+    protected $_fieldLabels;
+
     /**
      * @var Model
      */
@@ -81,11 +90,28 @@ abstract class ConfigModelLog extends ActivityLog
     }
 
     /**
-     * Get the labels for the fields
+     * Get the labels for the fields, modifiable through an event
      * 
      * @return array
      */
     protected function getFieldLabels(): array
+    {
+        if ($this->_fieldLabels === null) {
+            $event = new RegisterFieldLabelsEvent([
+                'labels' => $this->_getFieldLabels()
+            ]);
+            Event::trigger($this, self::EVENT_REGISTER_FIELD_LABELS, $event);
+            $this->_fieldLabels = $event->labels;
+        }
+        return $this->_fieldLabels;
+    }
+
+    /**
+     * Get the labels for the fields
+     * 
+     * @return array
+     */
+    protected function _getFieldLabels(): array
     {
         return [];
     }

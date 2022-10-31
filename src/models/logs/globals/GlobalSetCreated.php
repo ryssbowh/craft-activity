@@ -41,7 +41,7 @@ class GlobalSetCreated extends ConfigModelLog
     /**
      * @inheritDoc
      */
-    protected function getFieldLabels(): array
+    protected function _getFieldLabels(): array
     {
         return (new GlobalSet)->attributeLabels();
     }
