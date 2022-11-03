@@ -6,6 +6,9 @@ use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use craft\helpers\ProjectConfig as ProjectConfigHelper;
 use craft\services\ProjectConfig;
 
+/**
+ * @since 2.2.0
+ */
 class TableColumns extends DefaultHandler
 {
     /**

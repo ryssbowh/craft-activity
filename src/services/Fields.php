@@ -10,14 +10,28 @@ use Ryssbowh\Activity\exceptions\ActivityTypeException;
 use craft\base\Component;
 use yii\base\Event;
 
+/**
+ * @since 2.2.0
+ */
 class Fields extends Component
 {   
     const EVENT_REGISTER_TRACKED_FIELDS = 'register-tracked-fields';
     const EVENT_REGISTER_FIELD_TYPINGS = 'register-field-typings';
     const EVENT_REGISTER_FIELD_LABELS = 'register-field-labels';
 
+    /**
+     * @var array
+     */
     protected $trackedFields;
+
+    /**
+     * @var array
+     */
     protected $fieldTypings;
+
+    /**
+     * @var array
+     */
     protected $fieldLabels;
 
     /**

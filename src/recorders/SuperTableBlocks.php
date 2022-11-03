@@ -9,6 +9,9 @@ use craft\events\ConfigEvent;
 use craft\services\ProjectConfig;
 use yii\base\Event;
 
+/**
+ * @since 2.2.0
+ */
 class SuperTableBlocks extends ConfigModelRecorder
 {
     /**

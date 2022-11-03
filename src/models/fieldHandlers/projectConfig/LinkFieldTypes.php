@@ -7,6 +7,9 @@ use craft\base\Field;
 use craft\helpers\ProjectConfig as ProjectConfigHelper;
 use craft\services\ProjectConfig;
 
+/**
+ * @since 2.2.0
+ */
 class LinkFieldTypes extends DefaultHandler
 {
     /**

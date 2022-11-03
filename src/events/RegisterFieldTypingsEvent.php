@@ -4,6 +4,9 @@ namespace Ryssbowh\Activity\events;
 
 use yii\base\Event;
 
+/**
+ * @since 2.2.0
+ */
 class RegisterFieldTypingsEvent extends Event
 {
     /**

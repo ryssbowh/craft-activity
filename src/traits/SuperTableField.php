@@ -14,6 +14,9 @@ use Ryssbowh\Activity\services\Recorders;
 use Ryssbowh\Activity\services\Types;
 use yii\base\Event;
 
+/**
+ * @since 2.2.0
+ */
 trait SuperTableField
 {
     protected function initSuperTableField()

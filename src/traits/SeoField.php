@@ -9,6 +9,9 @@ use Ryssbowh\Activity\services\FieldHandlers;
 use Ryssbowh\Activity\services\Fields;
 use yii\base\Event;
 
+/**
+ * @since 2.2.0
+ */
 trait SeoField
 {
     protected function initSeoField()

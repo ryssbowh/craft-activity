@@ -20,7 +20,8 @@ abstract class FieldHandler extends Model
     public $fancyValue;
 
     /**
-     * @var mixed
+     * @var   mixed
+     * @since 2.2.0
      */
     public $data;
 
@@ -71,7 +72,8 @@ abstract class FieldHandler extends Model
 
     /**
      * Get the targets this field handler applies to
-     * 
+     *
+     * @since  2.2.0
      * @return array
      */
     protected static function _getTargets(): array

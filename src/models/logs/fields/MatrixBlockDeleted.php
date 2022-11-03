@@ -2,6 +2,9 @@
 
 namespace Ryssbowh\Activity\models\logs\fields;
 
+/**
+ * @since 2.2.0
+ */
 class MatrixBlockDeleted extends MatrixBlockCreated
 {
     /**

@@ -10,6 +10,9 @@ use Ryssbowh\Activity\services\Fields;
 use craft\services\ProjectConfig;
 use yii\base\Event;
 
+/**
+ * @since 2.2.0
+ */
 trait RedactorField
 {
     protected function initRedactorField()

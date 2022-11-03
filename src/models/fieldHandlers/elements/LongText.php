@@ -4,7 +4,10 @@ namespace Ryssbowh\Activity\models\fieldHandlers\elements;
 
 use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
 
-class LongText extends ElementFieldHandler
+/**
+ * @since 2.1.0
+ */
+class LongText extends ElementFieldHandler 
 {
     /**
      * @inheritDoc
