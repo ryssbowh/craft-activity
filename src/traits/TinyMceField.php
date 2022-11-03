@@ -15,6 +15,9 @@ use yii\base\Event;
  */
 trait TinyMceField
 {
+    /**
+     * Register everything needed for Tiny MCE fields tracking
+     */
     protected function initTinyMceField()
     {
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_LABELS, function (Event $event) {

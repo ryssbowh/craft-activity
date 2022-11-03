@@ -15,6 +15,9 @@ use yii\base\Event;
  */
 trait RedactorField
 {
+    /**
+     * Register everything needed for Redactor fields tracking
+     */
     protected function initRedactorField()
     {
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_LABELS, function (Event $event) {

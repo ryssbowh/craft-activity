@@ -13,6 +13,9 @@ use yii\base\Event;
  */
 trait TypedLinkField
 {
+    /**
+     * Register everything needed for Typed link fields tracking
+     */
     protected function initTypedLinkField()
     {
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_LABELS, function (Event $event) {
