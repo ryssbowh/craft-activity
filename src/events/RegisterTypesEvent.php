@@ -48,6 +48,9 @@ use Ryssbowh\Activity\models\logs\fields\FieldGroupCreated;
 use Ryssbowh\Activity\models\logs\fields\FieldGroupDeleted;
 use Ryssbowh\Activity\models\logs\fields\FieldGroupSaved;
 use Ryssbowh\Activity\models\logs\fields\FieldSaved;
+use Ryssbowh\Activity\models\logs\fields\MatrixBlockCreated;
+use Ryssbowh\Activity\models\logs\fields\MatrixBlockDeleted;
+use Ryssbowh\Activity\models\logs\fields\MatrixBlockSaved;
 use Ryssbowh\Activity\models\logs\globals\GlobalDeleted;
 use Ryssbowh\Activity\models\logs\globals\GlobalSaved;
 use Ryssbowh\Activity\models\logs\globals\GlobalSetCreated;
@@ -164,6 +167,9 @@ class RegisterTypesEvent extends Event
             new ImageTransformCreated,
             new ImageTransformSaved,
             new ImageTransformDeleted,
+            new MatrixBlockSaved,
+            new MatrixBlockCreated,
+            new MatrixBlockDeleted,
             new PluginDisabled,
             new PluginEnabled,
             new PluginInstalled,

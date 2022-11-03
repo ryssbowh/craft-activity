@@ -14,14 +14,14 @@ class EmailSettings extends ProjectConfigRecorder
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate('email', function(Event $event) {
-            Activity::getRecorder('emailSettings')->onChanged('email', 'emailSettingsChanged', $event->oldValue, $event->newValue);
+            Activity::getRecorder('emailSettings')->onConfigChanged('email', 'emailSettingsChanged', $event->oldValue, $event->newValue);
         });
     }
         
     /**
      * @inheritDoc
      */
-    protected function _getTrackedFieldNames(): array
+    protected function getTrackedFieldNames(array $config): array
     {
         return ['fromEmail', 'fromName', 'replyToEmail', 'template', 'transportType', 'transportSettings.encryptionMethod', 'transportSettings.host', 'transportSettings.password', 'transportSettings.port', 'transportSettings.timeout', 'transportSettings.useAuthentication', 'transportSettings.username', 'transportSettings.command'];
     }

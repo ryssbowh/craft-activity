@@ -41,7 +41,7 @@ class SiteCreated extends ConfigModelLog
     /**
      * @inheritDoc
      */
-    protected function _getFieldLabels(): array
+    protected function getFieldLabels(): array
     {
         return array_merge((new Site)->attributeLabels(), [
             'hasUrls' => \Craft::t('activity', 'Has its own base URL'),

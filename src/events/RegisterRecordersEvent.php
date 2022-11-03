@@ -23,6 +23,7 @@ use Ryssbowh\Activity\recorders\GlobalSets;
 use Ryssbowh\Activity\recorders\Globals;
 use Ryssbowh\Activity\recorders\ImageTransforms;
 use Ryssbowh\Activity\recorders\Mailer;
+use Ryssbowh\Activity\recorders\MatrixBlocks;
 use Ryssbowh\Activity\recorders\Plugins;
 use Ryssbowh\Activity\recorders\Routes;
 use Ryssbowh\Activity\recorders\Sections;
@@ -70,6 +71,7 @@ class RegisterRecordersEvent extends Event
             'globals' => new Globals,
             'globalSets' => new GlobalSets,
             'imageTransforms' => new ImageTransforms,
+            'matrixBlocks' => new MatrixBlocks,
             'mailer' => new Mailer,
             'plugins' => new Plugins,
             'routes' => new Routes,

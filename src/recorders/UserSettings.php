@@ -15,14 +15,14 @@ class UserSettings extends ProjectConfigRecorder
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_USERS, function (Event $event) {
-            Activity::getRecorder('userSettings')->onChanged('users', 'userSettingsChanged', $event->oldValue, $event->newValue);
+            Activity::getRecorder('userSettings')->onConfigChanged('users', 'userSettingsChanged', $event->oldValue, $event->newValue);
         });
     }
     
     /**
      * @inheritDoc
      */
-    protected function _getTrackedFieldNames(): array
+    protected function getTrackedFieldNames(array $config): array
     {
         return ['allowPublicRegistration', 'defaultGroup', 'photoSubpath', 'photoVolumeUid', 'requireEmailVerification', 'suspendByDefault', 'validateOnPublicRegistration'];
     }

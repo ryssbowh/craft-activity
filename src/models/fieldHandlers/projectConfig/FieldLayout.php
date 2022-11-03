@@ -36,6 +36,7 @@ class FieldLayout extends DefaultHandler
             ProjectConfig::PATH_VOLUMES . '.{uid}.fieldLayouts',
             ProjectConfig::PATH_USER_FIELD_LAYOUTS,
             ProjectConfig::PATH_ADDRESS_FIELD_LAYOUTS,
+            ProjectConfig::PATH_MATRIX_BLOCK_TYPES . '.{uid}.fieldLayouts'
         ];
     }
 

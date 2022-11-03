@@ -36,7 +36,7 @@ class ImageTransformCreated extends ConfigModelLog
     /**
      * @inheritDoc
      */
-    protected function _getFieldLabels(): array
+    protected function getFieldLabels(): array
     {
         return array_merge((new ImageTransform)->attributeLabels(), [
             'interlace' => \Craft::t('app', 'Interlacing'),

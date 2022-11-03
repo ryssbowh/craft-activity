@@ -10,4 +10,14 @@ class RegisterFieldTypingsEvent extends Event
      * @var array|string
      */
     public $typings;
+
+    /**
+     * @inheritDoc
+     */
+    public function init()
+    {
+        $this->typings = [
+            '_base' => ['searchable' => 'bool']
+        ];
+    }
 }

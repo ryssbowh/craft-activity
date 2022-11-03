@@ -1,8 +1,24 @@
 # ryssbowh/craft-activity Changelog
 
-## 2.2.2 - unreleased
+## 2.2.0 - unreleased
 ### Removed
 - Removed settings related to no changes as Project Config is already doing this
+### Changed
+- Signature for `ConfigModelRecorder::getTrackedFieldNames(): array` is now `getTrackedFieldNames(array $config): array` so we can track different fields based on the config being saved
+- Signature for `ConfigModelRecorder::getTrackedFieldTypings(): array` is now `getTrackedFieldTypings(array $config): array` so we can have different typings based on the config being saved
+- Renamed `ProjectConfigRecorder::onChanged()` to `ProjectConfigRecorder::onConfigChanged()`
+### Added
+- Individual fields config for all Craft native fields is now tracked
+- Individual fields config for [Redactor](https://plugins.craftcms.com/redactor), [Super table](https://plugins.craftcms.com/super-table), [SEO](https://plugins.craftcms.com/seo), [Typed Link](https://plugins.craftcms.com/typedlinkfield) and [TinyMCE](https://plugins.craftcms.com/tinymce) fields is now tracked
+- Added event `Ryssbowh\Activity\services\Fields::EVENT_REGISTER_TRACKED_FIELDS`
+- Added event `Ryssbowh\Activity\services\Fields::EVENT_REGISTER_FIELD_TYPINGS`
+- Added event `Ryssbowh\Activity\services\Fields::EVENT_REGISTER_FIELD_LABELS`
+- Added event `Ryssbowh\Activity\base\fieldHandlers\FieldHandler::EVENT_REGISTER_TARGETS`
+- Matrix blocks definitions is now tracked through 3 new log types
+- Super table blocks definitions is now tracked through 3 new log types
+### Fixed
+- Dashboard toolbar centering
+- Issue with Twig field plugin [#4](https://github.com/ryssbowh/craft-activity/issues/3)
 
 ## 2.1.1 - 2022-10-27
 ### Fixed

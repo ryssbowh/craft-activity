@@ -35,7 +35,7 @@ class FilesystemCreated extends ConfigModelLog
     /**
      * @inheritDoc
      */
-    protected function _getFieldLabels(): array
+    protected function getFieldLabels(): array
     {
         return [
             'handle' => \Craft::t('app', 'Handle'),

@@ -1,0 +1,34 @@
+{% import "activity/includes/macros" as macros %}
+
+<li>
+    {% for row in field.data %}
+        {{ ('Row {row} of columns was ' ~ row.mode)|t('activity', {row: row.row + 1}) }}
+        <ul>
+            {% for fieldName, fieldLabel in {heading: 'Heading', handle: 'Handle', width: 'Width', type: 'Type'} %}
+                {% if row[fieldName] ?? false %}
+                    <li>
+                        {% set hasFrom = 'f' in row[fieldName]|keys %}
+                        {% set hasTo = 't' in row[fieldName]|keys %}
+                        {% if hasFrom and hasTo %}
+                            {{ "{field} was changed from {from} to {to}"|t('activity', {
+                                field: fieldLabel|t('activity'),
+                                from: macros.fromValue(row[fieldName]),
+                                to: macros.toValue(row[fieldName])
+                            })|raw }}
+                        {% elseif hasTo %}
+                            {{ "{field} was set to {to}"|t('activity', {
+                                field: fieldLabel|t('activity'),
+                                to: macros.toValue(row[fieldName])
+                            })|raw }}
+                        {% elseif hasFrom %}
+                            {{ "{field} value ({from}) was removed"|t('activity', {
+                                field: fieldLabel|t('activity'),
+                                from: macros.fromValue(row[fieldName])
+                            })|raw }}
+                        {% endif %}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</li>
