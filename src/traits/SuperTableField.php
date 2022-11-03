@@ -19,6 +19,9 @@ use yii\base\Event;
  */
 trait SuperTableField
 {
+    /**
+     * Register everything needed for Super table fields tracking
+     */
     protected function initSuperTableField()
     {
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_LABELS, function (Event $event) {

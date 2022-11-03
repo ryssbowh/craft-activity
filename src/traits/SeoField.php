@@ -14,6 +14,9 @@ use yii\base\Event;
  */
 trait SeoField
 {
+    /**
+     * Register everything needed for SEO fields tracking
+     */
     protected function initSeoField()
     {
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_LABELS, function (Event $event) {
