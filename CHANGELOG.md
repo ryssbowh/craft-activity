@@ -1,6 +1,6 @@
 # ryssbowh/craft-activity Changelog
 
-## 2.2.0 - unreleased
+## 2.2.0 - 2022-11-04
 ### Removed
 - Removed settings related to no changes as Project Config is already doing this
 ### Changed
