@@ -320,5 +320,4 @@ See the class reference [here](https://ryssbowh.github.io/docs/craft-activity2/n
 
 ## Roadmap
 
-- Track individual field config
 - Track layout field rules
