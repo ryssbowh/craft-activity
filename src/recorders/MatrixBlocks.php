@@ -52,7 +52,8 @@ class MatrixBlocks extends ConfigModelRecorder
         if (!$baseName == 'fields') {
             return parent::getHandler($baseName, $path, $config, $value);
         }
-        $elements = reset($config['fieldLayouts'])['tabs'][0]['elements'];
+        $layout = $config['fieldLayouts'] ?? [];
+        $elements = $layout ? reset($layout)['tabs'][0]['elements'] : [];
         foreach ($elements as $element) {
             if (isset($value[$element['fieldUid']])) {
                 $value[$element['fieldUid']]['required'] = $element['required'];

@@ -16,7 +16,7 @@ class Volumes extends DefaultHandler
     {
         if ($this->value == '*') {
             $this->fancyValue = \Craft::t('app', 'All');
-        } else {
+        } else if (is_array($this->value)) {
             $this->fancyValue = [];
             foreach ($this->value as $uid) {
                 $this->fancyValue[] = $this->getVolumeName($uid);
