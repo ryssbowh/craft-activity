@@ -1,6 +1,6 @@
 # ryssbowh/craft-activity Changelog
 
-## 2.2.1 - 2022-11-4
+## 2.2.1 - 2022-11-04
 ### Fixed
 - Fixed user field settings labels
 - Fixed untracked matrix field setting `propagationMethod`
