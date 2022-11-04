@@ -1,13 +1,13 @@
 # ryssbowh/craft-activity Changelog
 
-## 1.2.0 - unreleased
+## 1.2.0 - 2022-11-04
 ### Changed
 - Signature for `ConfigModelRecorder::getTrackedFieldNames(): array` is now `getTrackedFieldNames(array $config): array` so we can track different fields based on the config being saved
 - Signature for `ConfigModelRecorder::getTrackedFieldTypings(): array` is now `getTrackedFieldTypings(array $config): array` so we can have different typings based on the config being saved
 - Renamed `ProjectConfigRecorder::onChanged()` to `ProjectConfigRecorder::onConfigChanged()`
 ### Added
 - Individual fields config for all Craft native fields is now tracked
-- Individual fields config for [Redactor](https://plugins.craftcms.com/redactor), [Super table](https://plugins.craftcms.com/super-table), [SEO](https://plugins.craftcms.com/seo), [Typed Link](https://plugins.craftcms.com/typedlinkfield) and [TinyMCE](https://plugins.craftcms.com/tinymce) fields is now tracked
+- Individual fields config for [Redactor](https://plugins.craftcms.com/redactor), [Super table](https://plugins.craftcms.com/super-table), [SEO](https://plugins.craftcms.com/seo) and [Typed Link](https://plugins.craftcms.com/typedlinkfield)
 - Added event `Ryssbowh\Activity\services\Fields::EVENT_REGISTER_TRACKED_FIELDS`
 - Added event `Ryssbowh\Activity\services\Fields::EVENT_REGISTER_FIELD_TYPINGS`
 - Added event `Ryssbowh\Activity\services\Fields::EVENT_REGISTER_FIELD_LABELS`
