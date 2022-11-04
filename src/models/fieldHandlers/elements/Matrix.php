@@ -87,7 +87,8 @@ class Matrix extends ElementFieldHandler
                 'mode' => 'changed'
             ];
             foreach ($block['fields'] as $handle => $handler) {
-                if ($fdirty = $handler->getDirty($oldBlocks[$id]['fields'][$handle])) {
+                $oldHandler = $oldBlocks[$id]['fields'][$handle] ?? null;
+                if ($oldHandler and $fdirty = $handler->getDirty($oldHandler)) {
                     $blockIsdirty = true;
                     $blockDirty['fields'][$handle] = [
                         'handler' => get_class($handler),
