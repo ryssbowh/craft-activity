@@ -151,7 +151,7 @@ class FieldLayout extends DefaultHandler
                 if ($element['type'] == CustomField::class) {
                     $field = \Craft::$app->fields->getFieldByUid($element['fieldUid']);
                     $values[$element['fieldUid']] = [
-                        'name' => $field->name,
+                        'name' => $field ? $field->name : '*deleted field*',
                         'label' => $element['label'],
                         'required' => $element['required']
                     ];
