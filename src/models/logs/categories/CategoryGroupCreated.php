@@ -36,7 +36,7 @@ class CategoryGroupCreated extends ConfigModelLog
     /**
      * @inheritDoc
      */
-    protected function getFieldLabels(): array
+    protected function _getFieldLabels(): array
     {
         return array_merge((new CategoryGroup)->attributeLabels(), [
             'structure.maxLevels' => \Craft::t('app', 'Max Levels'),
