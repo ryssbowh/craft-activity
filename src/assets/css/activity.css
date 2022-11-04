@@ -47,3 +47,7 @@
     height: calc(100% - 126px);
     overflow-y: auto;
 }
+
+header #toolbar {
+    justify-content: center;
+}
