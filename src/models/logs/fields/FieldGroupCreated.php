@@ -35,7 +35,7 @@ class FieldGroupCreated extends ConfigModelLog
     /**
      * @inheritDoc
      */
-    protected function _getFieldLabels(): array
+    protected function getFieldLabels(): array
     {
         return [
             'name' => \Craft::t('app', 'Name')

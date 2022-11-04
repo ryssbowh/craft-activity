@@ -1,0 +1,34 @@
+{% import "activity/includes/macros" as macros %}
+
+{% for typeName, data in field.data %}
+    <li>
+        {{ ('Settings for {type} were ' ~ data.mode)|t('activity', {
+            type: data.label
+        }) }}
+        <ul>
+            {% for key, data in data.data %}
+                {% set hasFrom = 'f' in data|keys %}
+                {% set hasTo = 't' in data|keys %}
+                <li>
+                    {% if hasFrom and hasTo %}
+                        {{ '{field} was changed from {from} to {to}'|t('activity', {
+                            field: macros.fieldLabel('settings.typeSettings.' ~ typeName ~ '.' ~ key, log),
+                            from: macros.fromValue(data),
+                            to: macros.toValue(data)
+                        })|raw }}
+                    {% elseif hasTo %}
+                        {{ "{field} was set to {to}"|t('activity', {
+                            field: macros.fieldLabel('settings.typeSettings.' ~ typeName ~ '.' ~ key, log),
+                            to: macros.toValue(data)
+                        })|raw }}
+                    {% elseif hasFrom %}
+                        {{ "Field {field} value ({from}) was removed"|t('activity', {
+                            field: macros.fieldLabel('settings.typeSettings.' ~ typeName ~ '.' ~ key, log),
+                            from: macros.fromValue(data)
+                        })|raw }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endfor %}

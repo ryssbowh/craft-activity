@@ -3,10 +3,12 @@
 namespace Ryssbowh\Activity\events;
 
 use Ryssbowh\Activity\exceptions\FieldHandlerException;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\BlockFields;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\DefaultCategoryPlacement;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldGroup;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldLayout;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldType;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Options;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Permissions;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\PreviewTargets;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\SectionPropagationMethod;
@@ -14,12 +16,19 @@ use Ryssbowh\Activity\models\fieldHandlers\projectConfig\SectionType;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Site;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\SiteGroup;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\SiteSettings;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Source;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Sources;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\TableColumns;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\TableDefaultValues;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\TitleTranslationMethod;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Transform;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Transforms;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\TransportType;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\UriParts;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\UserGroup;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Volume;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\VolumeType;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Volumes;
 use yii\base\Event;
 
 class RegisterProjectConfigfieldHandlersEvent extends Event
@@ -52,7 +61,16 @@ class RegisterProjectConfigfieldHandlersEvent extends Event
             FieldType::class,
             SiteGroup::class,
             Permissions::class,
-            VolumeType::class
+            VolumeType::class,
+            TableDefaultValues::class,
+            TableColumns::class,
+            Transform::class,
+            Transforms::class,
+            Volumes::class,
+            Sources::class,
+            Source::class,
+            BlockFields::class,
+            Options::class,
         ]);
     }
 

@@ -36,7 +36,7 @@ class TagGroupCreated extends ConfigModelLog
     /**
      * @inheritDoc
      */
-    protected function _getFieldLabels(): array
+    protected function getFieldLabels(): array
     {
         return array_merge((new TagGroup)->attributeLabels(), [
         ]);

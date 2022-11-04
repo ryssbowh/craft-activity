@@ -1,0 +1,34 @@
+{% import "activity/includes/macros" as macros %}
+
+{% if field.data|length %}
+    <li>
+        {% for row in field.data %}
+            {{ ('Row {row} of default values was ' ~ row.mode)|t('activity', {row: row.row + 1}) }}
+            <ul>
+                {% for rfield in row.cols %}
+                    <li>
+                        {% set hasFrom = 'f' in rfield|keys %}
+                        {% set hasTo = 't' in rfield|keys %}
+                        {% if hasFrom and hasTo %}
+                            {{ "{field} was changed from {from} to {to}"|t('activity', {
+                                field: rfield.heading,
+                                from: macros.fromValue(rfield),
+                                to: macros.toValue(rfield)
+                            })|raw }}
+                        {% elseif hasTo %}
+                            {{ "{field} was set to {to}"|t('activity', {
+                                field: rfield.heading,
+                                to: macros.toValue(rfield)
+                            })|raw }}
+                        {% elseif hasFrom %}
+                            {{ "{field} value ({from}) was removed"|t('activity', {
+                                field: rfield.heading,
+                                from: macros.fromValue(rfield)
+                            })|raw }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </li>
+{% endif %}

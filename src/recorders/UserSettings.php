@@ -21,7 +21,7 @@ class UserSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    protected function _getTrackedFieldNames(): array
+    protected function getTrackedFieldNames(array $config): array
     {
         return ['allowPublicRegistration', 'defaultGroup', 'photoSubpath', 'photoVolumeUid', 'requireEmailVerification', 'suspendByDefault', 'validateOnPublicRegistration'];
     }

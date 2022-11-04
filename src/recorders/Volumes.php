@@ -36,7 +36,7 @@ class Volumes extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function _getTrackedFieldNames(): array
+    protected function getTrackedFieldNames(array $config): array
     {
         return ['name', 'handle', 'hasUrls', 'url', 'type', 'titleTranslationMethod', 'fieldLayouts', 'titleTranslationKeyFormat', 'settings.path'];
     }

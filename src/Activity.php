@@ -5,10 +5,17 @@ namespace Ryssbowh\Activity;
 use Ryssbowh\Activity\base\recorders\Recorder;
 use Ryssbowh\Activity\models\Settings;
 use Ryssbowh\Activity\services\FieldHandlers;
+use Ryssbowh\Activity\services\Fields;
 use Ryssbowh\Activity\services\Logs;
 use Ryssbowh\Activity\services\Recorders;
 use Ryssbowh\Activity\services\Types;
+use Ryssbowh\Activity\traits\RedactorField;
+use Ryssbowh\Activity\traits\SeoField;
+use Ryssbowh\Activity\traits\SuperTableField;
+use Ryssbowh\Activity\traits\TinyMceField;
+use Ryssbowh\Activity\traits\TypedLinkField;
 use Ryssbowh\Activity\twig\ActivityExtension;
+use Ryssbowh\Activity\twig\TwigActivity;
 use craft\base\Model;
 use craft\base\Plugin;
 use craft\services\Elements;
@@ -22,6 +29,8 @@ use yii\base\Event;
 
 class Activity extends Plugin
 {
+    use RedactorField, SeoField, TinyMceField, TypedLinkField, SuperTableField;
+
     /**
      * @var Themes
      */
@@ -58,6 +67,12 @@ class Activity extends Plugin
         $this->registerUserHook();
         $this->registerTwig();
         $this->registerRecorders();
+        
+        $this->initSeoField();
+        $this->initRedactorField();
+        $this->initTinyMceField();
+        $this->initTypedLinkField();
+        $this->initSuperTableField();
 
         Event::on(Application::class, Application::EVENT_AFTER_REQUEST, function (Event $event) {
             $this->recorders->saveLogs();
@@ -102,7 +117,7 @@ class Activity extends Plugin
             \Craft::$app->view->registerTwigExtension(new ActivityExtension);
         }
         Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
-            $event->sender->set('activity', Activity::$plugin);
+            $event->sender->set('activity', TwigActivity::class);
         });
     }
 
@@ -190,6 +205,7 @@ class Activity extends Plugin
             'logs' => Logs::class,
             'types' => Types::class,
             'fieldHandlers' => FieldHandlers::class,
+            'fields' => Fields::class,
         ]);
     }
 }

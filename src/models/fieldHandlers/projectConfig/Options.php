@@ -2,22 +2,62 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
+use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use craft\helpers\ProjectConfig as ProjectConfigHelper;
 use craft\services\ProjectConfig;
 
 class Options extends DefaultHandler
 {
     /**
+     * @var array
+     */
+    protected $_dirty;
+
+    /**
      * @inheritDoc
      */
     public function init(): void
     {
         parent::init();
-        $value = ProjectConfigHelper::unpackAssociativeArrays($this->value);
-        foreach ($value as $index => $sub) {
-            $value[$index]['default'] = (bool)$sub['default'];
+        $this->value = $this->buildValues($this->value);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getTemplate(): ?string
+    {
+        return 'activity/field-handlers/field-options';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDirty(FieldHandler $handler): array
+    {
+        if ($this->_dirty === null) {
+            $this->_dirty = $this->buildDirty($this->value, $handler->value);
         }
-        $this->fancyValue = $value;
+        return $this->_dirty;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isDirty(FieldHandler $handler): bool
+    {
+        return !empty($this->getDirty($handler));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getDbValue(string $valueKey): array
+    {
+        if ($valueKey == 'f') {
+            return $this->buildDirty([], $this->value);
+        }
+        return $this->buildDirty($this->value, []);
     }
 
     /**
@@ -34,10 +74,67 @@ class Options extends DefaultHandler
     }
 
     /**
-     * @inheritDoc
+     * Build dirty values
+     * 
+     * @param  array  $newFields
+     * @param  array  $oldFields
+     * @return array
      */
-    public function hasFancyValue(): bool
+    protected function buildValues(array $values): array
     {
-        return true;
+        $values = ProjectConfigHelper::unpackAssociativeArrays($values);
+        foreach ($values as $index => $sub) {
+            $values[$index]['default'] = (bool)$sub['default'];
+        }
+        return $values;
+    }
+
+    /**
+     * Build dirty values
+     * 
+     * @param  array $newFields
+     * @param  array $oldFields
+     * @return array
+     */
+    protected function buildDirty(array $newFields, array $oldFields): array
+    {
+        $dirty = [];
+        foreach ($newFields as $id => $values) {
+            if (array_key_exists($id, $oldFields)) {
+                $rowDirty = false;
+                $rDirty = [
+                    'mode' => 'changed',
+                    'row' => $id
+                ];
+                foreach (['label', 'value', 'default'] as $field) {
+                    if (($values[$field] ?? null) !== ($oldFields[$id][$field] ?? null)) {
+                        $rowDirty = true;
+                        $rDirty[$field]['f'] = $oldFields[$id][$field];
+                        $rDirty[$field]['t'] = $values[$field];
+                    }
+                }
+                if ($rowDirty) {
+                    $dirty[] = $rDirty;
+                }
+            } else {
+                $dirty[] = [
+                    'row' => $id,
+                    'mode' => 'added',
+                    'label' => ['t' => $values['label']],
+                    'value' => ['t' => $values['value']],
+                    'default' => ['t' => $values['default']]
+                ];
+            }
+        }
+        foreach (array_diff_key($oldFields, $newFields) as $id => $values) {
+            $dirty[] = [
+                'row' => $id,
+                'mode' => 'removed',
+                'label' => ['f' => $values['label']],
+                'value' => ['f' => $values['value']],
+                'default' => ['f' => $values['default']]
+            ];
+        }
+        return $dirty;
     }
 }

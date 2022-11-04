@@ -2,13 +2,6 @@
 
 Record user activity in Craft, this plugin can record and keep track of changed fields for pretty much any event that happens in the frontend/control panel/console whether it's an element or some config that's being changed.
 
-All Craft fields tracking is supported, as well as :
-- [Redactor](https://plugins.craftcms.com/redactor)
-- [Super table](https://plugins.craftcms.com/super-table)
-- [SEO](https://plugins.craftcms.com/seo)
-- [Typed Link](https://plugins.craftcms.com/typedlinkfield)
-- [TinyMCE](https://plugins.craftcms.com/tinymce)
-
 A non exhaustive list of things this plugin can track :
 - Elements
   - Entries (created, saved, deleted, restored, moved, reverted to revision)
@@ -23,6 +16,7 @@ A non exhaustive list of things this plugin can track :
 - Entry types (created, saved, deleted)
 - Sections (created, saved, deleted)
 - Fields (created, saved, deleted)
+- Matrix blocks (created, saved, deleted)
 - Field groups (created, saved, deleted)
 - Global sets (created, saved, deleted)
 - Plugins (enabled, disabled, installed, uninstalled)
@@ -31,7 +25,7 @@ A non exhaustive list of things this plugin can track :
 - Sites (created, saved, deleted)
 - Tag groups (created, saved, deleted)
 - Users
-  - Logged in, out
+  - login/logout
   - permissions changed
   - activated, self activated
   - assigned groups
@@ -46,6 +40,13 @@ A non exhaustive list of things this plugin can track :
 - Widgets (created, saved, deleted)
 - Emails (sent, failed)
 - Craft edition changed
+
+All native Craft fields tracking is supported, as well as :
+- [Redactor](https://plugins.craftcms.com/redactor)
+- [Super table](https://plugins.craftcms.com/super-table)
+- [SEO](https://plugins.craftcms.com/seo)
+- [Typed Link](https://plugins.craftcms.com/typedlinkfield)
+- [TinyMCE](https://plugins.craftcms.com/tinymce)
 
 User activity and the fields changed will remain viewable even when the object recorded for no longer exists.
 
@@ -213,7 +214,7 @@ class MyHandler extends FieldHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             'system.live'
@@ -267,7 +268,7 @@ class MyHandler extends ElementFieldHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             Matrix::class
@@ -306,8 +307,7 @@ See the class reference [here](https://ryssbowh.github.io/docs/craft-activity1/n
 - Drafts aren't managed at the moment as provisional drafts cannot be ignored which creates lots of useless logs. May implement this in the future.
 - Hard delete events can't be ignored
 - Widgets changes can't be tracked
-- User specific permissions can't be tracked, there's no event for it in Craft
-- Each individual fields config isn't tracked
+- Table field default values can't be tracked when the field is removed
 - Tags aren't tracked, seems useless since there's no tag management utility in Craft
 - Elements moved activity is ignored by default
 - The system doesn't track every single config field (such as for fields for example), if you choose to ignore activity when no changes are done, activity won't be recorded even if changes are made to a field that isn't tracked.

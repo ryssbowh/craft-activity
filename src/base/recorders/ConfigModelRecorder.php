@@ -9,6 +9,11 @@ use yii\base\Event;
 abstract class ConfigModelRecorder extends ProjectConfigRecorder
 {
     /**
+     * @var ConfigEvent
+     */
+    protected $currentEvent;
+
+    /**
      * Saved a log on update
      * 
      * @param ConfigEvent $event
@@ -52,6 +57,7 @@ abstract class ConfigModelRecorder extends ProjectConfigRecorder
         if (!$this->shouldSaveLog($type)) {
             return;
         }
+        $this->currentEvent = $event;
         $path = $event->path;
         if ($event->tokenMatches) {
             $path = str_replace($event->tokenMatches[0], '{uid}', $path);
@@ -71,6 +77,7 @@ abstract class ConfigModelRecorder extends ProjectConfigRecorder
         }
         $params = $this->modifyParams($params, $event);
         $this->commitLog($type, $params);
+        $this->currentEvent = null;
     }
 
     /**

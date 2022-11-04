@@ -1,0 +1,107 @@
+{% import "activity/includes/macros" as macros %}
+
+{% macro matrixField(handle, field, type, log) %}
+    {% set template = handlerTemplate(field.handler) %}
+    {% if template %}
+        {% include template %}
+    {% else %}
+        {% set hasFrom = 'f' in field.data|keys %}
+        {% set hasTo = 't' in field.data|keys %}
+        <li>
+            {% if hasFrom and hasTo %}
+                {% if field.data.f is same as(true) and field.data.t is same as(false) %}
+                    {{ "{field} was unchecked"|t('activity', {
+                        field: log.fieldLabel(handle, type),
+                    })|raw }}
+                {% elseif field.data.f is same as(false) and field.data.t is same as(true) %}
+                    {{ "{field} was checked"|t('activity', {
+                        field: log.fieldLabel(handle, type),
+                    })|raw }}
+                {% else %}
+                    {{ "{field} was changed from {from} to {to}"|t('activity', {
+                        field: log.fieldLabel(handle, type),
+                        from: macros.fromValue(field.data),
+                        to: macros.toValue(field.data)
+                    })|raw }}
+                {% endif %}
+            {% elseif hasTo %}
+                {% if field.data.t is same as(false) %}
+                    {{ "{field} was unchecked"|t('activity', {
+                        field: log.fieldLabel(handle, type),
+                    })|raw }}
+                {% elseif field.data.t is same as(true) %}
+                    {{ "{field} was checked"|t('activity', {
+                        field: log.fieldLabel(handle, type),
+                    })|raw }}
+                {% else %}
+                    {{ "{field} was set to {to}"|t('activity', {
+                        field: log.fieldLabel(handle, type),
+                        to: macros.toValue(field.data)
+                    })|raw }}
+                {% endif %}
+            {% elseif hasFrom %}
+                {% if field.data.f is same as(false) %}
+                    {{ "{field} was unchecked"|t('activity', {
+                        field: log.fieldLabel(handle, type),
+                    })|raw }}
+                {% elseif field.data.f is same as(true) %}
+                    {{ "{field} was checked"|t('activity', {
+                        field: log.fieldLabel(handle, type),
+                    })|raw }}
+                {% else %}
+                    {{ "{field} value ({from}) was removed"|t('activity', {
+                        field: log.fieldLabel(handle, type),
+                        from: macros.fromValue(field.data),
+                    })|raw }}
+                {% endif %}
+            {% else %}
+                {{ "{field} was changed"|t('activity', {
+                    field: log.fieldLabel(handle, type),
+                })|raw }}
+            {% endif %}
+        </li>
+    {% endif %}
+{% endmacro %}
+
+{% if field.data.changed ?? false %}
+    {% for changed in field.data.changed %}
+        <li>
+            {{ 'Field {field} was changed'|t('activity', {
+                field: changed.name
+            }) }}
+            <ul>
+                {% for handle, mfield in changed.data %}
+                    {{ _self.matrixField(handle, mfield, changed.type, log) }}
+                {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+{% endif %}
+{% if field.data.added ?? false %}
+    {% for added in field.data.added %}
+        <li>
+            {{ 'Field {field} was added'|t('activity', {
+                field: added.name
+            }) }}
+            <ul>
+                {% for handle, mfield in added.data %}
+                    {{ _self.matrixField(handle, mfield, added.type, log) }}
+                {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+{% endif %}
+{% if field.data.removed ?? false %}
+    {% for removed in field.data.removed %}
+        <li>
+            {{ 'Field {field} was removed'|t('activity', {
+                field: removed.name
+            }) }}
+            <ul>
+                {% for handle, mfield in removed.data %}
+                    {{ _self.matrixField(handle, mfield, removed.type, log) }}
+                {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+{% endif %}

@@ -36,7 +36,7 @@ class AssetTransformCreated extends ConfigModelLog
     /**
      * @inheritDoc
      */
-    protected function _getFieldLabels(): array
+    protected function getFieldLabels(): array
     {
         return array_merge((new AssetTransform)->attributeLabels(), [
             'interlace' => \Craft::t('app', 'Interlacing'),

@@ -7,6 +7,7 @@ use craft\fieldlayoutelements\CustomField;
 use craft\helpers\ProjectConfig;
 use craft\services\Categories;
 use craft\services\Globals;
+use craft\services\Matrix;
 use craft\services\Sections;
 use craft\services\Tags;
 use craft\services\Users;
@@ -40,6 +41,7 @@ class FieldLayout extends DefaultHandler
             Tags::CONFIG_TAGGROUP_KEY . '.{uid}.fieldLayouts',
             Volumes::CONFIG_VOLUME_KEY . '.{uid}.fieldLayouts',
             Users::CONFIG_USERS_KEY . '.fieldLayouts',
+            Matrix::CONFIG_BLOCKTYPE_KEY . '.{uid}.fieldLayouts'
         ];
     }
 

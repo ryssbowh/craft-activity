@@ -20,6 +20,11 @@ abstract class FieldHandler extends Model
     public $fancyValue;
 
     /**
+     * @var mixed
+     */
+    public $data;
+
+    /**
      * Does this handler defines a fancy value
      * 
      * @return boolean

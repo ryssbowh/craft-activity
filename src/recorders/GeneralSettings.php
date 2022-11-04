@@ -15,14 +15,14 @@ class GeneralSettings extends ProjectConfigRecorder
     public function init()
     {
         \Craft::$app->projectConfig->onUpdate('system', function(Event $event) {
-            Activity::getRecorder('generalSettings')->onChanged('system', 'generalSettingsChanged', $event->oldValue, $event->newValue);
+            Activity::getRecorder('generalSettings')->onConfigChanged('system', 'generalSettingsChanged', $event->oldValue, $event->newValue);
         });
     }
     
     /**
      * @inheritDoc
      */
-    protected function _getTrackedFieldNames(): array
+    protected function getTrackedFieldNames(array $config): array
     {
         return ['live', 'name', 'retryDuration', 'timeZone'];
     }

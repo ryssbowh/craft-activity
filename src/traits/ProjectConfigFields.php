@@ -3,6 +3,7 @@
 namespace Ryssbowh\Activity\traits;
 
 use Ryssbowh\Activity\Activity;
+use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 
 trait ProjectConfigFields
 {
@@ -40,10 +41,7 @@ trait ProjectConfigFields
                     $value = $value[$sub];
                 }
                 if (!$skip) {
-                    $class = $this->getPathFieldHandler($path, $config);
-                    $handlers[$baseName] = new $class([
-                        'value' => $this->typeValue($config, $baseName, $value)
-                    ]);
+                    $handlers[$baseName] = $this->getHandler($baseName, $path, $config, $value);
                 }
             }
         }
@@ -83,6 +81,23 @@ trait ProjectConfigFields
             ];
         }
         return $dirty;
+    }
+
+    /**
+     * Get the handler for a path and a value
+     * 
+     * @param  string $baseName
+     * @param  string $path
+     * @param  array  $config
+     * @param  mixed  $value
+     * @return FieldHandler
+     */
+    protected function getHandler(string $baseName, string $path, array $config, $value): FieldHandler
+    {
+        $class = $this->getPathFieldHandler($path, $config);
+        return new $class([
+            'value' => $this->typeValue($config, $baseName, $value)
+        ]);
     }
 
     /**

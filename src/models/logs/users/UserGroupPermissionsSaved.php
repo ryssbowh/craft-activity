@@ -36,7 +36,7 @@ class UserGroupPermissionsSaved extends ConfigModelLog
     /**
      * @inheritDoc
      */
-    protected function _getFieldLabels(): array
+    protected function getFieldLabels(): array
     {
         return [
             'permissions' => \Craft::t('app', 'Permissions')
