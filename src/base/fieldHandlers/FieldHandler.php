@@ -2,10 +2,13 @@
 
 namespace Ryssbowh\Activity\base\fieldHandlers;
 
+use Ryssbowh\Activity\Activity;
 use craft\base\Model;
 
 abstract class FieldHandler extends Model
 {
+    const EVENT_REGISTER_TARGETS = 'register-targets';
+    
     /**
      * @var mixed
      */
@@ -52,11 +55,21 @@ abstract class FieldHandler extends Model
     }
 
     /**
-     * Get the targets this field handler applies to
+     * Get the targets this field handler applies to, can be modified through an event
      * 
      * @return array
      */
     public static function getTargets(): array
+    {
+        return Activity::$plugin->fieldHandlers->getHandlerTargets(get_called_class(), static::_getTargets());
+    }
+
+    /**
+     * Get the targets this field handler applies to
+     * 
+     * @return array
+     */
+    protected static function _getTargets(): array
     {
         return [];
     }

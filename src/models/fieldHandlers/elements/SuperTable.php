@@ -44,7 +44,7 @@ class SuperTable extends ElementFieldHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             'verbb\\supertable\\fields\\SuperTableField'

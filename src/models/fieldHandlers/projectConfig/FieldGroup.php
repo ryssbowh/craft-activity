@@ -25,7 +25,7 @@ class FieldGroup extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             Fields::CONFIG_FIELDS_KEY . '.{uid}.fieldGroup'

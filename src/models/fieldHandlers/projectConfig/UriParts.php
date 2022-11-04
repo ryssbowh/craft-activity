@@ -29,7 +29,7 @@ class UriParts extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             Routes::CONFIG_ROUTES_KEY . '.{uid}.uriParts'

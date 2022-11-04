@@ -18,7 +18,7 @@ class SectionType extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             Sections::CONFIG_SECTIONS_KEY . '.{uid}.type'

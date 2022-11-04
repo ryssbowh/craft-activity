@@ -4,10 +4,12 @@ namespace Ryssbowh\Activity\services;
 
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use Ryssbowh\Activity\events\RegisterElementFieldHandlersEvent;
+use Ryssbowh\Activity\events\RegisterHandlerTargetsEvent;
 use Ryssbowh\Activity\events\RegisterProjectConfigfieldHandlersEvent;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Unknown;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\DefaultHandler;
 use craft\base\Component;
+use yii\base\Event;
 
 class FieldHandlers extends Component
 {
@@ -25,6 +27,11 @@ class FieldHandlers extends Component
      * @var array
      */
     protected $_projectConfigHandlers;
+
+    /**
+     * @var array
+     */
+    protected $handlerTargets = [];
 
     /**
      * Get element handlers, indexed by field class
@@ -110,6 +117,25 @@ class FieldHandlers extends Component
         $event = new RegisterElementFieldHandlersEvent;
         $this->trigger(self::EVENT_REGISTER_ELEMENT_HANDLERS, $event);
         $this->_elementHandlers = $event->handlers;
+    }
+
+    /**
+     * Get the targets for a handler
+     * 
+     * @param  string $class
+     * @param  array  $default
+     * @return array
+     */
+    public function getHandlerTargets(string $class, array $default): array
+    {
+        if (!isset($this->handlerTargets[$class])) {
+            $event = new RegisterHandlerTargetsEvent([
+                'targets' => $default
+            ]);
+            Event::trigger($class, $class::EVENT_REGISTER_TARGETS, $event);
+            $this->handlerTargets[$class] = $event->targets;
+        }
+        return $this->handlerTargets[$class];
     }
 
     /**

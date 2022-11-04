@@ -28,7 +28,7 @@ class UserGroup extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             Users::CONFIG_USERS_KEY . '.defaultGroup'

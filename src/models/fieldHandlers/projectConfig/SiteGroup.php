@@ -25,7 +25,7 @@ class SiteGroup extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             Sites::CONFIG_SITES_KEY . '.{uid}.siteGroup'

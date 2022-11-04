@@ -48,7 +48,7 @@ class ListsField extends ElementFieldHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             Checkboxes::class,

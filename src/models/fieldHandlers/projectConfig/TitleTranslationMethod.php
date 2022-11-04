@@ -20,7 +20,7 @@ class TitleTranslationMethod extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             Volumes::CONFIG_VOLUME_KEY . '.{uid}.titleTranslationMethod',

@@ -31,7 +31,7 @@ class FieldLayout extends DefaultHandler
     /**
      * @inheritDoc
      */
-    public static function getTargets(): array
+    protected static function _getTargets(): array
     {
         return [
             Sections::CONFIG_ENTRYTYPES_KEY . '.{uid}.fieldLayouts',
