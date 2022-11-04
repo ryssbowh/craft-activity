@@ -36,18 +36,12 @@ class Entries extends ElementsRecorder
                 Activity::getRecorder('entries')->stopRecording();
             });
         }
-        //------------Do not record entry changes when sections/entry types are being created/removed
-        \Craft::$app->projectConfig->onAdd(Sections::CONFIG_SECTIONS_KEY. '.{uid}', function (Event $event) {
-            Activity::getRecorder('entries')->stopRecording();
+        //------------Emoty log queue after entry types have been created/removed
+        Event::on(Sections::class, Sections::EVENT_AFTER_SAVE_ENTRY_TYPE, function (Event $event) {
+            Activity::getRecorder('entries')->emptyQueue();
         });
-        \Craft::$app->projectConfig->onUpdate(Sections::CONFIG_SECTIONS_KEY. '.{uid}', function (Event $event) {
-            Activity::getRecorder('entries')->stopRecording();
-        });
-        Event::on(Sections::class, Sections::EVENT_BEFORE_APPLY_ENTRY_TYPE_DELETE, function (Event $event) {
-            Activity::getRecorder('entries')->stopRecording();
-        });
-        Event::on(Sections::class, Sections::EVENT_BEFORE_APPLY_SECTION_DELETE, function (Event $event) {
-            Activity::getRecorder('entries')->stopRecording();
+        Event::on(Sections::class, Sections::EVENT_AFTER_DELETE_ENTRY_TYPE, function (Event $event) {
+            Activity::getRecorder('entries')->emptyQueue();
         });
         //------------
         Event::on(Entry::class, Entry::EVENT_BEFORE_SAVE, function ($event) {
