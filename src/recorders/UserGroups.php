@@ -72,7 +72,7 @@ class UserGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(): array
+    protected function _getTrackedFieldNames(): array
     {
         return ['name', 'handle', 'description'];
     }

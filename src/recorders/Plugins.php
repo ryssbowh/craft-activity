@@ -168,7 +168,7 @@ class Plugins extends Recorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames()
+    protected function getTrackedFieldNames(array $config)
     {
         return '*';
     }

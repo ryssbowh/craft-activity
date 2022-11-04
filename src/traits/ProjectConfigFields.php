@@ -15,7 +15,7 @@ trait ProjectConfigFields
      */
     public function getConfigValues(string $basePath, array $config): array
     {
-        $names = $this->getTrackedFieldNames();
+        $names = $this->getTrackedFieldNames($config);
         if ($names == '*') {
             $names = array_keys($config);
         }
@@ -40,9 +40,9 @@ trait ProjectConfigFields
                     $value = $value[$sub];
                 }
                 if (!$skip) {
-                    $class = Activity::$plugin->fieldHandlers->getForProjectConfigPath($path);
+                    $class = $this->getPathFieldHandler($path, $config);
                     $handlers[$baseName] = new $class([
-                        'value' => $this->typeValue($baseName, $value)
+                        'value' => $this->typeValue($config, $baseName, $value)
                     ]);
                 }
             }
@@ -87,14 +87,15 @@ trait ProjectConfigFields
 
     /**
      * Type a value by path
-     * 
+     *
+     * @param  array $config
      * @param  string $path
      * @param  mixed $value
      * @return mixed
      */
-    protected function typeValue(string $path, $value)
+    protected function typeValue(array $config, string $path, $value)
     {
-        $typing = $this->getTrackedFieldTypings()[$path] ?? null;
+        $typing = $this->getTrackedFieldTypings($config)[$path] ?? null;
         switch ($typing) {
             case 'bool':
                 return (bool)$value;
@@ -109,6 +110,18 @@ trait ProjectConfigFields
     }
 
     /**
+     * Get the field handler for a path
+     * 
+     * @param  string $path
+     * @param  array  $config
+     * @return string
+     */
+    protected function getPathFieldHandler(string $path, array $config): string
+    {
+        return Activity::$plugin->fieldHandlers->getForProjectConfigPath($path);
+    }
+
+    /**
      * Get fields typing, must return an array :
      *
      * [
@@ -116,18 +129,20 @@ trait ProjectConfigFields
      * ]
      *
      * Valid typings are 'string', 'int', 'float' and 'bool'
-     * 
+     *
+     * @param  array $config
      * @return array
      */
-    protected function getTrackedFieldTypings(): array
+    protected function getTrackedFieldTypings(array $config): array
     {
         return [];
     }
 
     /**
      * Get tracked config names, return '*' for all
-     * 
+     *
+     * @param  array $config
      * @return array|string
      */
-    abstract protected function getTrackedFieldNames();
+    abstract protected function getTrackedFieldNames(array $config);
 }

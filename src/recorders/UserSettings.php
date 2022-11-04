@@ -21,7 +21,7 @@ class UserSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(): array
+    protected function _getTrackedFieldNames(): array
     {
         return ['allowPublicRegistration', 'defaultGroup', 'photoSubpath', 'photoVolumeUid', 'requireEmailVerification', 'suspendByDefault', 'validateOnPublicRegistration'];
     }
@@ -29,7 +29,7 @@ class UserSettings extends ProjectConfigRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldTypings(): array
+    protected function _getTrackedFieldTypings(): array
     {
         return [
             'defaultGroup' => 'string'

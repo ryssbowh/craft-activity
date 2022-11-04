@@ -37,7 +37,7 @@ class CategoryGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldNames(): array
+    protected function _getTrackedFieldNames(): array
     {
         return ['name', 'handle', 'structure.maxLevels', 'defaultPlacement', 'siteSettings', 'fieldLayouts'];
     }

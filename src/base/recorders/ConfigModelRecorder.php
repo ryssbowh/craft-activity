@@ -3,13 +3,11 @@
 namespace Ryssbowh\Activity\base\recorders;
 
 use Ryssbowh\Activity\Activity;
-use Ryssbowh\Activity\traits\ProjectConfigFields;
 use craft\events\ConfigEvent;
+use yii\base\Event;
 
-abstract class ConfigModelRecorder extends Recorder
+abstract class ConfigModelRecorder extends ProjectConfigRecorder
 {
-    use ProjectConfigFields;
-
     /**
      * Saved a log on update
      * 
