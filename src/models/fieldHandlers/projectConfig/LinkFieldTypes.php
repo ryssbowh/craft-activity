@@ -5,7 +5,8 @@ namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use craft\base\Field;
 use craft\helpers\ProjectConfig as ProjectConfigHelper;
-use craft\services\ProjectConfig;
+use craft\services\Fields;
+use typedlinkfield\Plugin;
 
 /**
  * @since 1.2.0
@@ -16,6 +17,21 @@ class LinkFieldTypes extends DefaultHandler
      * @var array
      */
     protected $_dirty;
+
+    /**
+     * @inheritDoc
+     */
+    public function init()
+    {
+        $this->value = ProjectConfigHelper::unpackAssociativeArray($this->value);
+        foreach ($this->value as $type => $values) {
+            foreach ($values as $name => $value) {
+                if (in_array($name, ['allowCustomQuery', 'disableValidation', 'allowAliases'])) {
+                    $this->value[$type][$name] = (bool)$value;
+                }
+            }
+        }
+    }
 
     /**
      * @inheritDoc
@@ -63,7 +79,7 @@ class LinkFieldTypes extends DefaultHandler
     protected function getField(): Field
     {
         $field = \Craft::$app->fields->createField([
-            'type' => 'lenz\\linkfield\\fields\\LinkField'
+            'type' => 'typedlinkfield\\fields\\LinkField'
         ]);
         return $field;
     }
@@ -77,7 +93,7 @@ class LinkFieldTypes extends DefaultHandler
      */
     protected function buildDirty(array $newFields, array $oldFields): array
     {
-        $types = $this->field->getAvailableLinkTypes();
+        $types = Plugin::getInstance()->getLinkTypes();
         $dirty = [];
 
         foreach (array_intersect_key($newFields, $oldFields) as $name => $typeSettings) {
@@ -167,7 +183,7 @@ class LinkFieldTypes extends DefaultHandler
     protected static function _getTargets(): array
     {
         return [
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[lenz\\linkfield\\fields\\LinkField].typeSettings'
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[typedlinkfield\\fields\\LinkField].typeSettings'
         ];
     }
 

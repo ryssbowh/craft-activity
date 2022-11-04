@@ -7,7 +7,7 @@ use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Transform;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Transforms;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Volumes;
 use Ryssbowh\Activity\services\Fields;
-use craft\services\ProjectConfig;
+use craft\services\Fields as CraftFields;
 use yii\base\Event;
 
 /**
@@ -20,6 +20,15 @@ trait RedactorField
      */
     protected function initRedactorField()
     {
+        Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_TYPINGS, function (Event $event) {
+            $event->typings['craft\\redactor\\Field'] = [
+                'settings.showHtmlButtonForNonAdmins' => 'bool',
+                'settings.removeEmptyTags' => 'bool',
+                'settings.removeInlineStyles' => 'bool',
+                'settings.removeNbsp' => 'bool',
+                'settings.purifyHtml' => 'bool',
+            ];
+        });
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_LABELS, function (Event $event) {
             $categories = array_keys(\Craft::$app->i18n->translations);
             $category = in_array('redactor', $categories) ? 'redactor' : 'activity';
@@ -48,13 +57,13 @@ trait RedactorField
             $event->targets[] = 'craft\\redactor\\Field';
         });
         Event::on(Volumes::class, Volumes::EVENT_REGISTER_TARGETS, function (Event $event) {
-            $event->targets[] = ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\redactor\\Field].availableVolumes';
+            $event->targets[] = CraftFields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\redactor\\Field].availableVolumes';
         });
         Event::on(Transforms::class, Transforms::EVENT_REGISTER_TARGETS, function (Event $event) {
-            $event->targets[] = ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\redactor\\Field].availableTransforms';
+            $event->targets[] = CraftFields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\redactor\\Field].availableTransforms';
         });
         Event::on(Transform::class, Transform::EVENT_REGISTER_TARGETS, function (Event $event) {
-            $event->targets[] = ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\redactor\\Field].defaultTransform';
+            $event->targets[] = CraftFields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\redactor\\Field].defaultTransform';
         });
     }
 }

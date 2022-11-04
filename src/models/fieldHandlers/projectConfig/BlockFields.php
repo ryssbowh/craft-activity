@@ -6,7 +6,8 @@ use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use Ryssbowh\Activity\traits\ProjectConfigFields;
 use craft\fieldlayoutelements\CustomField;
-use craft\services\ProjectConfig;
+use craft\services\Fields;
+use craft\services\Matrix;
 
 /**
  * @since 1.2.0
@@ -64,7 +65,7 @@ class BlockFields extends DefaultHandler
     protected static function _getTargets(): array
     {
         return [
-            ProjectConfig::PATH_MATRIX_BLOCK_TYPES . '.{uid}.fields'
+            Matrix::CONFIG_BLOCKTYPE_KEY . '.{uid}.fields'
         ];
     }
 
@@ -79,7 +80,7 @@ class BlockFields extends DefaultHandler
     {
         $dirty = [];
         foreach (array_intersect_key($newFields, $oldFields) as $uid => $config) {
-            $fdirty = $this->getDirtyConfig(ProjectConfig::PATH_FIELDS . '.{uid}', $config, $oldFields[$uid]);
+            $fdirty = $this->getDirtyConfig(Fields::CONFIG_FIELDS_KEY . '.{uid}', $config, $oldFields[$uid]);
             if ($fdirty) {
                 $dirty['changed'][] = [
                     'type' => $config['type'],
@@ -89,7 +90,7 @@ class BlockFields extends DefaultHandler
             }
         }
         foreach (array_diff_key($newFields, $oldFields) as $uid => $config) {
-            $fdirty = $this->getDirtyConfig(ProjectConfig::PATH_FIELDS . '.{uid}', $config, []);
+            $fdirty = $this->getDirtyConfig(Fields::CONFIG_FIELDS_KEY . '.{uid}', $config, []);
             if ($fdirty) {
                 $dirty['added'][] = [
                     'type' => $config['type'],
@@ -99,7 +100,7 @@ class BlockFields extends DefaultHandler
             }
         }
         foreach (array_diff_key($oldFields, $newFields) as $uid => $config) {
-            $fdirty = $this->getDirtyConfig(ProjectConfig::PATH_FIELDS . '.{uid}', [], $config);
+            $fdirty = $this->getDirtyConfig(Fields::CONFIG_FIELDS_KEY . '.{uid}', [], $config);
             if ($fdirty) {
                 $dirty['removed'][] = [
                     'type' => $config['type'],

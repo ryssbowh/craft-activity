@@ -3,9 +3,11 @@
 namespace Ryssbowh\Activity\traits;
 
 use Ryssbowh\Activity\models\fieldHandlers\elements\LinkField;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\AllowedLinkFieldTypes;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\LinkFieldTypes;
 use Ryssbowh\Activity\services\FieldHandlers;
 use Ryssbowh\Activity\services\Fields;
+use typedlinkfield\Plugin;
 use yii\base\Event;
 
 /**
@@ -18,10 +20,22 @@ trait TypedLinkField
      */
     protected function initTypedLinkField()
     {
+        Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_TYPINGS, function (Event $event) {
+            $event->typings['typedlinkfield\\fields\\LinkField'] = [
+                'settings.allowCustomText' => 'bool',
+                'settings.allowTarget' => 'bool',
+                'settings.autoNoReferrer' => 'bool',
+                'settings.customTextRequired' => 'bool',
+                'settings.enableAllLinkTypes' => 'bool',
+                'settings.enableAriaLabel' => 'bool',
+                'settings.enableElementCache' => 'bool',
+                'settings.enableTitle' => 'bool'
+            ];
+        });
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_LABELS, function (Event $event) {
             $categories = array_keys(\Craft::$app->i18n->translations);
             $category = in_array('typedlinkfield', $categories) ? 'typedlinkfield' : 'activity';
-            $event->labels['lenz\\linkfield\\fields\\LinkField'] = [
+            $event->labels['typedlinkfield\\fields\\LinkField'] = [
                 'settings.allowCustomText' => \Craft::t($category, 'Allow custom link text'),
                 'settings.allowTarget' => \Craft::t($category, 'Allow links to open in new window'),
                 'settings.autoNoReferrer' => \Craft::t($category, 'Set link relation to "noopener noreferrer" when opening links in a new window'),
@@ -29,7 +43,7 @@ trait TypedLinkField
                 'settings.customTextRequired' => \Craft::t($category, 'Custom link text is required'),
                 'settings.defaultLinkName' => \Craft::t($category, 'Default link type'),
                 'settings.defaultText' => \Craft::t($category, 'Default link text'),
-                'settings.enableAllLinkTypes' => \Craft::t($category, 'Enable all'),
+                'settings.allowedLinkNames' => \Craft::t('activity', 'Allowed Types'),
                 'settings.enableAriaLabel' => \Craft::t($category, 'Enable element url and title cache'),
                 'settings.enableElementCache' => \Craft::t($category, 'Enable element url and title cache'),
                 'settings.enableTitle' => \Craft::t($category, 'Enable title support'),
@@ -42,16 +56,9 @@ trait TypedLinkField
                 'settings.typeSettings.url.disableValidation' => \Craft::t($category, 'Disable URL input validation'),
                 'settings.typeSettings.url.allowAliases' => \Craft::t($category, 'Allow aliases and environment variables')
             ];
-            $field = null;
-            foreach (\Craft::$app->fields->getAllFields() as $cfield) {
-                if (get_class($cfield) == 'lenz\\linkfield\\fields\\LinkField') {
-                    $field = $cfield;
-                    break;
-                }
-            }
-            if ($field) {
-                foreach ($field->getAvailableLinkTypes() as $name => $type) {
-                    $event->labels['lenz\\linkfield\\fields\\LinkField'] = array_merge($event->labels['lenz\\linkfield\\fields\\LinkField'], [
+            if (\Craft::$app->plugins->isPluginEnabled('typedlinkfield')) {
+                foreach (Plugin::getInstance()->getLinkTypes() as $name => $type) {
+                    $event->labels['typedlinkfield\\fields\\LinkField'] = array_merge($event->labels['typedlinkfield\\fields\\LinkField'], [
                         "settings.typeSettings.$name.enabled" => \Craft::t('app', 'Enabled'),
                         "settings.typeSettings.$name.sources" => \Craft::t('app', 'Sources'),
                         "settings.typeSettings.$name.sites" => \Craft::t('app', 'Sites'),
@@ -62,13 +69,14 @@ trait TypedLinkField
             }
         });
         Event::on(Fields::class, Fields::EVENT_REGISTER_TRACKED_FIELDS, function (Event $event) {
-            $event->tracked['lenz\\linkfield\\fields\\LinkField'] = ['settings.allowCustomText', 'settings.allowTarget', 'settings.autoNoReferrer', 'settings.customTextMaxLength', 'settings.customTextRequired', 'settings.defaultLinkName', 'settings.defaultText', 'settings.enableAllLinkTypes', 'settings.enableAriaLabel', 'settings.enableElementCache', 'settings.enableTitle', 'settings.typeSettings'];
+            $event->tracked['typedlinkfield\\fields\\LinkField'] = ['settings.allowCustomText', 'settings.allowTarget', 'settings.autoNoReferrer', 'settings.customTextMaxLength', 'settings.customTextRequired', 'settings.defaultLinkName', 'settings.defaultText', 'settings.allowedLinkNames', 'settings.enableAriaLabel', 'settings.enableElementCache', 'settings.enableTitle', 'settings.typeSettings'];
         });
         Event::on(FieldHandlers::class, FieldHandlers::EVENT_REGISTER_ELEMENT_HANDLERS, function (Event $event) {
             $event->add(LinkField::class);
         });
         Event::on(FieldHandlers::class, FieldHandlers::EVENT_REGISTER_PROJECTCONFIG_HANDLERS, function (Event $event) {
             $event->add(LinkFieldTypes::class);
+            $event->add(AllowedLinkFieldTypes::class);
         });
     }
 }

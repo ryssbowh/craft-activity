@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\ProjectConfig;
+use craft\services\Fields;
 
 /**
  * @since 1.2.0
@@ -33,9 +33,9 @@ class Source extends DefaultHandler
     protected static function _getTargets(): array
     {
         return [
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\Assets].restrictedLocationSource',
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\Categories].source',
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\Tags].source',
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\Assets].restrictedLocationSource',
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\Categories].source',
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\Tags].source',
         ];
     }
 

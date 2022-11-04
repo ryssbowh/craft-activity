@@ -45,21 +45,21 @@ class RegisterTrackedFieldsEvent extends Event
         $fields[Checkboxes::class] = ['settings.options'];
         $fields[MultiSelect::class] = ['settings.options'];
         $fields[RadioButtons::class] = ['settings.options'];
-        $fields[Assets::class] = ['settings.restrictLocation', 'settings.restrictedLocationSource', 'settings.restrictedLocationSubpath', 'settings.allowSubfolders', 'settings.restrictedDefaultUploadSubpath', 'settings.sources', 'settings.defaultUploadLocationSource', 'settings.defaultUploadLocationSubpath', 'settings.showUnpermittedVolumes', 'settings.showUnpermittedFiles', 'settings.restrictFiles', 'settings.allowUploads', 'settings.maxRelations', 'settings.minRelations', 'settings.viewMode', 'settings.selectionLabel', 'settings.validateRelatedElements', 'settings.previewMode', 'settings.allowSelfRelations', 'settings.allowedKinds', 'settings.useTargetSite', 'settings.showSiteMenu', 'settings.localizeRelations'];
+        $fields[Assets::class] = ['settings.useSingleFolder', 'settings.singleUploadLocationSource', 'settings.singleUploadLocationSubpath', 'settings.sources', 'settings.defaultUploadLocationSource', 'settings.defaultUploadLocationSubpath', 'settings.showUnpermittedVolumes', 'settings.showUnpermittedFiles', 'settings.restrictFiles', 'settings.allowUploads', 'settings.limit', 'settings.viewMode', 'settings.selectionLabel', 'settings.validateRelatedElements', 'settings.previewMode', 'settings.allowSelfRelations', 'settings.allowedKinds', 'settings.useTargetSite', 'settings.showSiteMenu', 'settings.localizeRelations'];
         $fields[Color::class] = ['settings.defaultColor'];
         $fields[Date::class] = ['settings.minuteIncrement', 'settings.showTimeZone', 'settings.showDate', 'settings.showTime', 'settings.min', 'settings.max'];
         $fields[Time::class] = ['settings.minuteIncrement', 'settings.min', 'settings.max'];
         $fields[Email::class] = ['settings.placeholder'];
-        $fields[Entries::class] = ['settings.sources', 'settings.minRelations', 'settings.maxRelations', 'settings.selectionLabel', 'settings.validateRelatedElements', 'settings.allowSelfRelations', 'settings.useTargetSite', 'settings.showSiteMenu', 'settings.localizeRelations'];
+        $fields[Entries::class] = ['settings.sources', 'settings.limit', 'settings.selectionLabel', 'settings.validateRelatedElements', 'settings.allowSelfRelations', 'settings.useTargetSite', 'settings.showSiteMenu', 'settings.localizeRelations'];
         $fields[Users::class] = ['settings.sources', 'settings.minRelations', 'settings.maxRelations', 'settings.selectionLabel', 'settings.validateRelatedElements', 'settings.allowSelfRelations', 'settings.localizeRelations'];
         $fields[Categories::class] = ['settings.source', 'settings.branchLimit', 'settings.selectionLabel', 'settings.validateRelatedElements', 'settings.allowSelfRelations', 'settings.useTargetSite', 'settings.showSiteMenu', 'settings.localizeRelations'];
         $fields[Tags::class] = ['settings.source', 'settings.selectionLabel', 'settings.validateRelatedElements', 'settings.allowSelfRelations', 'settings.useTargetSite', 'settings.showSiteMenu', 'settings.localizeRelations'];
-        $fields[Number::class] = ['settings.defaultValue', 'settings.min', 'settings.max', 'settings.decimals', 'settings.prefix', 'settings.suffix', 'settings.size', 'settings.previewFormat', 'settings.previewCurrency'];
+        $fields[Number::class] = ['settings.defaultValue', 'settings.min', 'settings.max', 'settings.decimals', 'settings.prefix', 'settings.suffix', 'settings.size', 'settings.previewFormat'];
         $fields[PlainText::class] = ['settings.uiMode', 'settings.placeholder', 'settings.charLimit', 'settings.byteLimit', 'settings.code', 'settings.multiline', 'settings.initialRows', 'settings.columnType'];
         $fields[Lightswitch::class] = ['settings.default', 'settings.offLabel', 'settings.onLabel'];
         $fields[Table::class] = ['settings.addRowLabel', 'settings.columnType', 'settings.columns', 'settings.defaults', 'settings.minRows', 'settings.maxRows'];
         $fields[Url::class] = ['settings.types', 'settings.maxLength'];
-        $fields[Matrix::class] = ['settings.minBlocks', 'settings.maxBlocks'];
+        $fields[Matrix::class] = ['settings.minBlocks', 'settings.maxBlocks', 'settings.propagationMethod'];
         $this->tracked = $fields;
     }
 }

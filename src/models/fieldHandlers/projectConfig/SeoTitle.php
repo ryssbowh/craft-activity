@@ -2,8 +2,8 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\ProjectConfig;
 use craft\helpers\ProjectConfig as ProjectConfigHelper;
+use craft\services\Fields;
 
 /**
  * @since 1.2.0
@@ -39,7 +39,7 @@ class SeoTitle extends DefaultHandler
     protected static function _getTargets(): array
     {
         return [
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[ether\\seo\\fields\\SeoField].title'
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[ether\\seo\\fields\\SeoField].title'
         ];
     }
 }

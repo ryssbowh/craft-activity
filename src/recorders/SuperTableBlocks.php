@@ -6,7 +6,6 @@ use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\events\ConfigEvent;
-use craft\services\ProjectConfig;
 use yii\base\Event;
 
 /**

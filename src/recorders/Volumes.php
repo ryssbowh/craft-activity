@@ -44,7 +44,7 @@ class Volumes extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function getTrackedFieldTypings(): array
+    protected function getTrackedFieldTypings(array $config): array
     {
         return [
             'hasUrls' => 'bool'

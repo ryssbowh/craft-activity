@@ -12,7 +12,6 @@ use Ryssbowh\Activity\services\Types;
 use Ryssbowh\Activity\traits\RedactorField;
 use Ryssbowh\Activity\traits\SeoField;
 use Ryssbowh\Activity\traits\SuperTableField;
-use Ryssbowh\Activity\traits\TinyMceField;
 use Ryssbowh\Activity\traits\TypedLinkField;
 use Ryssbowh\Activity\twig\ActivityExtension;
 use Ryssbowh\Activity\twig\TwigActivity;
@@ -29,7 +28,7 @@ use yii\base\Event;
 
 class Activity extends Plugin
 {
-    use RedactorField, SeoField, TinyMceField, TypedLinkField, SuperTableField;
+    use RedactorField, SeoField, TypedLinkField, SuperTableField;
 
     /**
      * @var Themes
@@ -70,7 +69,6 @@ class Activity extends Plugin
         
         $this->initSeoField();
         $this->initRedactorField();
-        $this->initTinyMceField();
         $this->initTypedLinkField();
         $this->initSuperTableField();
 

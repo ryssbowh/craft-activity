@@ -49,11 +49,9 @@ class RegisterFieldLabelsEvent extends Event
             ]
         ];
         $labels[Assets::class] = [
-            'settings.restrictLocation' => \Craft::t('app', 'Restrict assets to a single location'),
-            'settings.restrictedLocationSource' => \Craft::t('activity', 'Asset Location Volume'),
-            'settings.restrictedLocationSubpath' => \Craft::t('activity', 'Asset Location Subpath'),
-            'settings.allowSubfolders' => \Craft::t('app', 'Allow subfolders'),
-            'settings.restrictedDefaultUploadSubpath' => \Craft::t('app', 'Default Upload Location'),
+            'settings.useSingleFolder' => \Craft::t('app', 'Restrict assets to a single folder'),
+            'settings.singleUploadLocationSource' => \Craft::t('activity', 'Asset Location Volume'),
+            'settings.singleUploadLocationSubpath' => \Craft::t('activity', 'Asset Location Subpath'),
             'settings.sources' => \Craft::t('app', 'Sources'),
             'settings.defaultUploadLocationSource' => \Craft::t('activity', 'Default Upload Location Volume'),
             'settings.defaultUploadLocationSubpath' => \Craft::t('activity', 'Default Upload Location Subpath'),
@@ -61,8 +59,7 @@ class RegisterFieldLabelsEvent extends Event
             'settings.showUnpermittedFiles' => \Craft::t('app', 'Show unpermitted files'),
             'settings.restrictFiles' => \Craft::t('app', 'Restrict allowed file types'),
             'settings.allowUploads' => \Craft::t('app', 'Allow uploading directly to the field'),
-            'settings.maxRelations' => \Craft::t('app', 'Max Relations'),
-            'settings.minRelations' => \Craft::t('app', 'Min Relations'),
+            'settings.limit' => \Craft::t('app', 'Limit'),
             'settings.viewMode' => \Craft::t('app', 'View Mode'),
             'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related assets'),
@@ -100,23 +97,29 @@ class RegisterFieldLabelsEvent extends Event
         ];
         $labels[Entries::class] = [
             'settings.sources' => \Craft::t('app', 'Sources'),
-            'settings.minRelations' => \Craft::t('app', 'Min Relations'),
-            'settings.maxRelations' => \Craft::t('app', 'Max Relations'),
+            'settings.limit' => \Craft::t('app', 'Limit'),
             'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related entries'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
-            'settings.useTargetSite' => \Craft::t('app', 'Relate assets from a specific site?'),
+            'settings.useTargetSite' => \Craft::t('app', 'Relate entries from a specific site?'),
             'settings.showSiteMenu' => \Craft::t('app', 'Show the site menu'),
             'settings.localizeRelations' => \Craft::t('app', 'Manage relations on a per-site basis')
         ];
-        $labels[Users::class] = $labels[Entries::class];
+        $labels[Users::class] = [
+            'settings.sources' => \Craft::t('app', 'Sources'),
+            'settings.limit' => \Craft::t('app', 'Limit'),
+            'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
+            'settings.validateRelatedElements' => \Craft::t('app', 'Validate related users'),
+            'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
+            'settings.localizeRelations' => \Craft::t('app', 'Manage relations on a per-site basis')
+        ];
         $labels[Categories::class] = [
             'settings.source' => \Craft::t('app', 'Source'),
             'settings.branchLimit' => \Craft::t('app', 'Branch Limit'),
             'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related categories'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
-            'settings.useTargetSite' => \Craft::t('app', 'Relate assets from a specific site?'),
+            'settings.useTargetSite' => \Craft::t('app', 'Relate categories from a specific site?'),
             'settings.showSiteMenu' => \Craft::t('app', 'Show the site menu'),
             'settings.localizeRelations' => \Craft::t('app', 'Manage relations on a per-site basis')
         ];
@@ -125,7 +128,7 @@ class RegisterFieldLabelsEvent extends Event
             'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related tags'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
-            'settings.useTargetSite' => \Craft::t('app', 'Relate assets from a specific site?'),
+            'settings.useTargetSite' => \Craft::t('app', 'Relate tags from a specific site?'),
             'settings.showSiteMenu' => \Craft::t('app', 'Show the site menu'),
             'settings.localizeRelations' => \Craft::t('app', 'Manage relations on a per-site basis')
         ];
@@ -137,8 +140,7 @@ class RegisterFieldLabelsEvent extends Event
             'settings.size' => \Craft::t('app', 'Size'),
             'settings.prefix' => \Craft::t('app', 'Prefix Text'),
             'settings.suffix' => \Craft::t('app', 'Suffix Text'),
-            'settings.previewFormat' => \Craft::t('app', 'Preview Format'),
-            'settings.previewCurrency' => \Craft::t('activity', 'Preview Currency'),
+            'settings.previewFormat' => \Craft::t('app', 'Preview Format')
         ];
         $labels[PlainText::class] = [
             'settings.uiMode' => \Craft::t('app', 'UI Mode'),
@@ -170,6 +172,7 @@ class RegisterFieldLabelsEvent extends Event
         $labels[Matrix::class] = [
             'settings.minBlocks' => \Craft::t('app', 'Min Blocks'),
             'settings.maxBlocks' => \Craft::t('app', 'Max Blocks'),
+            'settings.propagationMethod' => \Craft::t('app', 'Propagation Method'),
         ];
         $this->labels = $labels;
     }

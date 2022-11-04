@@ -7,7 +7,6 @@ use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
 use craft\events\ConfigEvent;
 use craft\services\Fields as CraftFields;
-use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class Fields extends ConfigModelRecorder

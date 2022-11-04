@@ -2,6 +2,8 @@
 
 namespace Ryssbowh\Activity\events;
 
+use craft\fields\Date;
+use craft\fields\PlainText;
 use yii\base\Event;
 
 /**
@@ -21,6 +23,13 @@ class RegisterFieldTypingsEvent extends Event
     {
         $this->typings = [
             '_base' => ['searchable' => 'bool']
+        ];
+        $this->typings[PlainText::class] = [
+            'settings.code' => 'bool',
+            'settings.multiline' => 'bool'
+        ];
+        $this->typings[Date::class] = [
+            'settings.showTimeZone' => 'bool'
         ];
     }
 }

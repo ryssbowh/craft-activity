@@ -2,8 +2,6 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\ProjectConfig;
-
 /**
  * @since 1.2.0
  */

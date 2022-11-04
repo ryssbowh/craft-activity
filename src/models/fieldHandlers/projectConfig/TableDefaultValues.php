@@ -5,7 +5,7 @@ namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use craft\base\Field;
 use craft\helpers\ProjectConfig as ProjectConfigHelper;
-use craft\services\ProjectConfig;
+use craft\services\Fields;
 
 /**
  * @since 1.2.0
@@ -80,7 +80,7 @@ class TableDefaultValues extends DefaultHandler
     protected static function _getTargets(): array
     {
         return [
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\Table].defaults',
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\Table].defaults',
         ];
     }
 

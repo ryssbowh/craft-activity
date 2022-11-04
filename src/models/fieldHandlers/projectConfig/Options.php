@@ -4,7 +4,7 @@ namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use craft\helpers\ProjectConfig as ProjectConfigHelper;
-use craft\services\ProjectConfig;
+use craft\services\Fields;
 
 /**
  * @since 1.2.0
@@ -69,10 +69,10 @@ class Options extends DefaultHandler
     protected static function _getTargets(): array
     {
         return [
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\Dropdown].options',
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\Checkboxes].options',
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\MultiSelect].options',
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\RadioButtons].options',
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\Dropdown].options',
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\Checkboxes].options',
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\MultiSelect].options',
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\RadioButtons].options',
         ];
     }
 

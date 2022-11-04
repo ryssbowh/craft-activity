@@ -2,7 +2,7 @@
 
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
-use craft\services\ProjectConfig;
+use craft\services\Fields;
 
 /**
  * @since 1.2.0
@@ -39,9 +39,9 @@ class Sources extends DefaultHandler
     protected static function _getTargets(): array
     {
         return [
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\Assets].sources',
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\Entries].sources',
-            ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\fields\\Users].sources'
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\Assets].sources',
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\Entries].sources',
+            Fields::CONFIG_FIELDS_KEY . '.{uid}.settings[craft\\fields\\Users].sources'
         ];
     }
 
