@@ -8,6 +8,9 @@ use Ryssbowh\Activity\traits\ProjectConfigFields;
 use craft\fieldlayoutelements\CustomField;
 use craft\services\ProjectConfig;
 
+/**
+ * @since 1.2.0
+ */
 class BlockFields extends DefaultHandler
 {
     use ProjectConfigFields;

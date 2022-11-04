@@ -8,6 +8,9 @@ use craft\base\Model;
 use craft\helpers\Html;
 use craft\helpers\UrlHelper;
 
+/**
+ * @since 1.2.0
+ */
 class SuperTableBlockCreated extends ConfigModelLog
 {
     /**

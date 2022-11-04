@@ -8,6 +8,9 @@ use Ryssbowh\Activity\services\FieldHandlers;
 use Ryssbowh\Activity\services\Fields;
 use yii\base\Event;
 
+/**
+ * @since 1.2.0
+ */
 trait TypedLinkField
 {
     protected function initTypedLinkField()

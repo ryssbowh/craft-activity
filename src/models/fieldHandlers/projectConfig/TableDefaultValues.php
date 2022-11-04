@@ -7,6 +7,9 @@ use craft\base\Field;
 use craft\helpers\ProjectConfig as ProjectConfigHelper;
 use craft\services\ProjectConfig;
 
+/**
+ * @since 1.2.0
+ */
 class TableDefaultValues extends DefaultHandler
 {
     /**

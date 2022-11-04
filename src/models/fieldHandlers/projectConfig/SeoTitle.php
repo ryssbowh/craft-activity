@@ -5,6 +5,9 @@ namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 use craft\services\ProjectConfig;
 use craft\helpers\ProjectConfig as ProjectConfigHelper;
 
+/**
+ * @since 1.2.0
+ */
 class SeoTitle extends DefaultHandler
 {
     /**

@@ -10,6 +10,9 @@ use Ryssbowh\Activity\services\Fields;
 use craft\services\ProjectConfig;
 use yii\base\Event;
 
+/**
+ * @since 1.2.0
+ */
 trait TinyMceField
 {
     protected function initTinyMceField()

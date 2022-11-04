@@ -23,6 +23,9 @@ use craft\fields\Url;
 use craft\fields\Users;
 use yii\base\Event;
 
+/**
+ * @since 1.2.0
+ */
 class RegisterFieldLabelsEvent extends Event
 {
     /**

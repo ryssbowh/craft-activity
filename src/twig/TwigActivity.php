@@ -5,6 +5,9 @@ namespace Ryssbowh\Activity\twig;
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\services\Logs;
 
+/**
+ * @since 1.2.0
+ */
 class TwigActivity
 {
     /**
