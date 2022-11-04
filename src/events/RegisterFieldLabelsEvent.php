@@ -106,18 +106,26 @@ class RegisterFieldLabelsEvent extends Event
             'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related entries'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
-            'settings.useTargetSite' => \Craft::t('app', 'Relate assets from a specific site?'),
+            'settings.useTargetSite' => \Craft::t('app', 'Relate entries from a specific site?'),
             'settings.showSiteMenu' => \Craft::t('app', 'Show the site menu'),
             'settings.localizeRelations' => \Craft::t('app', 'Manage relations on a per-site basis')
         ];
-        $labels[Users::class] = $labels[Entries::class];
+        $labels[Users::class] = [
+            'settings.sources' => \Craft::t('app', 'Sources'),
+            'settings.minRelations' => \Craft::t('app', 'Min Relations'),
+            'settings.maxRelations' => \Craft::t('app', 'Max Relations'),
+            'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
+            'settings.validateRelatedElements' => \Craft::t('app', 'Validate related users'),
+            'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
+            'settings.localizeRelations' => \Craft::t('app', 'Manage relations on a per-site basis')
+        ];
         $labels[Categories::class] = [
             'settings.source' => \Craft::t('app', 'Source'),
             'settings.branchLimit' => \Craft::t('app', 'Branch Limit'),
             'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related categories'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
-            'settings.useTargetSite' => \Craft::t('app', 'Relate assets from a specific site?'),
+            'settings.useTargetSite' => \Craft::t('app', 'Relate categories from a specific site?'),
             'settings.showSiteMenu' => \Craft::t('app', 'Show the site menu'),
             'settings.localizeRelations' => \Craft::t('app', 'Manage relations on a per-site basis')
         ];
@@ -126,7 +134,7 @@ class RegisterFieldLabelsEvent extends Event
             'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related tags'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
-            'settings.useTargetSite' => \Craft::t('app', 'Relate assets from a specific site?'),
+            'settings.useTargetSite' => \Craft::t('app', 'Relate tags from a specific site?'),
             'settings.showSiteMenu' => \Craft::t('app', 'Show the site menu'),
             'settings.localizeRelations' => \Craft::t('app', 'Manage relations on a per-site basis')
         ];
@@ -179,6 +187,7 @@ class RegisterFieldLabelsEvent extends Event
         $labels[Matrix::class] = [
             'settings.minBlocks' => \Craft::t('app', 'Min Blocks'),
             'settings.maxBlocks' => \Craft::t('app', 'Max Blocks'),
+            'settings.propagationMethod' => \Craft::t('app', 'Propagation Method'),
         ];
         $this->labels = $labels;
     }
