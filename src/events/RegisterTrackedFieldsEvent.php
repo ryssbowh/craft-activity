@@ -61,7 +61,7 @@ class RegisterTrackedFieldsEvent extends Event
         $fields[Lightswitch::class] = ['settings.default', 'settings.offLabel', 'settings.onLabel'];
         $fields[Table::class] = ['settings.addRowLabel', 'settings.columnType', 'settings.columns', 'settings.defaults', 'settings.minRows', 'settings.maxRows'];
         $fields[Url::class] = ['settings.types', 'settings.maxLength'];
-        $fields[Matrix::class] = ['settings.minBlocks', 'settings.maxBlocks'];
+        $fields[Matrix::class] = ['settings.minBlocks', 'settings.maxBlocks', 'settings.propagationMethod'];
         $this->tracked = $fields;
     }
 }
