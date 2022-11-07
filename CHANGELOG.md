@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.2.1 - 2022-11-07
+
+### Fixed
+- Fixed issue with Options handler [#1](https://github.com/ryssbowh/craft-activity/issues/1)
+
 ## 1.2.0 - 2022-11-04
 
 ### Changed

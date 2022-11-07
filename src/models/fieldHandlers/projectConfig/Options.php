@@ -87,7 +87,9 @@ class Options extends DefaultHandler
     {
         $values = ProjectConfigHelper::unpackAssociativeArrays($values);
         foreach ($values as $index => $sub) {
-            $values[$index]['default'] = (bool)$sub['default'];
+            if (isset($sub['default'])) {
+                $values[$index]['default'] = (bool)$sub['default'];
+            }
         }
         return $values;
     }
