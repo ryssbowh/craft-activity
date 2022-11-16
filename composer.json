@@ -37,8 +37,8 @@
         "name": "User Activity",
         "handle": "activity",
         "developer": "The Web Puzzlers",
-        "developerUrl": "https://github.com/ryssbowh",
-        "documentationUrl": "https://github.com/ryssbowh/craft-activity",
+        "developerUrl": "https://puzzlers.run",
+        "documentationUrl": "https://puzzlers.run/plugins/user-activity/2.x",
         "class": "Ryssbowh\\Activity\\Activity"
     },
     "config": {
