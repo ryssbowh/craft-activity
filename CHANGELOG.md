@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.2.2 - 2022-11-16
+
+### Changed
+- Updated documentation urls
+
 ## 1.2.1 - 2022-11-07
 
 ### Fixed
