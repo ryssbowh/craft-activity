@@ -71,6 +71,9 @@ class TableDefaultValues extends DefaultHandler
      */
     protected function getField(): ?Field
     {
+        if (!($this->data['fieldUid'] ?? null)) {
+            return null;
+        }
         return \Craft::$app->fields->getFieldByUid($this->data['fieldUid']);
     }
 
