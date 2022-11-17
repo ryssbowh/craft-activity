@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.2.3 - 2022-11-17
+
+### Fixed
+- Fixed issue with TableDefaultValues handler [#1](https://github.com/ryssbowh/craft-activity/issues/1)
+
 ## 1.2.2 - 2022-11-16
 
 ### Changed
