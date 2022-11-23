@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.2.4 - 2022-11-23
+
+### Fixed
+- Fixed issues with user permission changes not calculated properly [#4](https://github.com/ryssbowh/craft-activity/issues/4)
+
 ## 1.2.3 - 2022-11-17
 
 ### Fixed

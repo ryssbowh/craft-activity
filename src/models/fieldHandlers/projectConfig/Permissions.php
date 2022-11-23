@@ -116,9 +116,9 @@ class Permissions extends DefaultHandler
     protected function findPermission(string $perm): ?array
     {
         $allPerms = \Craft::$app->userPermissions->getAllPermissions();
-        foreach ($allPerms as $array) {
-            if ($label = $this->findPermissionLabel($perm, $array['permissions'])) {
-                return [$array['heading'], $label];
+        foreach ($allPerms as $heading => $array) {
+            if ($label = $this->findPermissionLabel($perm, $array)) {
+                return [$heading, $label];
             }
         }
         return null;

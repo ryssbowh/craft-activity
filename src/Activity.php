@@ -181,6 +181,16 @@ class Activity extends Plugin
      */
     protected function registerPermissions()
     {
+        Event::on(
+            UserPermissions::class,
+            UserPermissions::EVENT_REGISTER_PERMISSIONS,
+            function(Event $event) {
+                $event->permissions['Exports'] = [
+                    'viewUserExport' => ['label' => 'View User Export'],
+                    'viewResourceExport' => ['label' => 'View Resource Export'],
+                ];
+            }
+        );
         Event::on(UserPermissions::class, UserPermissions::EVENT_REGISTER_PERMISSIONS, function (Event $event) {
             $event->permissions[\Craft::t('activity', 'Activity')] = [
                 'viewActivityLogs' => [
