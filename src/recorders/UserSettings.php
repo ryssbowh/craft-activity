@@ -14,7 +14,7 @@ class UserSettings extends ProjectConfigRecorder
     public function init()
     {
         \Craft::$app->projectConfig->onUpdate('users', function(Event $event) {
-            Activity::getRecorder('userSettings')->onChanged('users', 'userSettingsChanged', $event->oldValue, $event->newValue);
+            Activity::getRecorder('userSettings')->onConfigChanged('users', 'userSettingsChanged', $event->oldValue, $event->newValue);
         });
     }
     

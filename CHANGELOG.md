@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.2.6 - 2022-12-09
+
+### Fixed
+- Fixed issue saving user group [#8](https://github.com/ryssbowh/craft-activity/issues/8)
+
 ## 1.2.5 - 2022-11-24
 
 ### Fixed
