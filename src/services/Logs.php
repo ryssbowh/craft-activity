@@ -10,6 +10,7 @@ use Ryssbowh\Activity\models\ChangedField;
 use Ryssbowh\Activity\records\ActivityChangedField;
 use Ryssbowh\Activity\records\ActivityLog;
 use craft\base\Component;
+use craft\db\ActiveQuery;
 use craft\db\Paginator;
 use craft\db\Query;
 use craft\elements\User;
@@ -122,6 +123,32 @@ class Logs extends Component
      */
     public function getPaginatedLogs(array $filters, int $perPage = 5, string $orderBy = 'dateCreated desc'): array
     {
+        $query = $this->getLogsQuery($filters, $orderBy);
+        $paginator = new Paginator($query->limit(null), [
+            'currentPage' => \Craft::$app->getRequest()->getPageNum(),
+            'pageSize' => $perPage,
+        ]);
+        $results = array_map(function ($record) {
+            return $record->toModel();
+        }, $paginator->getPageResults());
+
+        return [
+            Paginate::create($paginator),
+            $results,
+        ];
+    }
+
+
+    /**
+     * Get a filtered logs query
+     * 
+     * @param  array  $filters
+     * @param  string $orderBy
+     * @return ActiveQuery
+     * @since  1.3.0
+     */
+    public function getLogsQuery(array $filters, string $orderBy = 'dateCreated desc'): ActiveQuery
+    {
         $query = ActivityLog::find()->with('changedFields')->orderBy($orderBy . ', id desc');
         if ($filters['users'] ?? false) {
             $query->andWhere(['in', 'user_id', $filters['users']]);
@@ -137,18 +164,7 @@ class Logs extends Component
             $date = \DateTime::createFromFormat('d/m/Y', $filters['dateTo']);
             $query->andWhere(['<=', 'dateCreated', $date->format('Y-m-d') . ' 23:59:59']);
         }
-        $paginator = new Paginator($query->limit(null), [
-            'currentPage' => \Craft::$app->getRequest()->getPageNum(),
-            'pageSize' => $perPage,
-        ]);
-        $results = array_map(function ($record) {
-            return $record->toModel();
-        }, $paginator->getPageResults());
-
-        return [
-            Paginate::create($paginator),
-            $results,
-        ];
+        return $query;
     }
 
     /**

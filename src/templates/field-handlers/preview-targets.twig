@@ -12,18 +12,18 @@
                         {% if hasFrom and hasTo %}
                             {{ "{field} was changed from {from} to {to}"|t('activity', {
                                 field: fieldLabel|t('activity'),
-                                from: macros.fromValue(row[fieldName]),
-                                to: macros.toValue(row[fieldName])
+                                from: macros.fromValue(row[fieldName])|spaceless,
+                                to: macros.toValue(row[fieldName])|spaceless
                             })|raw }}
                         {% elseif hasTo %}
                             {{ "{field} was set to {to}"|t('activity', {
                                 field: fieldLabel|t('activity'),
-                                to: macros.toValue(row[fieldName])
+                                to: macros.toValue(row[fieldName])|spaceless
                             })|raw }}
                         {% elseif hasFrom %}
                             {{ "{field} value ({from}) was removed"|t('activity', {
                                 field: fieldLabel|t('activity'),
-                                from: macros.fromValue(row[fieldName])
+                                from: macros.fromValue(row[fieldName])|spaceless
                             })|raw }}
                         {% endif %}
                     </li>

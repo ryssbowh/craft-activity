@@ -11,17 +11,17 @@
             {% if hasFrom and hasTo %}
                 {% if field.data.f is same as(true) and field.data.t is same as(false) %}
                     {{ "{field} was unchecked"|t('activity', {
-                        field: log.fieldLabel(handle, type),
+                        field: log.fieldLabel(handle, type)|spaceless,
                     })|raw }}
                 {% elseif field.data.f is same as(false) and field.data.t is same as(true) %}
                     {{ "{field} was checked"|t('activity', {
-                        field: log.fieldLabel(handle, type),
+                        field: log.fieldLabel(handle, type)|spaceless,
                     })|raw }}
                 {% else %}
                     {{ "{field} was changed from {from} to {to}"|t('activity', {
                         field: log.fieldLabel(handle, type),
-                        from: macros.fromValue(field.data),
-                        to: macros.toValue(field.data)
+                        from: macros.fromValue(field.data)|spaceless,
+                        to: macros.toValue(field.data)|spaceless
                     })|raw }}
                 {% endif %}
             {% elseif hasTo %}
@@ -36,7 +36,7 @@
                 {% else %}
                     {{ "{field} was set to {to}"|t('activity', {
                         field: log.fieldLabel(handle, type),
-                        to: macros.toValue(field.data)
+                        to: macros.toValue(field.data)|spaceless
                     })|raw }}
                 {% endif %}
             {% elseif hasFrom %}
@@ -51,7 +51,7 @@
                 {% else %}
                     {{ "{field} value ({from}) was removed"|t('activity', {
                         field: log.fieldLabel(handle, type),
-                        from: macros.fromValue(field.data),
+                        from: macros.fromValue(field.data)|spaceless,
                     })|raw }}
                 {% endif %}
             {% else %}

@@ -52,18 +52,18 @@
                     {% if hasFrom and hasTo %}
                         {{ '{field} was changed from {from} to {to}'|t('activity', {
                             field: label,
-                            from: macros.fromValue(field.data[key]),
-                            to: macros.toValue(field.data[key])
+                            from: macros.fromValue(field.data[key])|spaceless,
+                            to: macros.toValue(field.data[key])|spaceless
                         })|raw }}
                     {% elseif hasTo %}
                         {{ "{field} was set to {to}"|t('activity', {
                             field: label,
-                            to: macros.toValue(field.data[key])
+                            to: macros.toValue(field.data[key])|spaceless
                         })|raw }}
                     {% elseif hasFrom %}
                         {{ "Field {field} value ({from}) was removed"|t('activity', {
                             field: label,
-                            from: macros.fromValue(field.data[key])
+                            from: macros.fromValue(field.data[key])|spaceless
                         })|raw }}
                     {% endif %}
                 </li>
@@ -84,8 +84,8 @@
                 {% if field.data.value.f.id != field.data.value.t.id %}
                     <li>
                         {{ 'Value was changed from {from} to {to}'|t('activity', {
-                            from: _self.linkValue(field.data.value.f),
-                            to: _self.linkValue(field.data.value.t)
+                            from: _self.linkValue(field.data.value.f)|spaceless,
+                            to: _self.linkValue(field.data.value.t)|spaceless
                         })|raw }}
                     </li>
                 {% endif %}
@@ -97,7 +97,7 @@
                 </li>
                 <li>
                     {{ "Value ({from}) was removed"|t('activity', {
-                        from: _self.linkValue(field.data.value.f)
+                        from: _self.linkValue(field.data.value.f)|spaceless
                     })|raw }}
                 </li>
             {% elseif hasTo %}
@@ -108,7 +108,7 @@
                 </li>
                 <li>
                     {{ "Value was set to {to}"|t('activity', {
-                        to: _self.linkValue(field.data.value.t)
+                        to: _self.linkValue(field.data.value.t)|spaceless
                     })|raw }}
                 </li>
             {% endif %}

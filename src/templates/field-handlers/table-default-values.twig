@@ -11,19 +11,19 @@
                         {% set hasTo = 't' in rfield|keys %}
                         {% if hasFrom and hasTo %}
                             {{ "{field} was changed from {from} to {to}"|t('activity', {
-                                field: rfield.heading,
-                                from: macros.fromValue(rfield),
-                                to: macros.toValue(rfield)
+                                field: rfield.heading|spaceless,
+                                from: macros.fromValue(rfield)|spaceless,
+                                to: macros.toValue(rfield)|spaceless
                             })|raw }}
                         {% elseif hasTo %}
                             {{ "{field} was set to {to}"|t('activity', {
-                                field: rfield.heading,
-                                to: macros.toValue(rfield)
+                                field: rfield.heading|spaceless,
+                                to: macros.toValue(rfield)|spaceless
                             })|raw }}
                         {% elseif hasFrom %}
                             {{ "{field} value ({from}) was removed"|t('activity', {
-                                field: rfield.heading,
-                                from: macros.fromValue(rfield)
+                                field: rfield.heading|spaceless,
+                                from: macros.fromValue(rfield)|spaceless
                             })|raw }}
                         {% endif %}
                     </li>

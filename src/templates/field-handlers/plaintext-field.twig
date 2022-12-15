@@ -22,18 +22,18 @@
     {% if hasFrom and hasTo %}
         {{ "Field {field} was changed from {from} to {to}"|t('activity', {
             field: field.data.name,
-            from: _self.textFromValue(field),
-            to: _self.textToValue(field),
+            from: _self.textFromValue(field)|spaceless,
+            to: _self.textToValue(field)|spaceless,
         })|raw }}
     {% elseif hasTo %}
         {{ "Field {field} was set to {to}"|t('activity', {
             field: field.data.name,
-            to: _self.textToValue(field),
+            to: _self.textToValue(field)|spaceless,
         })|raw }}
     {% elseif hasFrom %}
         {{ "Field {field} value ({from}) was removed"|t('activity', {
             field: field.data.name,
-            from: _self.textFromValue(field),
+            from: _self.textFromValue(field)|spaceless,
         })|raw }}
     {% endif %}
 </li>

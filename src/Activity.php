@@ -4,6 +4,7 @@ namespace Ryssbowh\Activity;
 
 use Ryssbowh\Activity\base\recorders\Recorder;
 use Ryssbowh\Activity\models\Settings;
+use Ryssbowh\Activity\services\Exporters;
 use Ryssbowh\Activity\services\FieldHandlers;
 use Ryssbowh\Activity\services\Fields;
 use Ryssbowh\Activity\services\Logs;
@@ -111,7 +112,7 @@ class Activity extends Plugin
      */
     protected function registerTwig()
     {
-        if (\Craft::$app->request->isCpRequest) {
+        if (\Craft::$app->request->isCpRequest or \Craft::$app->request->isConsoleRequest) {
             \Craft::$app->view->registerTwigExtension(new ActivityExtension);
         }
         Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
@@ -171,7 +172,8 @@ class Activity extends Plugin
     {
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function(Event $event) {
             $event->rules = array_merge($event->rules, [
-                'activity' => 'activity/activity'
+                'activity' => 'activity/activity',
+                'export-activity-logs' => 'activity/export'
             ]);
         });
     }
@@ -204,6 +206,7 @@ class Activity extends Plugin
             'types' => Types::class,
             'fieldHandlers' => FieldHandlers::class,
             'fields' => Fields::class,
+            'exporters' => Exporters::class,
         ]);
     }
 }

@@ -14,12 +14,12 @@
             <ul>
                 <li>
                     {{ "Template was set to {to}"|t('activity', {
-                        to: macros.toValue(fields.template)
+                        to: macros.toValue(fields.template)|spaceless
                     })|raw }}
                 </li>
                 <li>
                     {{ "URI format was set to {to}"|t('activity', {
-                        to: macros.toValue(fields.uriFormat)
+                        to: macros.toValue(fields.uriFormat)|spaceless
                     })|raw }}
                 </li>
             </ul>
@@ -30,12 +30,12 @@
             <ul>
                 <li>
                     {{ "Template was {from}"|t('activity', {
-                        from: macros.fromValue(fields.template)
+                        from: macros.fromValue(fields.template)|spaceless
                     })|raw }}
                 </li>
                 <li>
                     {{ "URI format was {from}"|t('activity', {
-                        from: macros.fromValue(fields.uriFormat)
+                        from: macros.fromValue(fields.uriFormat)|spaceless
                     })|raw }}
                 </li>
             </ul>
@@ -48,8 +48,8 @@
                     <li>
                         {{ "Template was changed from {from} to {to}"|t('activity', {
                             site: siteName,
-                            from: macros.fromvalue(fields.template),
-                            to: macros.toValue(fields.template)
+                            from: macros.fromvalue(fields.template)|spaceless,
+                            to: macros.toValue(fields.template)|spaceless
                         })|raw }}
                     </li>
                 {% endif %}
@@ -57,8 +57,8 @@
                     <li>
                         {{ "URI format was changed from {from} to {to}"|t('activity', {
                             site: siteName,
-                            from: macros.fromvalue(fields.uriFormat),
-                            to: macros.toValue(fields.uriFormat)
+                            from: macros.fromvalue(fields.uriFormat)|spaceless,
+                            to: macros.toValue(fields.uriFormat)|spaceless
                         })|raw }}
                     </li>
                 {% endif %}
