@@ -28,11 +28,21 @@ var Activity = Garnish.Base.extend({
         this.addListener($('.menu.activity-filter a'), 'click', 'handleChangeFilter');
         this.addListener($('.activity-per-page a'), 'click', 'handleChangePager');
         this.addListener($('#reset-filters'), 'click', 'handleReset');
+        this.addListener($('#export-menu a'), 'click', 'handleExport');
         this.initDatePickers();
         this.initPager();
         this.initRecords();
         this.initHotReload();
         this.initModal();
+    },
+
+    handleExport: function (e) 
+    {
+        e.preventDefault();
+        var filters = this.buildFilters();
+        delete filters.perPage;
+        filters.type = $(e.target).data('handle');
+        window.open(Craft.getCpUrl('export-activity-logs') + '?' + $.param(filters));
     },
 
     initModal: function () {

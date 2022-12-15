@@ -35,7 +35,8 @@ class ActivityController extends Controller
             'types' => $types,
             'users' => $users,
             'filters' => $filters,
-            'perPage' => $perPage
+            'perPage' => $perPage,
+            'exporters' => Activity::$plugin->exporters->all
         ]);
     }
 

@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.0 - 2022-12-15
+
+### Added
+- Ability to export logs through the CP and console command [#7](https://github.com/ryssbowh/craft-activity/issues/7)
+- Text and Pdf exporters
+
 ## 2.2.4 - 2022-11-17
 
 ### Fixed

@@ -62,19 +62,19 @@
         <li>
             {% if hasFrom and hasTo %}
                 {{ "Field {field} was changed from {from} to {to}"|t('activity', {
-                    field: field.data.name,
-                    from: _self.elementFromValue(field.data),
-                    to: _self.elementToValue(field.data)
+                    field: field.data.name|spaceless,
+                    from: _self.elementFromValue(field.data)|spaceless,
+                    to: _self.elementToValue(field.data)|spaceless
                 })|raw }}
             {% elseif hasTo %}
                 {{ "Field {field} was set to {to}"|t('activity', {
-                    field: field.data.name,
-                    to: _self.elementToValue(field.data)
+                    field: field.data.name|spaceless,
+                    to: _self.elementToValue(field.data)|spaceless
                 })|raw }}
             {% elseif hasFrom %}
                 {{ "Field {field} value ({from}) was removed"|t('activity', {
-                    field: field.data.name,
-                    from: _self.elementFromValue(field.data)
+                    field: field.data.name|spaceless,
+                    from: _self.elementFromValue(field.data)|spaceless
                 })|raw }}
             {% endif %}
         </li>
@@ -89,57 +89,59 @@
         {% set hasFrom = 'f' in field.data|keys %}
         {% set hasTo = 't' in field.data|keys %}
         <li>
-            {% if hasFrom and hasTo %}
-                {% if field.data.f is same as(true) and field.data.t is same as(false) %}
-                    {{ "{field} was unchecked"|t('activity', {
-                        field: _self.fieldLabel(field.name, log),
-                    })|raw }}
-                {% elseif field.data.f is same as(false) and field.data.t is same as(true) %}
-                    {{ "{field} was checked"|t('activity', {
-                        field: _self.fieldLabel(field.name, log),
-                    })|raw }}
+            {% apply spaceless %}
+                {% if hasFrom and hasTo %}
+                    {% if field.data.f is same as(true) and field.data.t is same as(false) %}
+                        {{ "{field} was unchecked"|t('activity', {
+                            field: _self.fieldLabel(field.name, log)|spaceless,
+                        })|raw }}
+                    {% elseif field.data.f is same as(false) and field.data.t is same as(true) %}
+                        {{ "{field} was checked"|t('activity', {
+                            field: _self.fieldLabel(field.name, log)|spaceless,
+                        })|raw }}
+                    {% else %}
+                        {{ "{field} was changed from {from} to {to}"|t('activity', {
+                            field: _self.fieldLabel(field.name, log)|spaceless,
+                            from: _self.fromValue(field.data)|spaceless,
+                            to: _self.toValue(field.data)|spaceless
+                        })|raw }}
+                    {% endif %}
+                {% elseif hasTo %}
+                    {% if field.data.t is same as(false) %}
+                        {{ "{field} was unchecked"|t('activity', {
+                            field: _self.fieldLabel(field.name, log)|spaceless,
+                        })|raw }}
+                    {% elseif field.data.t is same as(true) %}
+                        {{ "{field} was checked"|t('activity', {
+                            field: _self.fieldLabel(field.name, log)|spaceless,
+                        })|raw }}
+                    {% else %}
+                        {{ "{field} was set to {to}"|t('activity', {
+                            field: _self.fieldLabel(field.name, log)|spaceless,
+                            to: _self.toValue(field.data)|spaceless
+                        })|raw }}
+                    {% endif %}
+                {% elseif hasFrom %}
+                    {% if field.data.f is same as(false) %}
+                        {{ "{field} was unchecked"|t('activity', {
+                            field: _self.fieldLabel(field.name, log)|spaceless,
+                        })|raw }}
+                    {% elseif field.data.f is same as(true) %}
+                        {{ "{field} was checked"|t('activity', {
+                            field: _self.fieldLabel(field.name, log)|spaceless,
+                        })|raw }}
+                    {% else %}
+                        {{ "{field} value ({from}) was removed"|t('activity', {
+                            field: _self.fieldLabel(field.name, log)|spaceless,
+                            from: _self.fromValue(field.data)|spaceless
+                        })|raw }}
+                    {% endif %}
                 {% else %}
-                    {{ "{field} was changed from {from} to {to}"|t('activity', {
-                        field: _self.fieldLabel(field.name, log),
-                        from: _self.fromValue(field.data),
-                        to: _self.toValue(field.data)
+                    {{ "{field} was changed"|t('activity', {
+                        field: _self.fieldLabel(field.name, log)|spaceless
                     })|raw }}
                 {% endif %}
-            {% elseif hasTo %}
-                {% if field.data.t is same as(false) %}
-                    {{ "{field} was unchecked"|t('activity', {
-                        field: _self.fieldLabel(field.name, log),
-                    })|raw }}
-                {% elseif field.data.t is same as(true) %}
-                    {{ "{field} was checked"|t('activity', {
-                        field: _self.fieldLabel(field.name, log),
-                    })|raw }}
-                {% else %}
-                    {{ "{field} was set to {to}"|t('activity', {
-                        field: _self.fieldLabel(field.name, log),
-                        to: _self.toValue(field.data)
-                    })|raw }}
-                {% endif %}
-            {% elseif hasFrom %}
-                {% if field.data.f is same as(false) %}
-                    {{ "{field} was unchecked"|t('activity', {
-                        field: _self.fieldLabel(field.name, log),
-                    })|raw }}
-                {% elseif field.data.f is same as(true) %}
-                    {{ "{field} was checked"|t('activity', {
-                        field: _self.fieldLabel(field.name, log),
-                    })|raw }}
-                {% else %}
-                    {{ "{field} value ({from}) was removed"|t('activity', {
-                        field: _self.fieldLabel(field.name, log),
-                        from: _self.fromValue(field.data)
-                    })|raw }}
-                {% endif %}
-            {% else %}
-                {{ "{field} was changed"|t('activity', {
-                    field: _self.fieldLabel(field.name, log)
-                })|raw }}
-            {% endif %}
+            {% endapply %}
         </li>
     {% endif %}
 {% endmacro %}

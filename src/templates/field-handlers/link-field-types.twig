@@ -13,18 +13,18 @@
                     {% if hasFrom and hasTo %}
                         {{ '{field} was changed from {from} to {to}'|t('activity', {
                             field: macros.fieldLabel('settings.typeSettings.' ~ typeName ~ '.' ~ key, log),
-                            from: macros.fromValue(data),
-                            to: macros.toValue(data)
+                            from: macros.fromValue(data)|spaceless,
+                            to: macros.toValue(data)|spaceless
                         })|raw }}
                     {% elseif hasTo %}
                         {{ "{field} was set to {to}"|t('activity', {
                             field: macros.fieldLabel('settings.typeSettings.' ~ typeName ~ '.' ~ key, log),
-                            to: macros.toValue(data)
+                            to: macros.toValue(data)|spaceless
                         })|raw }}
                     {% elseif hasFrom %}
                         {{ "Field {field} value ({from}) was removed"|t('activity', {
                             field: macros.fieldLabel('settings.typeSettings.' ~ typeName ~ '.' ~ key, log),
-                            from: macros.fromValue(data)
+                            from: macros.fromValue(data)|spaceless
                         })|raw }}
                     {% endif %}
                 </li>

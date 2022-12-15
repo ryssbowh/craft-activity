@@ -6,15 +6,7 @@
             <td>{{ log.siteName|raw }}</td>
         {% endif %}
         <td>
-            {% if log.request == 'cp' %}
-                {{ 'Control Panel'|t('activity') }}
-            {% elseif log.request == 'site' %}
-                {{ 'Site'|t('activity') }}
-            {% elseif log.request == 'yaml' %}
-                {{ 'Yaml config'|t('activity') }}
-            {% elseif log.request =='console' %}
-                {{ 'Console'|t('activity') }}
-            {% endif %}
+            {{ log.requestName }}
         </td>
         <td>{{ log.title|raw }} {% if description %}<a class="icon arrow"></a>{% endif %}</td>
         <td>{{ log.dateCreated|date('d/m/Y H:i:s') }}</td>

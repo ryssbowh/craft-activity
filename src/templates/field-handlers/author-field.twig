@@ -23,18 +23,18 @@
     {% if hasFrom and hasTo %}
         {{ "Author was changed from {from} to {to}"|t('activity', {
             field: field.data.name,
-            from: _self.authorFromValue(field),
-            to: _self.authorToValue(field),
+            from: _self.authorFromValue(field)|spaceless,
+            to: _self.authorToValue(field)|spaceless,
         })|raw }}
     {% elseif hasTo %}
         {{ "Author was set to {to}"|t('activity', {
             field: field.data.name,
-            to: _self.authorToValue(field),
+            to: _self.authorToValue(field)|spaceless,
         })|raw }}
     {% elseif hasFrom %}
         {{ "Author ({from}) was removed"|t('activity', {
             field: field.data.name,
-            from: _self.authorFromValue(field),
+            from: _self.authorFromValue(field)|spaceless,
         })|raw }}
     {% endif %}
 </li>

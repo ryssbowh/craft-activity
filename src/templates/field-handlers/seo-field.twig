@@ -32,18 +32,18 @@
                     {% if hasFrom and hasTo %}
                         {{ '{field} was changed from {from} to {to}'|t('activity', {
                             field: key|capitalize|t('activity'),
-                            from: macros.fromValue(field.data[key]),
-                            to: macros.toValue(field.data[key])
+                            from: macros.fromValue(field.data[key])|spaceless,
+                            to: macros.toValue(field.data[key])|spaceless
                         })|raw }}
                     {% elseif hasTo %}
                         {{ "{field} was set to {to}"|t('activity', {
                             field: key|capitalize|t('activity'),
-                            to: macros.toValue(field.data[key])
+                            to: macros.toValue(field.data[key])|spaceless
                         })|raw }}
                     {% elseif hasFrom %}
                         {{ "Field {field} value ({from}) was removed"|t('activity', {
                             field: key|capitalize|t('activity'),
-                            from: macros.fromValue(field.data[key])
+                            from: macros.fromValue(field.data[key])|spaceless
                         })|raw }}
                     {% endif %}
                 </li>
@@ -59,18 +59,18 @@
                             {% if hasFrom and hasTo %}
                                 {{ '{field} was changed from {from} to {to}'|t('activity', {
                                     field: (social ~ ' ' ~ key)|capitalize|t('activity'),
-                                    from: macros.fromValue(field.data[social][key]),
-                                    to: macros.toValue(field.data[social][key])
+                                    from: macros.fromValue(field.data[social][key])|spaceless,
+                                    to: macros.toValue(field.data[social][key])|spaceless
                                 })|raw }}
                             {% elseif hasTo %}
                                 {{ "{field} was set to {to}"|t('activity', {
                                     field: (social ~ ' ' ~ key)|capitalize|t('activity'),
-                                    to: macros.toValue(field.data[social][key])
+                                    to: macros.toValue(field.data[social][key])|spaceless
                                 })|raw }}
                             {% elseif hasFrom %}
                                 {{ "Field {field} value ({from}) was removed"|t('activity', {
                                     field: (social ~ ' ' ~ key)|capitalize|t('activity'),
-                                    from: macros.fromValue(field.data[social][key])
+                                    from: macros.fromValue(field.data[social][key])|spaceless
                                 })|raw }}
                             {% endif %}
                         </li>
@@ -83,18 +83,18 @@
                         {% if hasFrom and hasTo %}
                             {{ '{field} was changed from {from} to {to}'|t('activity', {
                                 field: (social ~ ' image')|capitalize|t('activity'),
-                                from: _self.assetFromValue(field.data[social].image),
-                                to: _self.assetToValue(field.data[social].image)
+                                from: _self.assetFromValue(field.data[social].image)|spaceless,
+                                to: _self.assetToValue(field.data[social].image)|spaceless
                             })|raw }}
                         {% elseif hasTo %}
                             {{ "{field} was set to {to}"|t('activity', {
                                 field: (social ~ ' image')|capitalize|t('activity'),
-                                to: _self.assetToValue(field.data[social].image)
+                                to: _self.assetToValue(field.data[social].image)|spaceless
                             })|raw }}
                         {% elseif hasFrom %}
                             {{ "Field {field} value ({from}) was removed"|t('activity', {
                                 field: (social ~ ' image')|capitalize|t('activity'),
-                                from: _self.assetFromValue(field.data[social].image)
+                                from: _self.assetFromValue(field.data[social].image)|spaceless
                             })|raw }}
                         {% endif %}
                     </li>
@@ -108,18 +108,18 @@
                 {% if hasFrom and hasTo %}
                     {{ '{field} was changed from {from} to {to}'|t('activity', {
                         field: 'Canonical'|t('activity'),
-                        from: macros.fromValue(field.data.advanced.canonical),
-                        to: macros.toValue(field.data.advanced.canonical)
+                        from: macros.fromValue(field.data.advanced.canonical)|spaceless,
+                        to: macros.toValue(field.data.advanced.canonical)|spaceless
                     })|raw }}
                 {% elseif hasTo %}
                     {{ "{field} was set to {to}"|t('activity', {
                         field: 'Canonical'|t('activity'),
-                        to: macros.toValue(field.data.advanced.canonical)
+                        to: macros.toValue(field.data.advanced.canonical)|spaceless
                     })|raw }}
                 {% elseif hasFrom %}
                     {{ "Field {field} value ({from}) was removed"|t('activity', {
                         field: 'Canonical'|t('activity'),
-                        from: macros.fromValue(field.data.advanced.canonical),
+                        from: macros.fromValue(field.data.advanced.canonical)|spaceless,
                     })|raw }}
                 {% endif %}
             </li>

@@ -210,6 +210,26 @@ abstract class ActivityLog extends Model
     }
 
     /**
+     * Request name getter
+     * 
+     * @return string
+     * @since  2.3.0
+     */
+    public function getRequestName(): string
+    {
+        if ($this->request == 'cp') {
+            return \Craft::t('activity', 'Control Panel');
+        }
+        if ($this->request == 'site') {
+            return \Craft::t('activity', 'Site');
+        }
+        if ($this->request == 'yaml') {
+            return \Craft::t('activity', 'Yaml config');
+        }
+        return \Craft::t('activity', 'Console');
+    }
+
+    /**
      * Save this log in database
      */
     public function save(): bool

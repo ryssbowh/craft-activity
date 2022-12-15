@@ -23,18 +23,18 @@
     {% if hasFrom and hasTo %}
         {{ "Field {field} was changed from {from} to {to}"|t('activity', {
             field: macros.fieldLabel(field.name, log),
-            from: _self.fromValue(field.data),
-            to: _self.toValue(field.data)
+            from: _self.fromValue(field.data)|spaceless,
+            to: _self.toValue(field.data)|spaceless
         })|raw }}
     {% elseif hasTo %}
         {{ "Field {field} was set to {to}"|t('activity', {
-            field: macros.fieldLabel(field.name, log),
-            to: _self.toValue(field.data)
+            field: macros.fieldLabel(field.name, log)|spaceless,
+            to: _self.toValue(field.data)|spaceless
         })|raw }}
     {% elseif hasFrom %}
         {{ "Field {field} value ({from}) was removed"|t('activity', {
-            field: macros.fieldLabel(field.name, log),
-            from: _self.fromValue(field.data)
+            field: macros.fieldLabel(field.name, log)|spaceless,
+            from: _self.fromValue(field.data)|spaceless
         })|raw }}
     {% endif %}
 </li>

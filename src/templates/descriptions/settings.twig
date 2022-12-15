@@ -2,31 +2,34 @@
 
 {% macro setting(field, log) %}
     <li>
-        {% set hasFrom = 'f' in field.data|keys %}
-        {% set hasTo = 't' in field.data|keys %}
-        {% if hasFrom and hasTo %}
-            {{ "{field} was changed from {from} to {to}"|t('activity', {
-                field: macros.settingLabel(field.name, log),
-                from: macros.fromValue(field.data),
-                to: macros.toValue(field.data)
-            })|raw }}
-        {% elseif hasTo %}
-            {{ "{field} was set to {to}"|t('activity', {
-                field: macros.settingLabel(field.name, log),
-                to: macros.toValue(field.data)
-            })|raw }}
-        {% elseif hasFrom %}
-            {{ "{field} value ({from}) was removed"|t('activity', {
-                field: macros.settingLabel(field.name, log),
-                from: macros.fromValue(field.data)
-            })|raw }}
-        {% else %}
-            {{ "{field} was changed"|t('activity', {
-                field: macros.settingLabel(field.name, log)
-            })|raw }}
-        {% endif %}
+        {% apply spaceless %}
+            {% set hasFrom = 'f' in field.data|keys %}
+            {% set hasTo = 't' in field.data|keys %}
+            {% if hasFrom and hasTo %}
+                {{ "{field} was changed from {from} to {to}"|t('activity', {
+                    field: macros.settingLabel(field.name, log)|spaceless,
+                    from: macros.fromValue(field.data)|spaceless,
+                    to: macros.toValue(field.data)|spaceless
+                })|raw }}
+            {% elseif hasTo %}
+                {{ "{field} was set to {to}"|t('activity', {
+                    field: macros.settingLabel(field.name, log)|spaceless,
+                    to: macros.toValue(field.data)|spaceless
+                })|raw }}
+            {% elseif hasFrom %}
+                {{ "{field} value ({from}) was removed"|t('activity', {
+                    field: macros.settingLabel(field.name, log)|spaceless,
+                    from: macros.fromValue(field.data)|spaceless
+                })|raw }}
+            {% else %}
+                {{ "{field} was changed"|t('activity', {
+                    field: macros.settingLabel(field.name, log)|spaceless
+                })|raw }}
+            {% endif %}
+        {% endapply %}
     </li>
 {% endmacro %}
+
 
 {% if log.changedFields %}
     <ul>
