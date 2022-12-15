@@ -85,10 +85,10 @@ class SuperTable extends ElementFieldHandler
             $blockDirty = [
                 'mode' => 'changed'
             ];
-            foreach ($block['fields'] as $handle => $handler) {
-                if ($fdirty = $handler->getDirty($oldBlocks[$id]['fields'][$handle])) {
+            foreach ($block['fields'] as $fieldId => $handler) {
+                if ($fdirty = $handler->getDirty($oldBlocks[$id]['fields'][$fieldId])) {
                     $blockIsdirty = true;
-                    $blockDirty['fields'][$handle] = [
+                    $blockDirty['fields'][$fieldId] = [
                         'handler' => get_class($handler),
                         'data' => $fdirty
                     ];
@@ -136,7 +136,7 @@ class SuperTable extends ElementFieldHandler
             $fields = [];
             foreach ($this->field->getBlockTypeFields([$block->type->id]) as $field) {
                 $class = Activity::$plugin->fieldHandlers->getForElementField(get_class($field));
-                $fields[$field->handle] = new $class([
+                $fields[$field->id] = new $class([
                     'field' => $field,
                     'element' => $block,
                     'name' => $field->name,
