@@ -1,5 +1,16 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.1 - 2022-12-16
+
+### Added
+- [Neo fields](https://plugins.craftcms.com/neo) support
+
+### Changed
+- Field instructions changes are now tracked
+
+### Fixed
+- Fixed issue when deleting a field defined by a disabled plugin
+
 ## 2.3.0 - 2022-12-15
 
 ### Added

@@ -9,16 +9,16 @@ use craft\helpers\Html;
 use craft\helpers\UrlHelper;
 
 /**
- * @since 2.2.0
+ * @since 2.3.1
  */
-class MatrixBlockCreated extends ConfigModelLog
+class NeoBlockCreated extends ConfigModelLog
 {
     /**
      * @inheritDoc
      */
     public function getTitle(): string
     {
-        return \Craft::t('activity', 'Created matrix block {name} in field {field}', [
+        return \Craft::t('activity', 'Created neo block {name} in field {field}', [
             'name' => $this->modelName,
             'field' => $this->fieldName
         ]);
@@ -106,9 +106,21 @@ class MatrixBlockCreated extends ConfigModelLog
     {
         return [
             'name' => \Craft::t('app', 'Name'),
+            'group' => \Craft::t('app', 'Group'),
+            'description' => \Craft::t('app', 'Description'),
             'handle' => \Craft::t('app', 'Handle'),
-            'required' => \Craft::t('app', 'Required'),
             'sortOrder' => \Craft::t('app', 'Order'),
+            'childBlocks' => \Craft::t('app', 'Child Blocks'),
+            'groupChildBlockTypes' => \Craft::t('app', 'Group Child Block Types'),
+            'maxBlocks' => \Craft::t('app', 'Max Blocks'),
+            'minBlocks' => \Craft::t('app', 'Min Blocks'),
+            'maxChildBlocks' => \Craft::t('app', 'Max Child Blocks'),
+            'minChildBlocks' => \Craft::t('app', 'Min Child Blocks'),
+            'maxSiblingBlocks' => \Craft::t('app', 'Max Sibling Blocks of This Type'),
+            'minSiblingBlocks' => \Craft::t('app', 'Min Sibling Blocks of This Type'),
+            'topLevel' => \Craft::t('app', 'Top Level'),
+            'ignorePermissions' => \Craft::t('app', 'Ignore Permissions'),
+            'enabled' => \Craft::t('app', 'Enabled'),
         ];
     }
 }

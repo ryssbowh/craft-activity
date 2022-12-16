@@ -12,7 +12,9 @@ class FieldType extends DefaultHandler
     public function init(): void
     {
         parent::init();
-        $this->fancyValue = $this->value::displayName();
+        try{
+            $this->fancyValue = $this->value::displayName();
+        } catch (\Throwable $e) {}
     }
 
     /**

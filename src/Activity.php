@@ -10,6 +10,7 @@ use Ryssbowh\Activity\services\Fields;
 use Ryssbowh\Activity\services\Logs;
 use Ryssbowh\Activity\services\Recorders;
 use Ryssbowh\Activity\services\Types;
+use Ryssbowh\Activity\traits\NeoField;
 use Ryssbowh\Activity\traits\RedactorField;
 use Ryssbowh\Activity\traits\SeoField;
 use Ryssbowh\Activity\traits\SuperTableField;
@@ -30,7 +31,7 @@ use yii\base\Event;
 
 class Activity extends Plugin
 {
-    use RedactorField, SeoField, TinyMceField, TypedLinkField, SuperTableField;
+    use RedactorField, SeoField, TinyMceField, TypedLinkField, SuperTableField, NeoField;
 
     /**
      * @var Themes
@@ -74,6 +75,7 @@ class Activity extends Plugin
         $this->initTinyMceField();
         $this->initTypedLinkField();
         $this->initSuperTableField();
+        $this->initNeoField();
 
         Event::on(Application::class, Application::EVENT_AFTER_REQUEST, function (Event $event) {
             $this->recorders->saveLogs();
