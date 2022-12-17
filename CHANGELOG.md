@@ -6,7 +6,7 @@
 - [Neo fields](https://plugins.craftcms.com/neo) support
 
 ### Changed
-- Field instructions changes are now tracked
+- Field instructions in layouts are now tracked
 
 ## 1.3.0 - 2022-12-15
 
