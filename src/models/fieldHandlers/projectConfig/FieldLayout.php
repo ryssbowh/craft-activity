@@ -114,6 +114,14 @@ class FieldLayout extends DefaultHandler
                     't' => $newFields[$uid]['label']
                 ];
             }
+            if ($newFields[$uid]['instructions'] !== $oldFields[$uid]['instructions']) {
+                $rowIsdirty = true;
+                $rowDirty['instructions'] = [
+                    'label' => \Craft::t('app', 'Instructions'),
+                    'f' => $oldFields[$uid]['instructions'],
+                    't' => $newFields[$uid]['instructions']
+                ];
+            }
             if ($rowIsdirty) {
                 $dirty['changed'][$uid] = $rowDirty;
             }
@@ -153,6 +161,7 @@ class FieldLayout extends DefaultHandler
                     $values[$element['fieldUid']] = [
                         'name' => $field ? $field->name : '*deleted field*',
                         'label' => $element['label'],
+                        'instructions' => $element['instructions'],
                         'required' => $element['required']
                     ];
                 }

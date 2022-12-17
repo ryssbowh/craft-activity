@@ -1,5 +1,13 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.3.1 - 2022-12-17
+
+### Added
+- [Neo fields](https://plugins.craftcms.com/neo) support
+
+### Changed
+- Field instructions changes are now tracked
+
 ## 1.3.0 - 2022-12-15
 
 ### Added

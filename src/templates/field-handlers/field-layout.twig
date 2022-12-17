@@ -9,12 +9,14 @@
                             field: added.name
                         }) }}
                         <ul>
-                            {% for name in ['required', 'label'] %}
-                                <li>{{ '{name} was set to {value}'|t('activity', {
-                                        name: name|capitalize|t('app'),
-                                        value: '<code>' ~ added[name]|prettyPrint ~ '</code>'
-                                    })|raw }}
-                                </li>
+                            {% for name in ['required', 'label', 'instructions'] %}
+                                {% if name in added|keys %}
+                                    <li>{{ '{name} was set to {value}'|t('activity', {
+                                            name: name|capitalize|t('app'),
+                                            value: '<code>' ~ added[name]|prettyPrint ~ '</code>'
+                                        })|raw }}
+                                    </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     </li>
@@ -29,12 +31,14 @@
                             field: removed.name
                         }) }}
                         <ul>
-                            {% for name in ['required', 'label'] %}
-                                <li>{{ '{name} was {value}'|t('activity', {
-                                        name: name|capitalize|t('app'),
-                                        value: '<code>' ~ removed[name]|prettyPrint ~ '</code>'
-                                    })|raw }}
-                                </li>
+                            {% for name in ['required', 'label', 'instructions'] %}
+                                {% if name in removed|keys %}
+                                    <li>{{ '{name} was {value}'|t('activity', {
+                                            name: name|capitalize|t('app'),
+                                            value: '<code>' ~ removed[name]|prettyPrint ~ '</code>'
+                                        })|raw }}
+                                    </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     </li>
@@ -49,13 +53,15 @@
                             field: changed.name
                         }) }}
                         <ul>
-                            {% for name in ['required', 'label'] %}
-                                <li>{{ '{name} was changed from {from} to {to}'|t('activity', {
-                                        name: name|capitalize|t('app'),
-                                        from: '<code>' ~ changed[name].f|prettyPrint ~ '</code>',
-                                        to: '<code>' ~ changed[name].t|prettyPrint ~ '</code>'
-                                    })|raw }}
-                                </li>
+                            {% for name in ['required', 'label', 'instructions'] %}
+                                {% if name in changed|keys %}
+                                    <li>{{ '{name} was changed from {from} to {to}'|t('activity', {
+                                            name: name|capitalize|t('app'),
+                                            from: '<code>' ~ changed[name].f|prettyPrint ~ '</code>',
+                                            to: '<code>' ~ changed[name].t|prettyPrint ~ '</code>'
+                                        })|raw }}
+                                    </li>
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     </li>

@@ -1,0 +1,46 @@
+{% import "activity/includes/macros" as macros %}
+
+{% macro neoBlock(block) %}
+    <ul>
+        {% for mfield in block.fields ?? [] %}
+            {{ macros.elementField(mfield) }}
+        {% endfor %}
+        {% if block.children ?? [] %}
+            <li>{{ 'Children blocks changes:'|t('activity') }}</li>
+            <ul>
+                {{ _self.neoBlocks(block.children) }}
+            </ul>
+        {% endif %}
+    </ul>
+{% endmacro %}
+
+{% macro neoBlocks(blocks) %}
+    {% for row, block in blocks %}
+        {% if block.mode == 'changed' %}
+            <li>{{ 'Block {row} was changed'|t('activity', {row: row + 1}) }}</li>
+            {{ _self.neoBlock(block) }}
+        {% elseif block.mode == 'removed' %}
+            <li>{{ 'Block {row} was removed'|t('activity', {row: row + 1}) }}</li>
+            {{ _self.neoBlock(block) }}
+        {% else %}
+            <li>{{ 'Block {row} was added'|t('activity', {row: row + 1}) }}</li>
+            {{ _self.neoBlock(block) }}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+<li>
+    {% if field.data.blocks %}
+        {{ 'Field {field} was changed'|t('activity', {
+            field: field.data.name
+        }) }}
+        <ul>
+            {{ _self.neoBlocks(field.data.blocks) }}
+        </ul>
+    {% else %}
+        {{ 'Field {field} was set to {value}'|t('activity', {
+            field: field.data.name,
+            value: '<code>null</code>'
+        })|raw }}
+    {% endif %}
+</li>

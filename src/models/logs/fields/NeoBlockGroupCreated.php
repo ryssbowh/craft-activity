@@ -9,16 +9,16 @@ use craft\helpers\Html;
 use craft\helpers\UrlHelper;
 
 /**
- * @since 1.2.0
+ * @since 1.3.1
  */
-class MatrixBlockCreated extends ConfigModelLog
+class NeoBlockGroupCreated extends ConfigModelLog
 {
     /**
      * @inheritDoc
      */
     public function getTitle(): string
     {
-        return \Craft::t('activity', 'Created matrix block {name} in field {field}', [
+        return \Craft::t('activity', 'Created neo block group {name} in field {field}', [
             'name' => $this->modelName,
             'field' => $this->fieldName
         ]);
@@ -106,9 +106,8 @@ class MatrixBlockCreated extends ConfigModelLog
     {
         return [
             'name' => \Craft::t('app', 'Name'),
-            'handle' => \Craft::t('app', 'Handle'),
-            'required' => \Craft::t('app', 'Required'),
             'sortOrder' => \Craft::t('app', 'Order'),
+            'alwaysShowDropdown' => \Craft::t('activity', 'Always Show Dropdown'),
         ];
     }
 }
