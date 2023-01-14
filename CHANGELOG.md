@@ -1,5 +1,13 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.2 - 2023-01-14
+
+### Added
+- Setting to show user full names instead of friendly names
+
+### Fixed
+- "System" name not showing in users filter dropdown
+
 ## 2.3.1 - 2022-12-16
 
 ### Added

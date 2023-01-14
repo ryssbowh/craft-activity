@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Ryssbowh\Activity\models;
 
@@ -47,6 +47,11 @@ class Settings extends Model
     public string $autoDeleteLogsThreshold = '';
 
     /**
+     * @var boolean
+     */
+    public bool $showUsersFullName = false;
+
+    /**
      * @var array
      */
     public $ignoreRules = [
@@ -57,7 +62,7 @@ class Settings extends Model
 
     /**
      * Is a log type ignored by the set of rules
-     * 
+     *
      * @param  string  $handle
      * @return boolean
      */
@@ -68,8 +73,8 @@ class Settings extends Model
         }
         foreach ($this->ignoreRules as $rule) {
             if ($rule['active'] and ($rule['type'] == $handle or !$rule['type'])) {
-                if (!$rule['request'] or 
-                    ($rule['request'] == 'yaml' and \Craft::$app->projectConfig->isApplyingExternalChanges) or 
+                if (!$rule['request'] or
+                    ($rule['request'] == 'yaml' and \Craft::$app->projectConfig->isApplyingExternalChanges) or
                     ($rule['request'] == 'console' and \Craft::$app->request->isConsoleRequest) or
                     ($rule['request'] == 'cp' and \Craft::$app->request->isCpRequest) or
                     ($rule['request'] == 'site' and \Craft::$app->request->isSiteRequest)) {

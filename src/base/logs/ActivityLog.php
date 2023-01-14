@@ -82,7 +82,7 @@ abstract class ActivityLog extends Model
 
     /**
      * Handle getter
-     * 
+     *
      * @return string
      */
     public function getHandle(): string
@@ -93,7 +93,7 @@ abstract class ActivityLog extends Model
 
     /**
      * Name getter
-     * 
+     *
      * @return string
      */
     public function getName(): string
@@ -108,7 +108,7 @@ abstract class ActivityLog extends Model
 
     /**
      * Title getter
-     * 
+     *
      * @return string
      */
     public function getTitle(): string
@@ -118,7 +118,7 @@ abstract class ActivityLog extends Model
 
     /**
      * User getter
-     * 
+     *
      * @return ?User
      */
     public function getUser(): ?User
@@ -131,7 +131,7 @@ abstract class ActivityLog extends Model
 
     /**
      * User setter
-     * 
+     *
      * @param ?User $user
      */
     public function setUser(?User $user)
@@ -141,7 +141,7 @@ abstract class ActivityLog extends Model
 
     /**
      * User name getter
-     * 
+     *
      * @return string
      */
     public function getUserName(): string
@@ -154,7 +154,8 @@ abstract class ActivityLog extends Model
             if ($this->user->trashed) {
                 $status = '<span class="status trashed"></span>';
             }
-            return '<a href="' . $this->user->cpEditUrl . ' " target="_blank">' . $status . $this->user->friendlyName . '</a>';
+            $name = Activity::$plugin->settings->showUsersFullName ? $this->user->fullName : $this->user->friendlyName;
+            return '<a href="' . $this->user->cpEditUrl . ' " target="_blank">' . $status . $name . '</a>';
         }
         return \Craft::t('activity', '{user} (deleted)', [
             'user' => $this->user_name
@@ -163,7 +164,7 @@ abstract class ActivityLog extends Model
 
     /**
      * Description getter
-     * 
+     *
      * @return string
      */
     public function getDescription(): string
@@ -173,7 +174,7 @@ abstract class ActivityLog extends Model
 
     /**
      * Site getter
-     * 
+     *
      * @return ?Site
      */
     public function getSite(): ?Site
@@ -186,7 +187,7 @@ abstract class ActivityLog extends Model
 
     /**
      * Site setter
-     * 
+     *
      * @param Site $site
      */
     public function setSite(Site $site)
@@ -196,7 +197,7 @@ abstract class ActivityLog extends Model
 
     /**
      * Site name getter
-     * 
+     *
      * @return string
      */
     public function getSiteName(): string
@@ -211,7 +212,7 @@ abstract class ActivityLog extends Model
 
     /**
      * Request name getter
-     * 
+     *
      * @return string
      * @since  2.3.0
      */
@@ -239,7 +240,7 @@ abstract class ActivityLog extends Model
 
     /**
      * Build the title from class name
-     * 
+     *
      * @return string
      */
     protected function _getTitle(): string
