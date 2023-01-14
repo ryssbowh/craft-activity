@@ -46,6 +46,14 @@
         }}
 
         {{
+            forms.lightswitchField({
+                label: 'Show users full name'|t('activity'),
+                name: 'showUsersFullName',
+                on: settings.showUsersFullName
+            })
+        }}
+
+        {{
             forms.textField({
                 label: 'Automatically delete activity older than'|t('activity'),
                 instructions: 'No value means activity will never be deleted'|t('activity'),

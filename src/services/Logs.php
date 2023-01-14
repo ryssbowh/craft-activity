@@ -18,14 +18,14 @@ use craft\web\twig\variables\Paginate;
 
 class Logs extends Component
 {
-    const REQUEST_CP = 'cp';
-    const REQUEST_SITE = 'site';
-    const REQUEST_YAML = 'yaml';
-    const REQUEST_CONSOLE = 'console';
-    
+    public const REQUEST_CP = 'cp';
+    public const REQUEST_SITE = 'site';
+    public const REQUEST_YAML = 'yaml';
+    public const REQUEST_CONSOLE = 'console';
+
     /**
      * Saves a log
-     * 
+     *
      * @param  BaseActivityLog $log
      * @throws ActivityLogException
      * @return bool
@@ -42,9 +42,10 @@ class Logs extends Component
         if (!$request) {
             $request = $this->getCurrentRequest();
         }
+        $userName = $user ? (Activity::$plugin->settings->showUsersFullName ? $user->fullName : $user->friendlyName) : '';
         $record = new ActivityLog([
             'user_id' => $user ? $user->id : 0,
-            'user_name' => $user ? $user->friendlyName : '',
+            'user_name' => $user ? $userName : '',
             'type' => $log->handle,
             'target_class' => $log->target_class,
             'target_uid' => $log->target_uid,
@@ -72,7 +73,7 @@ class Logs extends Component
 
     /**
      * Get current request descriptor
-     * 
+     *
      * @return string
      */
     public function getCurrentRequest(): string
@@ -85,26 +86,37 @@ class Logs extends Component
 
     /**
      * Get all user used in database in all records
-     * 
+     *
      * @return array
      */
     public function getUsedUsers(): array
     {
-        $query = (new Query)
+        $query = (new Query())
             ->select(['user_id', 'user_name'])
             ->distinct()
             ->from('{{%activity_logs}}')
             ->all();
         $users = [];
+        $userIds = [];
         foreach ($query as $res) {
-            $user = User::find()->id($res['user_id'])->anyStatus()->one();
+            if (in_array($res['user_id'], $userIds)) {
+                continue;
+            }
+            $userIds[] = $res['user_id'];
+            $user = null;
+            if ($res['user_id'] == 0) {
+                $res['user_name'] = \Craft::t('app', 'System');
+            } else {
+                $user = User::find()->id($res['user_id'])->anyStatus()->one();
+            }
             $data = [
                 'id' => $res['user_id'],
                 'name' => $res['user_name'],
                 'exists' => false
             ];
             if ($user) {
-                $data['name'] = $user->friendlyName;
+                $name = Activity::$plugin->settings->showUsersFullName ? $user->fullName : $user->friendlyName;
+                $data['name'] = $name;
                 $data['exists'] = true;
                 $data['status'] = $user->status;
             }
@@ -115,7 +127,7 @@ class Logs extends Component
 
     /**
      * Get paginated logs according to some filters
-     * 
+     *
      * @param  array       $filters
      * @param  int|integer $perPage
      * @param  string      $orderBy
@@ -141,7 +153,7 @@ class Logs extends Component
 
     /**
      * Get a filtered logs query
-     * 
+     *
      * @param  array  $filters
      * @param  string $orderBy
      * @return ActiveQuery
@@ -169,7 +181,7 @@ class Logs extends Component
 
     /**
      * Get the latest logs for a user
-     * 
+     *
      * @param  User $user
      * @param  int  $limit
      * @return array
@@ -186,7 +198,7 @@ class Logs extends Component
 
     /**
      * Deletes all logs created by a user
-     * 
+     *
      * @param User $user
      */
     public function deleteUserLogs(User $user)
@@ -204,7 +216,7 @@ class Logs extends Component
 
     /**
      * Delete a log by id
-     * 
+     *
      * @param int $id
      */
     public function deleteLog(int $id)
@@ -214,7 +226,7 @@ class Logs extends Component
 
     /**
      * Get a changed field by id
-     * 
+     *
      * @param  int    $id
      * @return ChangedField
      * @throws ActivityChangedFieldException
@@ -237,7 +249,7 @@ class Logs extends Component
         if (!$threshold) {
             return;
         }
-        $date = (new \DateTime)->sub(new \DateInterval('P' . $threshold . 'D'));
+        $date = (new \DateTime())->sub(new \DateInterval('P' . $threshold . 'D'));
         ActivityLog::deleteAll(['<', 'dateCreated', $date->format('Y-m-d H:i:s')]);
     }
 }
