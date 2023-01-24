@@ -1,6 +1,6 @@
 # ryssbowh/craft-activity Changelog
 
-## 2.3.3
+## 2.3.3 - 2023-01-24
 
 ### Fixed
 - Ignore UI elements in Neo fields [#11](https://github.com/ryssbowh/craft-activity/issues/11)
