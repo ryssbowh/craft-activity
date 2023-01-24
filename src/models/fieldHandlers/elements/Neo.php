@@ -6,6 +6,7 @@ use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use benf\neo\elements\Block;
+use craft\fieldlayoutelements\BaseUiElement;
 
 /**
  * @since 2.3.1
@@ -76,7 +77,7 @@ class Neo extends ElementFieldHandler
 
     /**
      * Build dirty values
-     * 
+     *
      * @param  array  $newBlocks
      * @param  array  $oldBlocks
      * @return array
@@ -91,7 +92,7 @@ class Neo extends ElementFieldHandler
 
     /**
      * Build dirty values
-     * 
+     *
      * @param  array  $newBlocks
      * @param  array  $oldBlocks
      * @return array
@@ -121,7 +122,7 @@ class Neo extends ElementFieldHandler
                 $blocks[$id] = $blockDirty;
             }
         }
-        foreach(array_diff_key($newBlocks, $oldBlocks) as $id => $block) {
+        foreach (array_diff_key($newBlocks, $oldBlocks) as $id => $block) {
             $block['fields'] = array_map(function ($handler) {
                 return [
                     'handler' => get_class($handler),
@@ -132,7 +133,7 @@ class Neo extends ElementFieldHandler
             $block['mode'] = 'added';
             $blocks[$id] = $block;
         }
-        foreach(array_diff_key($oldBlocks, $newBlocks) as $id => $block) {
+        foreach (array_diff_key($oldBlocks, $newBlocks) as $id => $block) {
             $block['fields'] = array_map(function ($handler) {
                 return [
                     'handler' => get_class($handler),
@@ -148,7 +149,7 @@ class Neo extends ElementFieldHandler
 
     /**
      * Build the value
-     * 
+     *
      * @return array
      */
     protected function buildValues(): array
@@ -162,7 +163,7 @@ class Neo extends ElementFieldHandler
 
     /**
      * Build the value for one block
-     * 
+     *
      * @param  Block  $block
      * @return array
      */
@@ -171,6 +172,9 @@ class Neo extends ElementFieldHandler
         $fields = [];
         foreach ($block->getFieldLayout()->getTabs() as $tab) {
             foreach ($tab->elements as $elem) {
+                if ($elem instanceof BaseUiElement) {
+                    continue;
+                }
                 $field = $elem->field;
                 $class = Activity::$plugin->fieldHandlers->getForElementField(get_class($field));
                 $fields[$field->id] = new $class([
