@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.4 - 2023-02-03
+
+### Added
+- Logs now saves the IP of the request. Added a setting to display the IP on the dashboard (false by default)
+
 ## 2.3.3 - 2023-01-24
 
 ### Fixed

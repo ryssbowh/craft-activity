@@ -14,6 +14,7 @@ use craft\db\ActiveQuery;
 use craft\db\Paginator;
 use craft\db\Query;
 use craft\elements\User;
+use craft\web\Request;
 use craft\web\twig\variables\Paginate;
 
 class Logs extends Component
@@ -42,6 +43,10 @@ class Logs extends Component
         if (!$request) {
             $request = $this->getCurrentRequest();
         }
+        $ip = null;
+        if (\Craft::$app->request instanceof Request) {
+            $ip = \Craft::$app->request->getUserIP();
+        }
         $userName = $user ? (Activity::$plugin->settings->showUsersFullName ? $user->fullName : $user->friendlyName) : '';
         $record = new ActivityLog([
             'user_id' => $user ? $user->id : 0,
@@ -53,6 +58,7 @@ class Logs extends Component
             'site_name' => $site ? $site->name : '',
             'site_id' => $site ? $site->id : null,
             'request' => $request,
+            'ip' => $ip,
             'data' => $log->data
         ]);
         if ($record->save(false)) {

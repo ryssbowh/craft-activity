@@ -66,6 +66,12 @@ abstract class ActivityLog extends Model
     public $data;
 
     /**
+     * @var string
+     * @since 2.3.4
+     */
+    public $ip;
+
+    /**
      * @var \DateTime
      */
     public $dateCreated;

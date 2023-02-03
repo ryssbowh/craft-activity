@@ -21,7 +21,7 @@ class ActivityController extends Controller
         list($paginator, $logs) = Activity::$plugin->logs->getPaginatedLogs($filters, $perPage);
         $types = [];
         foreach (Activity::$plugin->types->usedTypes as $handle => $class) {
-            $type = new $class;
+            $type = new $class();
             $types[$handle] = $type->name;
         }
         asort($types);

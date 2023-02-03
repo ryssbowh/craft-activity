@@ -9,6 +9,9 @@
             {{ log.requestName }}
         </td>
         <td>{{ log.title|raw }} {% if description %}<a class="icon arrow"></a>{% endif %}</td>
+        {% if craft.activity.showUserIP %}
+            <td>{{ log.ip }}</td>
+        {% endif %}
         <td>{{ log.dateCreated|date('d/m/Y H:i:s') }}</td>
         <td class="thin">
             {% if currentUser.can('deleteActivityLogs') %}

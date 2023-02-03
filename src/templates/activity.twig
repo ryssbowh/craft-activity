@@ -99,6 +99,9 @@
             {% endif %}
             <th scope="col">{{ "Request"|t('activity') }}</th>
             <th scope="col">{{ "Activity"|t('activity') }}</th>
+            {% if craft.activity.showUserIP %}
+                <th scope="col">{{ "IP"|t('app') }}</th>
+            {% endif %}
             <th scope="col">{{ "Date"|t('app') }}</th>
             <td class="thin"></td>
         </thead>

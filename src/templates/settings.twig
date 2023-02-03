@@ -50,6 +50,14 @@
         }}
 
         {{
+            forms.lightswitchField({
+                label: 'Show user IPs on the dashboard'|t('activity'),
+                name: 'showUserIP',
+                on: settings.showUserIP
+            })
+        }}
+
+        {{
             forms.textField({
                 label: 'Automatically delete activity older than'|t('activity'),
                 instructions: 'No value means activity will never be deleted'|t('activity'),

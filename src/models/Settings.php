@@ -52,6 +52,12 @@ class Settings extends Model
     public bool $showUsersFullName = false;
 
     /**
+     * @var boolean
+     * @since 2.3.4
+     */
+    public bool $showUserIP = false;
+
+    /**
      * @var array
      */
     public $ignoreRules = [

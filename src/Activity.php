@@ -31,7 +31,12 @@ use yii\base\Event;
 
 class Activity extends Plugin
 {
-    use RedactorField, SeoField, TinyMceField, TypedLinkField, SuperTableField, NeoField;
+    use RedactorField;
+    use SeoField;
+    use TinyMceField;
+    use TypedLinkField;
+    use SuperTableField;
+    use NeoField;
 
     /**
      * @var Themes
@@ -41,8 +46,8 @@ class Activity extends Plugin
     /**
      * @inheritDoc
      */
-    public string $schemaVersion = '2.1.0';
-    
+    public string $schemaVersion = '2.3.4';
+
     /**
      * @inheritdoc
      */
@@ -69,7 +74,7 @@ class Activity extends Plugin
         $this->registerUserHook();
         $this->registerTwig();
         $this->registerRecorders();
-        
+
         $this->initSeoField();
         $this->initRedactorField();
         $this->initTinyMceField();
@@ -84,7 +89,7 @@ class Activity extends Plugin
 
     /**
      * Get a recorder by its name
-     * 
+     *
      * @param  string $name
      * @return Recorder
      */
@@ -117,9 +122,9 @@ class Activity extends Plugin
     protected function registerTwig()
     {
         if (\Craft::$app->request->isCpRequest or \Craft::$app->request->isConsoleRequest) {
-            \Craft::$app->view->registerTwigExtension(new ActivityExtension);
+            \Craft::$app->view->registerTwigExtension(new ActivityExtension());
         }
-        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function(Event $event) {
+        Event::on(CraftVariable::class, CraftVariable::EVENT_INIT, function (Event $event) {
             $event->sender->set('activity', TwigActivity::class);
         });
     }
@@ -141,7 +146,7 @@ class Activity extends Plugin
     {
         $types = [];
         foreach ($this->types->getTypes() as $handle => $class) {
-            $class = new $class;
+            $class = new $class();
             $types[$handle] = $class->name;
         }
         ksort($types);
@@ -159,14 +164,13 @@ class Activity extends Plugin
      */
     protected function registerUserHook()
     {
-        \Craft::$app->view->hook('cp.users.edit.details', function(array &$context) {
+        \Craft::$app->view->hook('cp.users.edit.details', function (array &$context) {
             if (\Craft::$app->user->identity->can('viewActivityLogs')) {
                 return \Craft::$app->view->renderTemplate('activity/user-latest-activity', [
                     'user' => $context['user']
                 ]);
             }
         });
-
     }
 
     /**
@@ -174,7 +178,7 @@ class Activity extends Plugin
      */
     protected function registerCpRoutes()
     {
-        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function(Event $event) {
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function (Event $event) {
             $event->rules = array_merge($event->rules, [
                 'activity' => 'activity/activity',
                 'export-activity-logs' => 'activity/export'

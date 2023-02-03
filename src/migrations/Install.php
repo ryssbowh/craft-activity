@@ -23,6 +23,7 @@ class Install extends Migration
             'site_name' => $this->string(255),
             'site_id' => $this->integer(11)->unsigned()->notNull(),
             'request' => $this->string(7),
+            'ip' => $this->string(50),
             'data' => $this->text(),
             'dateCreated' => $this->dateTime()->notNull(),
             'dateUpdated' => $this->dateTime()->notNull(),
