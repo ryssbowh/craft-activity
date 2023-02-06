@@ -12,11 +12,22 @@ class TwigActivity
 {
     /**
      * Get logs service
-     * 
+     *
      * @return Logs
      */
     public function getLogs(): Logs
     {
         return Activity::$plugin->logs;
+    }
+
+    /**
+     * Show user IPs
+     *
+     * @since 1.3.4
+     * @return bool
+     */
+    public function showUserIP(): bool
+    {
+        return Activity::$plugin->settings->showUserIP;
     }
 }

@@ -29,7 +29,7 @@ class ActivityLog extends ActiveRecord
 
     /**
      * Turn this record into a model
-     * 
+     *
      * @return ActivityLogModel
      */
     public function toModel(): ActivityLogModel
@@ -39,7 +39,7 @@ class ActivityLog extends ActiveRecord
         } catch (ActivityTypeException $e) {
             $class = MissingType::class;
         }
-        $params = $this->toArray(['id', 'user_id', 'user_name', 'site_id', 'site_name', 'target_class', 'target_uid', 'target_name', 'request', 'data', 'dateCreated']);
+        $params = $this->toArray(['id', 'user_id', 'user_name', 'site_id', 'site_name', 'target_class', 'target_uid', 'target_name', 'request', 'data', 'ip', 'dateCreated']);
         $params['changedFields'] = array_map(function ($record) {
             return $record->toModel();
         }, $this->changedFields);
