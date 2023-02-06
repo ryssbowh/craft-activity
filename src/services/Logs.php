@@ -43,10 +43,6 @@ class Logs extends Component
         if (!$request) {
             $request = $this->getCurrentRequest();
         }
-        $ip = null;
-        if (\Craft::$app->request instanceof Request) {
-            $ip = \Craft::$app->request->getUserIP();
-        }
         $userName = $user ? (Activity::$plugin->settings->showUsersFullName ? $user->fullName : $user->friendlyName) : '';
         $record = new ActivityLog([
             'user_id' => $user ? $user->id : 0,
@@ -58,9 +54,12 @@ class Logs extends Component
             'site_name' => $site ? $site->name : '',
             'site_id' => $site ? $site->id : null,
             'request' => $request,
-            'ip' => $ip,
             'data' => $log->data
         ]);
+        $info = \Craft::$app->plugins->getStoredPluginInfo('activity');
+        if (version_compare($info['schemaVersion'], '2.3.4', '>=')) {
+            $record->ip = \Craft::$app->request instanceof Request ? \Craft::$app->request->getUserIP() : null;
+        }
         if ($record->save(false)) {
             foreach ($log->changedFields as $name => $array) {
                 $field = new ActivityChangedField([
