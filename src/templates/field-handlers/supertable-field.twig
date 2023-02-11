@@ -1,5 +1,8 @@
 {% import "activity/includes/macros" as macros %}
 
+{% set fieldId = field.id ?? data.fieldId %}
+{% set key = (data.key is defined) ? data.key ~ '.blocks.' : 'blocks.' %}
+
 <li>
     {% if field.data.blocks %}
         {{ 'Field {field} was changed'|t('activity', {
@@ -10,22 +13,22 @@
                 {% if block.mode == 'changed' %}
                     <li>{{ 'Block {row} was changed'|t('activity', {row: row + 1}) }}</li>
                     <ul>
-                        {% for mfield in block.fields ?? [] %}
-                            {{ macros.elementField(mfield) }}
+                        {% for handle, mfield in block.fields ?? [] %}
+                            {{ macros.elementField(mfield, {fieldId: fieldId, key: key ~ row  ~ '.fields.' ~ handle ~ '.data' }) }}
                         {% endfor %}
                     </ul>
                 {% elseif block.mode == 'removed' %}
                     <li>{{ 'Block {row} was removed'|t('activity', {row: row + 1}) }}</li>
                     <ul>
-                        {% for mfield in block.fields ?? [] %}
-                            {{ macros.elementField(mfield) }}
+                        {% for handle, mfield in block.fields ?? [] %}
+                            {{ macros.elementField(mfield, {fieldId: fieldId, key: key ~ row  ~ '.fields.' ~ handle ~ '.data' }) }}
                         {% endfor %}
                     </ul>
                 {% else %}
                     <li>{{ 'Block {row} was added'|t('activity', {row: row + 1}) }}</li>
                     <ul>
-                        {% for mfield in block.fields ?? [] %}
-                            {{ macros.elementField(mfield) }}
+                        {% for handle, mfield in block.fields ?? [] %}
+                            {{ macros.elementField(mfield, {fieldId: fieldId, key: key ~ row  ~ '.fields.' ~ handle ~ '.data' }) }}
                         {% endfor %}
                     </ul>
                 {% endif %}

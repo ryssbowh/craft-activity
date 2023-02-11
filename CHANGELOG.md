@@ -1,5 +1,13 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.5 - 2023-02-11
+
+### Fixed
+- Fixed issue where url for the user exporting would show `myaccount`
+- Fixed issue with long text within nested fields (Matrix, SuperTable, Neo) [#12](https://github.com/ryssbowh/craft-activity/issues/12)
+- Fixed issue where long text would be turned into an ajax url in exports
+- Activity now sets a context before rendering activity templates
+
 ## 2.3.4 - 2023-02-06
 
 ### Added

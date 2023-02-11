@@ -6,6 +6,7 @@ use Ryssbowh\Activity\Activity;
 use craft\base\Model;
 use craft\elements\User;
 use craft\helpers\StringHelper;
+use craft\helpers\UrlHelper;
 use craft\models\Site;
 
 abstract class ActivityLog extends Model
@@ -161,7 +162,7 @@ abstract class ActivityLog extends Model
                 $status = '<span class="status trashed"></span>';
             }
             $name = Activity::$plugin->settings->showUsersFullName ? $this->user->fullName : $this->user->friendlyName;
-            return '<a href="' . $this->user->cpEditUrl . ' " target="_blank">' . $status . $name . '</a>';
+            return '<a href="' . UrlHelper::cpUrl('users/' . $this->user_id) . ' " target="_blank">' . $status . $name . '</a>';
         }
         return \Craft::t('activity', '{user} (deleted)', [
             'user' => $this->user_name

@@ -49,8 +49,12 @@
 }
 
 #activity-field-modal .body {
-    height: calc(100% - 126px);
+    height: calc(100% - 114px);
     overflow-y: auto;
+}
+
+#activity-field-modal .content {
+    overflow-wrap: break-word;
 }
 
 header #toolbar {
