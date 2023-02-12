@@ -57,6 +57,13 @@ class Activity extends Plugin
     public $hasCpSection = true;
 
     /**
+     * The context used to render logs, can be 'web' or 'export'
+     * @since 1.3.5
+     * @var   string
+     */
+    public string $twigContext = 'web';
+
+    /**
      * inheritDoc
      */
     public function init(): void

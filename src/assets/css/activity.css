@@ -48,6 +48,10 @@
     overflow-y: auto;
 }
 
+#activity-field-modal .content {
+    overflow-wrap: break-word;
+}
+
 header #toolbar {
     justify-content: center;
 }

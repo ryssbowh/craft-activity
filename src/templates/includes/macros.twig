@@ -145,3 +145,35 @@
         </li>
     {% endif %}
 {% endmacro %}
+
+{% macro longTextFromValue(field, data) %}
+    {# data can contain a key to access the value in the field. Nested fields (Matrix) will set this key #}
+    {% if data.key ?? false %}
+        {% set key = data.key %}
+        {% set fieldId = data.fieldId %}
+    {% else %}
+        {% set key = '' %}
+        {% set fieldId = field.id %}
+    {% endif %}
+    {% if craft.activity.context == 'web' and field.data.f|length > 50 %}
+        <a href="#" class="js-view-field-value" data-id="{{ fieldId }}" data-key="{{ key }}.f">view</a>
+    {% else %}
+        {{ _self.elementFromValue(field.data) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro longTextToValue(field, data) %}
+    {# data can contain a key to access the value in the field. Nested fields (Matrix) will set this key #}
+    {% if data.key ?? false %}
+        {% set key = data.key %}
+        {% set fieldId = data.fieldId %}
+    {% else %}
+        {% set key = '' %}
+        {% set fieldId = field.id %}
+    {% endif %}
+    {% if craft.activity.context == 'web' and field.data.t|length > 50 %}
+        <a href="#" class="js-view-field-value" data-id="{{ fieldId }}" data-key="{{ key }}.t">view</a>
+    {% else %}
+        {{ _self.elementToValue(field.data) }}
+    {% endif %}
+{% endmacro %}

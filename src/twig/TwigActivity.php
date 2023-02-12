@@ -11,6 +11,17 @@ use Ryssbowh\Activity\services\Logs;
 class TwigActivity
 {
     /**
+     * Get the current twig context, can be 'web' or 'export'
+     *
+     * @since  1.3.5
+     * @return string
+     */
+    public function getContext(): string
+    {
+        return Activity::$plugin->twigContext;
+    }
+
+    /**
      * Get logs service
      *
      * @return Logs

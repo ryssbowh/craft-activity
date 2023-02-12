@@ -1,28 +1,23 @@
+{% import "activity/includes/macros" as macros %}
+
 {% set hasFrom = 'f' in field.data|keys %}
 {% set hasTo = 't' in field.data|keys %}
-{% if data.key ?? false %}
-    {% set key = data.key %}
-    {% set fieldId = data.fieldId %}
-{% else %}
-    {% set key = '' %}
-    {% set fieldId = field.id %}
-{% endif %}
 <li>
     {% if hasFrom and hasTo %}
         {{ "Field {field} was changed from {from} to {to}"|t('activity', {
             field: field.data.name,
-            from: '<a href="#" class="js-view-field-value" data-id="' ~ fieldId ~ '" data-key="' ~ key ~ '.f" data-hassource="1">view</a>',
-            to: '<a href="#" class="js-view-field-value" data-id="' ~ fieldId ~ '" data-key="' ~ key ~ '.t" data-hassource="1">view</a>',
+            from: macros.longTextFromValue(field, data)|spaceless,
+            to: macros.longTextToValue(field, data)|spaceless,
         })|raw }}
     {% elseif hasTo %}
         {{ "Field {field} was set to {to}"|t('activity', {
             field: field.data.name,
-            to: '<a href="#" class="js-view-field-value" data-id="' ~ fieldId ~ '" data-key="' ~ key ~ '.t" data-hassource="1">view</a>',
+            to: macros.longTextToValue(field, data)|spaceless,
         })|raw }}
     {% elseif hasFrom %}
         {{ "Field {field} value ({from}) was removed"|t('activity', {
             field: field.data.name,
-            from: '<a href="#" class="js-view-field-value" data-id="' ~ fieldId ~ '" data-key="' ~ key ~ '.f" data-hassource="1">view</a>',
+            from: macros.longTextFromValue(field, data)|spaceless,
         })|raw }}
     {% endif %}
 </li>

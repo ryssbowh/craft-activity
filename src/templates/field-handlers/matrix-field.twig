@@ -1,5 +1,8 @@
 {% import "activity/includes/macros" as macros %}
 
+{% set fieldId = field.id ?? data.fieldId %}
+{% set key = (data.key is defined) ? data.key ~ '.blocks.' : 'blocks.' %}
+
 <li>
     {% if field.data.blocks %}
         {{ 'Field {field} was changed'|t('activity', {
@@ -16,7 +19,7 @@
                                 <li>{{ 'Block was disabled'|t('activity') }}</li>
                             {% endif %}
                             {% for handle, mfield in block.fields ?? [] %}
-                                {{ macros.elementField(mfield, {fieldId: field.id, key: 'blocks.' ~ row  ~ '.fields.' ~ handle ~ '.data' }) }}
+                                {{ macros.elementField(mfield, {fieldId: fieldId, key: key ~ row  ~ '.fields.' ~ handle ~ '.data' }) }}
                             {% endfor %}
                         </ul>
                     </li>
@@ -30,7 +33,7 @@
                                 <li>{{ 'Block was disabled'|t('activity') }}</li>
                             {% endif %}
                             {% for handle, mfield in block.fields ?? [] %}
-                                {{ macros.elementField(mfield, {fieldId: field.id, key: 'blocks.' ~ row ~ '.fields.' ~ handle ~ '.data' }) }}
+                                {{ macros.elementField(mfield, {fieldId: fieldId, key: key ~ row ~ '.fields.' ~ handle ~ '.data' }) }}
                             {% endfor %}
                         </ul>
                     </li>
@@ -44,7 +47,7 @@
                                 <li>{{ 'Block was disabled'|t('activity') }}</li>
                             {% endif %}
                             {% for handle, mfield in block.fields ?? [] %}
-                                {{ macros.elementField(mfield, {fieldId: field.id, key: 'blocks.' ~ row ~ '.fields.' ~ handle ~ '.data' }) }}
+                                {{ macros.elementField(mfield, {fieldId: fieldId, key: key ~ row ~ '.fields.' ~ handle ~ '.data' }) }}
                             {% endfor %}
                         </ul>
                     </li>
