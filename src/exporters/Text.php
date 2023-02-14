@@ -64,7 +64,7 @@ class Text extends Exporter
 
     /**
      * User name getter
-     * 
+     *
      * @return string
      */
     protected function getUserName(ActivityLog $log): string
@@ -76,7 +76,7 @@ class Text extends Exporter
             return $log->user->friendlyName;
         }
         return \Craft::t('activity', '{user} (deleted)', [
-            'user' => $this->user_name
+            'user' => $log->user_name
         ]);
     }
 }
