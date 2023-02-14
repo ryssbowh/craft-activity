@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.3.6 - 2023-02-14
+
+### Fixed
+- Fixed issue exporting text logs for deleted users [#12](https://github.com/ryssbowh/craft-activity/issues/12)
+
 ## 1.3.5 - 2023-02-12
 
 ### Fixed
