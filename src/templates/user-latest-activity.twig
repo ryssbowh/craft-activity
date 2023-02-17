@@ -8,7 +8,7 @@
             {% for log in logs %}
                 <p>{{ log.title|raw }}</p>
             {% endfor %}
-            <a target="_blank" href="{{ url('activity') }}?filters[users][]={{ user.id }}">{{ 'View all'|t('activity') }}</a>
+            <a target="_blank" href="{{ url('activity?filters[users][]=' ~ user.id) }}">{{ 'View all'|t('activity') }}</a>
         </div>
     </div>
 {% endif %}

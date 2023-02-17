@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.3.7 - 2023-02-17
+
+### Fixed
+- Fixed wrong url in multi sites for "View all" in user latest activity block
+
 ## 1.3.6 - 2023-02-14
 
 ### Fixed
