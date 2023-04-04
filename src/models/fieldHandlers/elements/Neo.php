@@ -6,7 +6,7 @@ use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 use benf\neo\elements\Block;
-use craft\fieldlayoutelements\BaseUiElement;
+use craft\fieldlayoutelements\CustomField;
 
 /**
  * @since 2.3.1
@@ -172,7 +172,7 @@ class Neo extends ElementFieldHandler
         $fields = [];
         foreach ($block->getFieldLayout()->getTabs() as $tab) {
             foreach ($tab->elements as $elem) {
-                if ($elem instanceof BaseUiElement) {
+                if (!$elem instanceof CustomField) {
                     continue;
                 }
                 $field = $elem->field;
