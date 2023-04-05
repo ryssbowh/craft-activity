@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 1.3.8 - 2023-04-05
+
+### Fixed
+- Fixed issue assigning groups to users [#14](https://github.com/ryssbowh/craft-activity/issues/14)
+
 ## 1.3.7 - 2023-02-17
 
 ### Fixed
