@@ -100,7 +100,7 @@ class Users extends ElementsRecorder
 
     /**
      * Save a log when a user is suspended
-     * 
+     *
      * @param User $user
      */
     public function onSuspend(User $user)
@@ -115,7 +115,7 @@ class Users extends ElementsRecorder
 
     /**
      * Save a log when a user is unsuspended
-     * 
+     *
      * @param User $user
      */
     public function onUnsuspend(User $user)
@@ -130,7 +130,7 @@ class Users extends ElementsRecorder
 
     /**
      * Save a log when a user is locked
-     * 
+     *
      * @param User $user
      */
     public function onLocked(User $user)
@@ -147,7 +147,7 @@ class Users extends ElementsRecorder
 
     /**
      * Save a log when a user is unlocked
-     * 
+     *
      * @param User $user
      */
     public function onUnlocked(User $user)
@@ -162,7 +162,7 @@ class Users extends ElementsRecorder
 
     /**
      * Save a log when a user fails to login
-     * 
+     *
      * @param User $user
      */
     public function onLoginFailed(User $user)
@@ -178,7 +178,7 @@ class Users extends ElementsRecorder
 
     /**
      * Save a log when a user uses an invalid token
-     * 
+     *
      * @param User $user
      */
     public function onInvalidToken(User $user)
@@ -194,7 +194,7 @@ class Users extends ElementsRecorder
 
     /**
      * Save a log when a user email is verified
-     * 
+     *
      * @param User $user
      */
     public function onEmailVerified(User $user)
@@ -210,28 +210,26 @@ class Users extends ElementsRecorder
 
     /**
      * Save a log when a user is assigned to groups
-     * 
+     *
      * @param int    $userId
      * @param array $newGroupIds
      * @param array $removedGroupIds
      */
     public function onAssignGroups(int $userId, array $newGroupIds, array $removedGroupIds)
     {
-        if (!$this->shouldSaveLog('userAssignGroups')) {
+        if (!$this->shouldSaveLog('userAssignedGroups')) {
             return;
         }
-        $this->commitLog('userAssignGroups', [
-            'element' => User::find()->anyStatus()->id($userId),
-            'changedFields' => [
-                'removedGroups' => $this->getGroupNames($removedGroupIds),
-                'newGroups' => $this->getGroupNames($newGroupIds)
-            ]
+        $this->commitLog('userAssignedGroups', [
+            'element' => User::find()->anyStatus()->id($userId)->one(),
+            'removedGroups' => $this->getGroupsData($removedGroupIds),
+            'newGroups' => $this->getGroupsData($newGroupIds)
         ]);
     }
 
     /**
      * Save a log when a user is activated
-     * 
+     *
      * @param User $user
      */
     public function onActivated(User $user)
@@ -252,26 +250,29 @@ class Users extends ElementsRecorder
 
     /**
      * Save a log when a user is assigned to the default group
-     * 
+     *
      * @param User $user
      */
     public function onAssignDefaultGroup(User $user)
     {
-        if (!$this->shouldSaveLog('userAssignDefaultGroup')) {
+        if (!$this->shouldSaveLog('userAssignedDefaultGroup')) {
             return;
         }
         $uid = \Craft::$app->getProjectConfig()->get('users.defaultGroup');
         $group = \Craft::$app->getUserGroups()->getGroupByUid($uid);
-        $this->commitLog('userAssignDefaultGroup', [
+        $this->commitLog('userAssignedDefaultGroup', [
             'element' => $user,
             'user' => $user,
-            'group' => $group->name
+            'group' => [
+                'name' => $group->name,
+                'id' => $group->id
+            ]
         ]);
     }
 
     /**
      * Save a log when a user logs in
-     * 
+     *
      * @param User $user
      */
     public function onLoggedIn(User $user)
@@ -286,7 +287,7 @@ class Users extends ElementsRecorder
 
     /**
      * Save a log when a user logs out
-     * 
+     *
      * @param User $user
      */
     public function onLoggedOut(User $user)
@@ -334,7 +335,7 @@ class Users extends ElementsRecorder
 
     /**
      * Save the old permissions and listen to end of request event so the new permissions can be tracked
-     * 
+     *
      * @param Element $user
      */
     protected function saveOldPermissions(Element $user)
@@ -365,19 +366,22 @@ class Users extends ElementsRecorder
     }
 
     /**
-     * Get the group names from an array of ids
-     * 
+     * Get the group data from an array of ids
+     *
      * @param  array  $ids
-     * @return string
+     * @return array
      */
-    protected function getGroupNames(array $ids): string
+    protected function getGroupsData(array $ids): array
     {
         $groups = [];
         foreach ($ids as $id) {
             $group = \Craft::$app->userGroups->getGroupById($id);
-            $groups[] = $group->name;
+            $groups[] = [
+                'name' => $group->name,
+                'id' => $group->id
+            ];
         }
-        return implode(', ', $groups);
+        return $groups;
     }
 
     /**

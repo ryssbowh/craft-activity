@@ -57,7 +57,7 @@ class Logs extends Component
             'data' => $log->data
         ]);
         $info = \Craft::$app->plugins->getStoredPluginInfo('activity');
-        if (version_compare($info['schemaVersion'], '2.3.4', '>=')) {
+        if ($info and version_compare($info['schemaVersion'], '2.3.4', '>=')) {
             $record->ip = \Craft::$app->request instanceof Request ? \Craft::$app->request->getUserIP() : null;
         }
         if ($record->save(false)) {
