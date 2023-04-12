@@ -54,8 +54,9 @@ class TwigActivity
     {
         if (is_array($value)) {
             $value = implode(', ', $value);
+        } else {
+            $value = PrettyPrint::get($value);
         }
-        $value = PrettyPrint::get($value);
         if (!is_string($value)) {
             \Craft::warning('Tried to print an element value that wasn\'t a string');
             \Craft::warning($value);
