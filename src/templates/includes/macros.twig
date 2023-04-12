@@ -36,12 +36,7 @@
 {% endmacro %}
 
 {% macro elementValue(value) %}
-    {% if value is iterable %}
-        {% set value = value|join(', ') %}
-    {% else %}
-        {% set value = value|prettyPrint %}
-    {% endif %}
-    <code>{{ value }}</code>
+    <code>{{ craft.activity.elementValue(value) }}</code>
 {% endmacro %}
 
 {% macro elementToValue(data) %}

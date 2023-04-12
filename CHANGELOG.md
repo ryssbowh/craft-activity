@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.10 - 2023-04-12
+
+### Fixed
+- Fixed issue printing logs that aren't strings [#15](https://github.com/ryssbowh/craft-activity/issues/15)
+
 ## 2.3.9 - 2023-04-05
 
 ### Fixed

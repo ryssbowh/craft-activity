@@ -3,6 +3,7 @@
 namespace Ryssbowh\Activity\twig;
 
 use Ryssbowh\Activity\Activity;
+use Ryssbowh\Activity\helpers\PrettyPrint;
 use Ryssbowh\Activity\services\Logs;
 
 /**
@@ -40,5 +41,26 @@ class TwigActivity
     public function showUserIP(): bool
     {
         return Activity::$plugin->settings->showUserIP;
+    }
+
+    /**
+     * Return an element value
+     *
+     * @param   $value
+     * @return string
+     * @since 2.3.10
+     */
+    public function elementValue($value): string
+    {
+        if (is_array($value)) {
+            $value = implode(', ', $value);
+        }
+        $value = PrettyPrint::get($value);
+        if (!is_string($value)) {
+            \Craft::warning('Tried to print an element value that wasn\'t a string');
+            \Craft::warning($value);
+            return '*error*';
+        }
+        return $value;
     }
 }
