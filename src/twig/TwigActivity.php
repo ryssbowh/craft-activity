@@ -53,14 +53,15 @@ class TwigActivity
     public function elementValue($value): string
     {
         if (is_array($value)) {
-            $value = implode(', ', $value);
+            try {
+                $value = implode(', ', $value);
+            } catch (\Throwable $e) {
+                \Craft::info($value);
+                \Craft::$app->errorHandler->logException($e);
+                return '*error*';
+            }
         } else {
             $value = PrettyPrint::get($value);
-        }
-        if (!is_string($value)) {
-            \Craft::warning('Tried to print an element value that wasn\'t a string');
-            \Craft::warning($value);
-            return '*error*';
         }
         return $value;
     }
