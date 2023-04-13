@@ -3,7 +3,9 @@
 namespace Ryssbowh\Activity\twig;
 
 use Ryssbowh\Activity\Activity;
+use Ryssbowh\Activity\helpers\PrettyPrint;
 use Ryssbowh\Activity\services\Logs;
+use craft\helpers\Json;
 
 /**
  * @since 1.2.0
@@ -40,5 +42,22 @@ class TwigActivity
     public function showUserIP(): bool
     {
         return Activity::$plugin->settings->showUserIP;
+    }
+
+    /**
+     * Return an element value
+     *
+     * @param   $value
+     * @return string
+     * @since 1.3.9
+     */
+    public function elementValue($value): string
+    {
+        if (is_array($value)) {
+            return Json::encode($value);
+        } else {
+            $value = PrettyPrint::get($value);
+        }
+        return $value;
     }
 }
