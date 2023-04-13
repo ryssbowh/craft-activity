@@ -5,6 +5,7 @@ namespace Ryssbowh\Activity\twig;
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\helpers\PrettyPrint;
 use Ryssbowh\Activity\services\Logs;
+use craft\helpers\Json;
 
 /**
  * @since 2.2.0
@@ -53,13 +54,7 @@ class TwigActivity
     public function elementValue($value): string
     {
         if (is_array($value)) {
-            try {
-                $value = implode(', ', $value);
-            } catch (\Throwable $e) {
-                \Craft::info($value);
-                \Craft::$app->errorHandler->logException($e);
-                return '*error*';
-            }
+            return Json::encode($value);
         } else {
             $value = PrettyPrint::get($value);
         }
