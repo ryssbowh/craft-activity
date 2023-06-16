@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.12 - 2023-06-16
+
+### Fixed
+- Fixed issue saving empty transforms config [#16](https://github.com/ryssbowh/craft-activity/issues/16)
+
 ## 2.3.11 - 2023-04-13
 
 ### Fixed

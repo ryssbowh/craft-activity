@@ -66,5 +66,5 @@ This plugin requires Craft 4.0 or above.
 
 ## Documentation
 
-- [Plugin documentation website](https://puzzlers.run/plugins/user-activity/2.x)
+- [Plugin documentation website](https://www.webpuzzlers.co.uk/plugins/user-activity/2.x)
 - [Class reference](https://ryssbowh.github.io/docs/craft-activity2/namespaces/ryssbowh-activity.html)

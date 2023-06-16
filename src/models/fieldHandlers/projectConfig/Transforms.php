@@ -16,7 +16,7 @@ class Transforms extends DefaultHandler
     {
         if ($this->value == '*') {
             $this->fancyValue = \Craft::t('app', 'All');
-        } else {
+        } elseif ($this->value) {
             $this->fancyValue = [];
             foreach ($this->value as $uid) {
                 $this->fancyValue[] = $this->getTransformName($uid);
@@ -35,7 +35,7 @@ class Transforms extends DefaultHandler
 
     /**
      * Get a transform name by uid
-     * 
+     *
      * @param  string $uid
      * @return string
      */
