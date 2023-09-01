@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.13 - 2023-09-01
+
+### Fixed
+- Fixed issue saving Neo fields [#16](https://github.com/ryssbowh/craft-activity/issues/17)
+
 ## 2.3.12 - 2023-06-16
 
 ### Fixed
