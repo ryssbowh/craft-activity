@@ -13,7 +13,7 @@ trait ElementFields
 {
     /**
      * Calculate dirty fields, input are two arrays of field handlers
-     * 
+     *
      * @param  array $newFields
      * @param  array $oldFields
      * @return array
@@ -45,7 +45,7 @@ trait ElementFields
 
     /**
      * Get an element custom field values, returns an array of field handlers
-     * 
+     *
      * @param  Element $element
      * @return array
      */
@@ -57,14 +57,15 @@ trait ElementFields
                 if ($elem instanceof CustomField) {
                     $handle = $elem->field->handle;
                     $class = Activity::$plugin->fieldHandlers->getForElementField(get_class($elem->field));
+                    $value = $element->getFieldValue($handle);
                     $handlers['field_' . $handle] = new $class([
                         'field' => $elem->field,
                         'element' => $element,
                         'name' => $elem->label ?? $elem->field->name,
-                        'value' => $elem->field->serializeValue($element->$handle, $element),
-                        'rawValue' => $element->$handle
+                        'value' => $elem->field->serializeValue($value, $element),
+                        'rawValue' => $value
                     ]);
-                } else if ($elem instanceof EntryTitleField or $elem instanceof TitleField) {
+                } elseif ($elem instanceof EntryTitleField or $elem instanceof TitleField) {
                     $handlers['title'] = new Plain([
                         'element' => $element,
                         'value' => $element->title,
