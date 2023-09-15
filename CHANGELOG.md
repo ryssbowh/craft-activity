@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.14 - 2023-09-15
+
+### Fixed
+- Fixed issue saving eager loaded elements [#18](https://github.com/ryssbowh/craft-activity/issues/18)
+
 ## 2.3.13 - 2023-09-01
 
 ### Fixed
