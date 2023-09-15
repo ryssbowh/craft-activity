@@ -106,7 +106,8 @@ class Neo extends ElementFieldHandler
                 'mode' => 'changed'
             ];
             foreach ($block['fields'] as $fieldId => $handler) {
-                if ($fdirty = $handler->getDirty($oldBlocks[$id]['fields'][$fieldId])) {
+                $oldHandler = $oldBlocks[$id]['fields'][$fieldId] ?? null;
+                if ($oldHandler and $fdirty = $handler->getDirty($oldHandler)) {
                     $blockIsdirty = true;
                     $blockDirty['fields'][$fieldId] = [
                         'handler' => get_class($handler),
