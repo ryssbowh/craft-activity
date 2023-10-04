@@ -6,6 +6,7 @@
 - Fixed issue not being able to add/delete/reorder ignore rules in settings
 - Fixed issue saving Neo fields [#20](https://github.com/ryssbowh/craft-activity/issues/20)
 - Fixed issue saving Matrix and Super Table fields
+- Changed how block rows are calculated
 
 ## 2.3.14 - 2023-09-15
 

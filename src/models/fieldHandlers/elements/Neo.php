@@ -100,9 +100,11 @@ class Neo extends ElementFieldHandler
     protected function buildDirtyBlocks(array $newBlocks, array $oldBlocks): array
     {
         $blocks = [];
+        $order = 1;
         foreach (array_intersect_key($newBlocks, $oldBlocks) as $id => $block) {
             $blockIsdirty = false;
             $blockDirty = [
+                'order' => $order,
                 'mode' => 'changed'
             ];
             foreach ($block['fields'] as $fieldId => $handler) {
@@ -122,28 +124,39 @@ class Neo extends ElementFieldHandler
             if ($blockIsdirty) {
                 $blocks[$id] = $blockDirty;
             }
+            $order++;
         }
-        foreach (array_diff_key($newBlocks, $oldBlocks) as $id => $block) {
-            $block['fields'] = array_map(function ($handler) {
-                return [
-                    'handler' => get_class($handler),
-                    'data' => $handler->getDbValue('t')
-                ];
-            }, $block['fields']);
-            $block['children'] = $this->buildDirtyBlocks($block['children'], []);
-            $block['mode'] = 'added';
-            $blocks[$id] = $block;
+        $order = 1;
+        foreach ($newBlocks as $id => $block) {
+            if (!isset($oldBlocks[$id])) {
+                $block['fields'] = array_map(function ($handler) {
+                    return [
+                        'handler' => get_class($handler),
+                        'data' => $handler->getDbValue('t')
+                    ];
+                }, $block['fields']);
+                $block['children'] = $this->buildDirtyBlocks($block['children'], []);
+                $block['mode'] = 'added';
+                $block['order'] = $order;
+                $blocks[$id] = $block;
+            }
+            $order++;
         }
-        foreach (array_diff_key($oldBlocks, $newBlocks) as $id => $block) {
-            $block['fields'] = array_map(function ($handler) {
-                return [
-                    'handler' => get_class($handler),
-                    'data' => $handler->getDbValue('f')
-                ];
-            }, $block['fields']);
-            $block['children'] = $this->buildDirtyBlocks([], $block['children']);
-            $block['mode'] = 'removed';
-            $blocks[$id] = $block;
+        $order = 1;
+        foreach ($oldBlocks as $id => $block) {
+            if (!isset($newBlocks[$id])) {
+                $block['fields'] = array_map(function ($handler) {
+                    return [
+                        'handler' => get_class($handler),
+                        'data' => $handler->getDbValue('f')
+                    ];
+                }, $block['fields']);
+                $block['children'] = $this->buildDirtyBlocks([], $block['children']);
+                $block['mode'] = 'removed';
+                $block['order'] = $order;
+                $blocks[$id] = $block;
+            }
+            $order++;
         }
         return $blocks;
     }
@@ -157,12 +170,13 @@ class Neo extends ElementFieldHandler
     {
         $value = [];
         $blocks = $this->field->normalizeValue($this->element->getFieldValue($this->field->handle), $this->element)->all();
-        $children = array_map(function ($block) {
-            return $block->getChildren()->all();
-        }, $blocks);
+        $children = [];
+        foreach ($blocks as $block) {
+            $children[$block->id] = $block->getChildren()->all();
+        }
         foreach ($blocks as $block) {
             if ($block->level == 1) {
-                $value[] = $this->buildBlockValues($block, $children);
+                $value[$block->id] = $this->buildBlockValues($block, $children);
             }
         }
         return $value;
@@ -200,7 +214,7 @@ class Neo extends ElementFieldHandler
         ];
         if ($children[$block->id] ?? null) {
             foreach ($children[$block->id] as $child) {
-                $value['children'][] = $this->buildBlockValues($child, $children);
+                $value['children'][$child->id] = $this->buildBlockValues($child, $children);
             }
         }
         return $value;

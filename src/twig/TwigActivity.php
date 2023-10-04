@@ -60,4 +60,27 @@ class TwigActivity
         }
         return $value;
     }
+
+    /**
+     * returns the version of Activity
+     *
+     * @return string
+     * @since 2.3.15
+     */
+    public function getVersion(): string
+    {
+        return Activity::$plugin->version;
+    }
+
+    /**
+     * Compare a version to the Activity plugin version
+     *
+     * @param  string $version
+     * @return bool
+     * @since  2.3.15
+     */
+    public function versionCompare(string $version, string $operator): bool
+    {
+        return version_compare($this->getVersion(), $version, $operator);
+    }
 }
