@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.15 - 2023-10-04
+
+### Fixed
+- Fixed issue not being able to add/delete/reorder ignore rules in settings
+- Fixed issue saving Neo fields [#20](https://github.com/ryssbowh/craft-activity/issues/20)
+
 ## 2.3.14 - 2023-09-15
 
 ### Fixed

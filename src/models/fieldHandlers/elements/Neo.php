@@ -156,8 +156,14 @@ class Neo extends ElementFieldHandler
     protected function buildValues(): array
     {
         $value = [];
-        foreach ($this->rawValue->anyStatus()->level(1)->all() as $id => $block) {
-            $value[] = $this->buildBlockValues($block);
+        $blocks = $this->field->normalizeValue($this->element->getFieldValue($this->field->handle), $this->element)->all();
+        $children = array_map(function ($block) {
+            return $block->getChildren()->all();
+        }, $blocks);
+        foreach ($blocks as $block) {
+            if ($block->level == 1) {
+                $value[] = $this->buildBlockValues($block, $children);
+            }
         }
         return $value;
     }
@@ -166,9 +172,10 @@ class Neo extends ElementFieldHandler
      * Build the value for one block
      *
      * @param  Block  $block
+     * @param  array $children Children for all blocks
      * @return array
      */
-    protected function buildBlockValues(Block $block): array
+    protected function buildBlockValues(Block $block, array $children): array
     {
         $fields = [];
         foreach ($block->getFieldLayout()->getTabs() as $tab) {
@@ -191,9 +198,9 @@ class Neo extends ElementFieldHandler
             'fields' => $fields,
             'children' => []
         ];
-        if ($children = $block->getChildren()) {
-            foreach ($children as $child) {
-                $value['children'][] = $this->buildBlockValues($child);
+        if ($children[$block->id] ?? null) {
+            foreach ($children[$block->id] as $child) {
+                $value['children'][] = $this->buildBlockValues($child, $children);
             }
         }
         return $value;
