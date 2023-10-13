@@ -17,7 +17,7 @@
 {% macro neoBlocks(blocks, field, key = '') %}
     {% for row, block in blocks %}
         {% set key = key ~ '.' ~ row %}
-        {% set label = (craft.activity.version == 'dev-master' or craft.activity.versionCompare('2.3.15', '>=')) ? block.order : (row + 1) %}
+        {% set label = block.order ?? (row + 1) %}
         {% if block.mode == 'changed' %}
             <li>{{ 'Block {row} was changed'|t('activity', {row: label}) }}</li>
             {{ _self.neoBlock(field, block, key) }}

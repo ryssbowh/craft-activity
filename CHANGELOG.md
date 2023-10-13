@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.3.16 - 2023-10-13
+
+### Fixed
+- Fixed Neo template bug introduced in 2.3.16
+
 ## 2.3.15 - 2023-10-04
 
 ### Fixed
