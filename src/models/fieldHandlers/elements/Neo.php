@@ -157,9 +157,10 @@ class Neo extends ElementFieldHandler
     {
         $value = [];
         $blocks = $this->field->normalizeValue($this->element->getFieldValue($this->field->handle), $this->element)->all();
-        $children = array_map(function ($block) {
-            return $block->getChildren()->all();
-        }, $blocks);
+        $children = [];
+        foreach ($blocks as $block) {
+            $children[$block->id] = $block->getChildren()->all();
+        }
         foreach ($blocks as $block) {
             if ($block->level == 1) {
                 $value[] = $this->buildBlockValues($block, $children);
