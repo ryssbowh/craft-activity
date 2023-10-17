@@ -73,7 +73,7 @@ class Matrix extends ElementFieldHandler
 
     /**
      * Build dirty values
-     * 
+     *
      * @param  array  $newBlocks
      * @param  array  $oldBlocks
      * @return array
@@ -142,13 +142,14 @@ class Matrix extends ElementFieldHandler
 
     /**
      * Build the value
-     * 
+     *
      * @return array
      */
     protected function buildValues(): array
     {
         $value = [];
-        foreach ($this->rawValue->anyStatus()->all() as $id => $block) {
+        $blocks = $this->field->normalizeValue($this->element->getFieldValue($this->field->handle), $this->element)->all();
+        foreach ($blocks as $id => $block) {
             $fields = [];
             foreach ($this->field->getBlockTypeFields([$block->type->id]) as $field) {
                 $class = Activity::$plugin->fieldHandlers->getForElementField(get_class($field));

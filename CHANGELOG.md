@@ -4,6 +4,7 @@
 
 ### Fixed
 - Fixed issue saving Neo fields [#20](https://github.com/ryssbowh/craft-activity/issues/20)
+- Fixed issue saving Matrix and Super Table fields
 
 ## 1.3.11 - 2023-09-15
 
