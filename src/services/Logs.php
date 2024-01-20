@@ -173,12 +173,13 @@ class Logs extends Component
         if ($filters['types'] ?? false) {
             $query->andWhere(['in', 'type', $filters['types']]);
         }
+        $format = \Craft::$app->formattingLocale->getDateFormat('short', 'php');
         if ($filters['dateFrom'] ?? false) {
-            $date = \DateTime::createFromFormat('d/m/Y', $filters['dateFrom']);
+            $date = \DateTime::createFromFormat($format, $filters['dateFrom']);
             $query->andWhere(['>=', 'dateCreated', $date->format('Y-m-d') . ' 00:00:00']);
         }
         if ($filters['dateTo'] ?? false) {
-            $date = \DateTime::createFromFormat('d/m/Y', $filters['dateTo']);
+            $date = \DateTime::createFromFormat($format, $filters['dateTo']);
             $query->andWhere(['<=', 'dateCreated', $date->format('Y-m-d') . ' 23:59:59']);
         }
         return $query;
