@@ -42,7 +42,7 @@ trait RedactorField
             ];
         });
         Event::on(Fields::class, Fields::EVENT_REGISTER_TRACKED_FIELDS, function (Event $event) {
-            $event->tracked['craft\\redactor\\Field'] = ['settings.uiMode', 'settings.manualConfig', 'settings.redactorConfig', 'settings.showHtmlButtonForNonAdmins', 'settings.showUnpermittedVolumes', 'settings.showUnpermittedFiles', 'settings.availableVolumes', 'settings.availableTransforms', 'settings.removeEmptyTags', 'settings.removeInlineStyles', 'settings.removeNbsp', 'settings.purifyHtml', 'settings.purifierConfig', 'settings.columnType'];
+            $event->tracked['craft\\redactor\\Field'] = ['settings.uiMode', 'settings.manualConfig', 'settings.redactorConfig', 'settings.showHtmlButtonForNonAdmins', 'settings.showUnpermittedVolumes', 'settings.showUnpermittedFiles', 'settings.availableVolumes', 'settings.availableTransforms', 'settings.removeEmptyTags', 'settings.removeInlineStyles', 'settings.removeNbsp', 'settings.purifyHtml', 'settings.purifierConfig', 'settings.columnType', 'settings.defaultTransform'];
         });
         Event::on(LongText::class, LongText::EVENT_REGISTER_TARGETS, function (Event $event) {
             $event->targets[] = 'craft\\redactor\\Field';

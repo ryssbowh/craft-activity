@@ -11,6 +11,7 @@
 ### Fixed
 - Fixed export button that was broken for multisite installations
 - Fixed issue where date filters would not work for some locales
+- Fixed issue where Redactor fields setting `defaultTransform` was not tracked
 
 ## 2.3.16 - 2023-10-13
 
