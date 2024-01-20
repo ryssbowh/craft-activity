@@ -13,7 +13,9 @@ class FieldLayout extends DefaultHandler
      * @var array
      */
     protected $_dirty;
-    
+
+    public bool $unpacked = false;
+
     /**
      * @inheritDoc
      */
@@ -80,7 +82,7 @@ class FieldLayout extends DefaultHandler
 
     /**
      * Build dirty values
-     * 
+     *
      * @param  array  $newFields
      * @param  array  $oldFields
      * @return array
@@ -101,7 +103,7 @@ class FieldLayout extends DefaultHandler
                     't' => (bool)$newFields[$uid]['required']
                 ];
             }
-            if ($newFields[$uid]['label'] !== $oldFields[$uid]['label']) {
+            if (($newFields[$uid]['label'] ?? null) !== ($oldFields[$uid]['label'] ?? null)) {
                 $rowIsdirty = true;
                 $rowDirty['label'] = [
                     'label' => \Craft::t('app', 'Label'),
@@ -109,7 +111,7 @@ class FieldLayout extends DefaultHandler
                     't' => $newFields[$uid]['label']
                 ];
             }
-            if ($newFields[$uid]['instructions'] !== $oldFields[$uid]['instructions']) {
+            if (($newFields[$uid]['instructions'] ?? null) !== ($oldFields[$uid]['instructions'] ?? null)) {
                 $rowIsdirty = true;
                 $rowDirty['instructions'] = [
                     'label' => \Craft::t('app', 'Instructions'),
@@ -140,25 +142,34 @@ class FieldLayout extends DefaultHandler
 
     /**
      * Build values for a field layout config
-     * 
+     *
      * @param  array $fieldLayout
      * @return array
      */
     protected function buildValues(array $fieldLayout): array
     {
-        $fieldLayout = ProjectConfigHelper::unpackAssociativeArrays($fieldLayout);
+        if (!$this->unpacked) {
+            $fieldLayout = ProjectConfigHelper::unpackAssociativeArrays($fieldLayout);
+        }
         $values = [];
         $fieldLayout = reset($fieldLayout);
         foreach ($fieldLayout['tabs'] ?? [] as $tab) {
-            foreach ($tab['elements'] as $element) {
+            foreach ($tab['elements'] ?? [] as $element) {
                 if ($element['type'] == CustomField::class) {
                     $field = \Craft::$app->fields->getFieldByUid($element['fieldUid']);
                     $values[$element['fieldUid']] = [
                         'name' => $field ? $field->name : '*deleted field*',
-                        'label' => $element['label'],
-                        'instructions' => $element['instructions'],
-                        'required' => $element['required']
+                        'required' => $element['required'] ?? ''
                     ];
+                    if (isset($element['label'])) {
+                        $values[$element['fieldUid']]['label'] = $element['label'];
+                    }
+                    if (isset($element['instructions'])) {
+                        $values[$element['fieldUid']]['instructions'] = $element['instructions'];
+                    }
+                    if (isset($element['width'])) {
+                        $values[$element['fieldUid']]['width'] = $element['width'];
+                    }
                 }
             }
         }

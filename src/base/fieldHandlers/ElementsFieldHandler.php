@@ -10,8 +10,7 @@ abstract class ElementsFieldHandler extends ElementFieldHandler
     public function init(): void
     {
         parent::init();
-        $handle = $this->field->handle;
-        $fvalue = $this->field->normalizeValue($this->element->getFieldValue($handle), $this->element);
+        $fvalue = $this->field->normalizeValue($this->rawValue, $this->element);
         $this->fancyValue = array_map(function ($elem) {
             return $elem->title;
         }, is_array($fvalue) ? $fvalue : $fvalue->all());

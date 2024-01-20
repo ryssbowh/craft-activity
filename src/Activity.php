@@ -16,6 +16,7 @@ use Ryssbowh\Activity\traits\SeoField;
 use Ryssbowh\Activity\traits\SuperTableField;
 use Ryssbowh\Activity\traits\TinyMceField;
 use Ryssbowh\Activity\traits\TypedLinkField;
+use Ryssbowh\Activity\traits\VizyField;
 use Ryssbowh\Activity\twig\ActivityExtension;
 use Ryssbowh\Activity\twig\TwigActivity;
 use craft\base\Model;
@@ -37,6 +38,7 @@ class Activity extends Plugin
     use TypedLinkField;
     use SuperTableField;
     use NeoField;
+    use VizyField;
 
     /**
      * @var Themes
@@ -88,6 +90,7 @@ class Activity extends Plugin
         $this->initTypedLinkField();
         $this->initSuperTableField();
         $this->initNeoField();
+        $this->initVizyField();
 
         Event::on(Application::class, Application::EVENT_AFTER_REQUEST, function (Event $event) {
             $this->recorders->saveLogs();

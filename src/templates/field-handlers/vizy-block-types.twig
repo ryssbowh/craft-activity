@@ -1,0 +1,156 @@
+{% import "activity/includes/macros" as macros %}
+
+{% macro vizyBlocks(blocks) %}
+    {% set categories = craft.app.i18n.translations|keys %}
+    {% set category = 'vizy' in categories ? 'vizy' : 'activity' %}
+    {% set fields = {
+        handle: 'Handle'|t('app'),
+        icon: 'Icon'|t(category),
+        minBlocks: 'Min Blocks'|t('app'),
+        maxBlocks: 'Max Blocks'|t('app'),
+        template: 'Template'|t('app'),
+        enabled: 'Enabled'|t('app'),
+    } %}
+    {% if blocks.changed ?? false %}
+        {% for changed in blocks.changed %}
+            <li>
+                {{ 'Block {block} was changed'|t('activity', {
+                    block: changed.name.t ?? changed.name
+                }) }}
+                <ul>
+                    {% if changed.name.t ?? null %}
+                        <li>
+                            {{ '{field} was changed from {from} to {to}'|t('activity', {
+                                from: macros.fromValue(changed.name),
+                                to: macros.toValue(changed.name),
+                                field: 'Name'|t('app')
+                            })|raw }}
+                        </li>
+                    {% endif %}
+                    {% for field, name in fields %}
+                        {% if field in changed|keys %}
+                            <li>
+                                {{ '{field} was changed from {from} to {to}'|t('activity', {
+                                    from: macros.fromValue(changed[field]),
+                                    to: macros.toValue(changed[field]),
+                                    field: name
+                                })|raw }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if 'layoutConfig' in changed|keys %}
+                        <li>
+                            {{ 'Field layout was changed'|t('activity') }}
+                            {{ macros.fieldLayout(changed.layoutConfig) }}
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endfor %}
+    {% endif %}
+    {% if blocks.added ?? false %}
+        {% for added in blocks.added %}
+            <li>
+                {{ 'Block {block} was added'|t('activity', {
+                    block: added.name
+                }) }}
+                <ul>
+                    {% for field, name in fields %}
+                        {% if field in added|keys %}
+                            <li>
+                                {{ '{field} was set to {to}'|t('activity', {
+                                    to: '<code>' ~ added[field]|prettyPrint ~ '</code>',
+                                    field: name
+                                })|raw }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if 'layoutConfig' in added|keys %}
+                        <li>
+                            {{ 'Field layout was added'|t('activity') }}
+                            {{ macros.fieldLayout(added.layoutConfig) }}
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endfor %}
+    {% endif %}
+    {% if blocks.removed ?? false %}
+        {% for removed in blocks.removed %}
+            <li>
+                {{ 'Block {block} was removed'|t('activity', {
+                    block: removed.name
+                }) }}
+                <ul>
+                    {% for field, name in fields %}
+                        {% if field in removed|keys %}
+                            <li>
+                                {{ '{field} value ({from}) was removed'|t('activity', {
+                                    from: '<code>' ~ removed[field]|prettyPrint ~ '</code>',
+                                    field: name
+                                })|raw }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if 'layoutConfig' in removed|keys %}
+                        <li>
+                            {{ 'Field layout was removed'|t('activity') }}
+                            {{ macros.fieldLayout(removed.layoutConfig) }}
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% if field.data.changed ?? false %}
+    {% for changed in field.data.changed %}
+        <li>
+            {{ 'Group {group} was changed'|t('activity', {
+                group: changed.name.t ?? changed.name
+            }) }}
+            <ul>
+                {% if changed.name.t ?? null %}
+                    <li>
+                        {{ 'Name was changed from {from} to {to}'|t({
+                            from: changed.name.f,
+                            to: changed.name.t
+                        }) }}
+                    </li>
+                {% endif %}
+                {% if changed.blockTypes ?? null %}
+                    {{ _self.vizyBlocks(changed.blockTypes) }}
+                {% endif %}
+            </ul>
+        </li>
+    {% endfor %}
+{% endif %}
+{% if field.data.added ?? false %}
+    {% for added in field.data.added %}
+        <li>
+            {{ 'Group {group} was added'|t('activity', {
+                group: added.name
+            }) }}
+            <ul>
+                {% if added.blockTypes ?? null %}
+                    {{ _self.vizyBlocks({added: added.blockTypes}) }}
+                {% endif %}
+            </ul>
+        </li>
+    {% endfor %}
+{% endif %}
+{% if field.data.removed ?? false %}
+    {% for removed in field.data.removed %}
+        <li>
+            {{ 'Group {group} was removed'|t('activity', {
+                group: removed.name
+            }) }}
+            <ul>
+                {% if removed.blockTypes ?? null %}
+                    {{ _self.vizyBlocks({removed: removed.blockTypes}) }}
+                {% endif %}
+            </ul>
+        </li>
+    {% endfor %}
+{% endif %}

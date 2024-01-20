@@ -172,3 +172,71 @@
         {{ _self.elementToValue(field.data) }}
     {% endif %}
 {% endmacro %}
+
+{% macro fieldLayout(layout) %}
+    {% if layout.added ?? false or layout.removed ?? false or layout.changed ?? false %}
+        <ul>
+            {% if layout.added ?? false %}
+                {% for added in layout.added %}
+                    <li>
+                        {{ 'Field {field} was added'|t('activity', {
+                            field: added.name
+                        }) }}
+                        <ul>
+                            {% for name in ['required', 'label', 'instructions', 'width'] %}
+                                {% if name in added|keys %}
+                                    <li>{{ '{name} was set to {value}'|t('activity', {
+                                            name: name|capitalize|t('app'),
+                                            value: '<code>' ~ added[name]|prettyPrint ~ '</code>'
+                                        })|raw }}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            {% endif %}
+            {% if layout.removed ?? false %}
+                {% for removed in layout.removed %}
+                    <li>
+                        {{ 'Field {field} was removed'|t('activity', {
+                            field: removed.name
+                        }) }}
+                        <ul>
+                            {% for name in ['required', 'label', 'instructions', 'width'] %}
+                                {% if name in removed|keys %}
+                                    <li>{{ '{name} was {value}'|t('activity', {
+                                            name: name|capitalize|t('app'),
+                                            value: '<code>' ~ removed[name]|prettyPrint ~ '</code>'
+                                        })|raw }}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            {% endif %}
+            {% if layout.changed ?? false %}
+                {% for changed in layout.changed %}
+                    <li>
+                        {{ 'Field {field} was changed'|t('activity', {
+                            field: changed.name
+                        }) }}
+                        <ul>
+                            {% for name in ['required', 'label', 'instructions', 'width'] %}
+                                {% if name in changed|keys %}
+                                    <li>{{ '{name} was changed from {from} to {to}'|t('activity', {
+                                            name: name|capitalize|t('app'),
+                                            from: '<code>' ~ changed[name].f|prettyPrint ~ '</code>',
+                                            to: '<code>' ~ changed[name].t|prettyPrint ~ '</code>'
+                                        })|raw }}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endmacro %}

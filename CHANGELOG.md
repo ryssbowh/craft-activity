@@ -1,5 +1,13 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.4.0 - unreleased
+
+### Added
+- Vizy fields support
+
+### Fixed
+- Fixed export button that was broken for multisites
+
 ## 2.3.16 - 2023-10-13
 
 ### Fixed
