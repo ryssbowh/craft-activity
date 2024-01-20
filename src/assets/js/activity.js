@@ -42,7 +42,7 @@ var Activity = Garnish.Base.extend({
         var filters = this.buildFilters();
         delete filters.perPage;
         filters.type = $(e.target).data('handle');
-        window.open(Craft.getCpUrl('export-activity-logs') + '?' + $.param(filters));
+        window.open(Craft.getCpUrl('export-activity-logs', filters));
     },
 
     initModal: function () {
