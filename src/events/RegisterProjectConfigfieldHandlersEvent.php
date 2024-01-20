@@ -4,6 +4,7 @@ namespace Ryssbowh\Activity\events;
 
 use Ryssbowh\Activity\exceptions\FieldHandlerException;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\BlockFields;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\CkEditorConfig;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\DefaultCategoryPlacement;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldGroup;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldLayout;
@@ -72,13 +73,14 @@ class RegisterProjectConfigfieldHandlersEvent extends Event
             Transforms::class,
             Transform::class,
             TableColumns::class,
-            TableDefaultValues::class
+            TableDefaultValues::class,
+            CkEditorConfig::class
         ]);
     }
 
     /**
      * get registered handlers
-     * 
+     *
      * @return array
      */
     public function getHandlers(): array
@@ -88,7 +90,7 @@ class RegisterProjectConfigfieldHandlersEvent extends Event
 
     /**
      * Add a field handler to register
-     * 
+     *
      * @param string  $handler
      * @param boolean $replace
      */
@@ -104,7 +106,7 @@ class RegisterProjectConfigfieldHandlersEvent extends Event
 
     /**
      * Add many field handlers to register
-     * 
+     *
      * @param array   $handlers
      * @param boolean $replace
      */

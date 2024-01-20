@@ -10,6 +10,7 @@ use Ryssbowh\Activity\services\Fields;
 use Ryssbowh\Activity\services\Logs;
 use Ryssbowh\Activity\services\Recorders;
 use Ryssbowh\Activity\services\Types;
+use Ryssbowh\Activity\traits\CkeditorField;
 use Ryssbowh\Activity\traits\NeoField;
 use Ryssbowh\Activity\traits\RedactorField;
 use Ryssbowh\Activity\traits\SeoField;
@@ -39,6 +40,7 @@ class Activity extends Plugin
     use SuperTableField;
     use NeoField;
     use VizyField;
+    use CkeditorField;
 
     /**
      * @var Themes
@@ -91,6 +93,7 @@ class Activity extends Plugin
         $this->initSuperTableField();
         $this->initNeoField();
         $this->initVizyField();
+        $this->initCkeditorField();
 
         Event::on(Application::class, Application::EVENT_AFTER_REQUEST, function (Event $event) {
             $this->recorders->saveLogs();
