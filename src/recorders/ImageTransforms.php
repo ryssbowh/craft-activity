@@ -12,6 +12,16 @@ class ImageTransforms extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'imageTransforms';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['imageTransformDeleted', 'imageTransformSaved', 'imageTransformCreated'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_IMAGE_TRANSFORMS . '.{uid}', function (Event $event) {

@@ -12,6 +12,16 @@ class CategoryGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'categoryGroups';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['categoryGroupCreated', 'categoryGroupSaved', 'categoryGroupDeleted'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_CATEGORY_GROUPS . '.{uid}', function (Event $event) {

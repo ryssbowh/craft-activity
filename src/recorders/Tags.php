@@ -12,6 +12,16 @@ class Tags extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'tagGroups';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['tagGroupDeleted', 'tagGroupSaved', 'tagGroupCreated'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_TAG_GROUPS . '.{uid}', function (Event $event) {

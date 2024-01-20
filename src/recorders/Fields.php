@@ -15,6 +15,16 @@ class Fields extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'fields';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['fieldCreated', 'fieldSaved', 'fieldDeleted'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_FIELDS . '.{uid}', function (Event $event) {
@@ -27,7 +37,7 @@ class Fields extends ConfigModelRecorder
             Activity::getRecorder('fields')->onRemove($event);
         });
     }
-        
+
     /**
      * @inheritDoc
      */

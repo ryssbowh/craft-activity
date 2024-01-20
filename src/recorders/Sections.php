@@ -12,6 +12,16 @@ class Sections extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'sections';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['sectionCreated', 'sectionSaved', 'sectionDeleted'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_SECTIONS . '.{uid}', function (Event $event) {

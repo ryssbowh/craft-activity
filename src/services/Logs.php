@@ -212,6 +212,32 @@ class Logs extends Component
     }
 
     /**
+     * Deletes all logs created for a site
+     *
+     * @param int $siteId
+     * @since 2.4.0
+     */
+    public function deleteSiteLogs(int $siteId)
+    {
+        ActivityLog::deleteAll(['site_id' => $siteId]);
+    }
+
+    /**
+     * Deletes all logs related to some types and related to a target
+     *
+     * @param array  $types
+     * @param string $target
+     * @since 2.4.0
+     */
+    public function deleteLogsByType(array $types, string $target)
+    {
+        ActivityLog::deleteAll(['and',
+            ['in', 'type', $types],
+            ['target_uid' => $target]
+        ]);
+    }
+
+    /**
      * Delete all logs
      */
     public function deleteAllLogs()

@@ -12,6 +12,16 @@ class GlobalSets extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'globals';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['globalDeleted', 'globalSaved', 'globalSetCreated', 'globalSetDeleted', 'globalSetSaved'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_GLOBAL_SETS . '.{uid}', function (Event $event) {

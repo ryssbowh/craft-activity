@@ -13,6 +13,16 @@ class FileSystems extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'filesystems';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['filesystemCreated', 'filesystemSaved', 'filesystemDeleted'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_FS . '.{uid}', function (Event $event) {
@@ -44,7 +54,7 @@ class FileSystems extends ConfigModelRecorder
         $event->oldValue['handle'] = $event->tokenMatches[0];
         $this->onRemove($event);
     }
-    
+
     /**
      * @inheritDoc
      */

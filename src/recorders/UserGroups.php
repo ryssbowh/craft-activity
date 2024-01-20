@@ -10,7 +10,15 @@ use yii\base\Event;
 
 class UserGroups extends ConfigModelRecorder
 {
-    protected $inited;
+    /**
+     * @inheritDoc
+     */
+    protected ?string $deleteTypesCategory = 'userGroups';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['userGroupDeleted', 'userGroupSaved', 'userGroupCreated', 'userGroupPermissionsSaved'];
 
     /**
      * @inheritDoc

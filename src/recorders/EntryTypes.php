@@ -13,6 +13,16 @@ class EntryTypes extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'entryTypes';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['entryTypeCreated', 'entryTypeSaved', 'entryTypeDeleted'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_ENTRY_TYPES . '.{uid}', function (Event $event) {

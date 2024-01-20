@@ -16,6 +16,16 @@ use yii\base\Event;
 
 class Users extends ElementsRecorder
 {
+    /**
+     * @inheritDoc
+     */
+    protected ?string $deleteTypesCategory = 'users';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['userActivated', 'userAssignedGroups', 'userAssignedDefaultGroup', 'userCreated', 'userDeleted', 'userInvalidToken', 'userLocked', 'userLoggedIn', 'userLoggedOut', 'userLoginFailed', 'userPermissionsSaved', 'userRegistered', 'userRestored', 'userSaved', 'userSelfActivated', 'userSuspended', 'userUnlocked', 'userUnsuspended', 'userVerifiedEmail'];
+
     protected $permissions = [];
     protected $endRequestInitiated = false;
 

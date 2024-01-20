@@ -4,11 +4,23 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ConfigModelRecorder;
+use craft\events\ConfigEvent;
+use craft\records\Site;
 use craft\services\ProjectConfig;
 use yii\base\Event;
 
 class Sites extends ConfigModelRecorder
 {
+    /**
+     * @inheritDoc
+     */
+    protected ?string $deleteTypesCategory = 'sites';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['siteCreated', 'siteSaved', 'siteDeleted'];
+
     /**
      * @inheritDoc
      */
@@ -27,7 +39,21 @@ class Sites extends ConfigModelRecorder
             Activity::getRecorder('categoryGroups')->emptyQueue();
         });
     }
-    
+
+    /**
+     * @inheritDoc
+     */
+    public function onRemove(ConfigEvent $event)
+    {
+        if (Activity::$plugin->settings->deleteLogsWithSite) {
+            $site = Site::find()->where(['uid' => $event->tokenMatches[0]])->one();
+            if ($site) {
+                Activity::$plugin->logs->deleteSiteLogs($site->id);
+            }
+        }
+        parent::onRemove($event);
+    }
+
     /**
      * @inheritDoc
      */

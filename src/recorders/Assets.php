@@ -15,6 +15,16 @@ class Assets extends ElementsRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'assets';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['assetDeleted', 'assetCreated', 'assetSaved'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         if (Activity::$plugin->settings->ignoreResave) {

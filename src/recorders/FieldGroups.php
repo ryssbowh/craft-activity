@@ -12,6 +12,16 @@ class FieldGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'fieldGroups';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['fieldGroupCreated', 'fieldGroupSaved', 'fieldGroupDeleted'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_FIELD_GROUPS . '.{uid}', function (Event $event) {
@@ -24,7 +34,7 @@ class FieldGroups extends ConfigModelRecorder
             Activity::getRecorder('fieldGroups')->onRemove($event);
         });
     }
-    
+
     /**
      * @inheritDoc
      */

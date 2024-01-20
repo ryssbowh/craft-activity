@@ -2,10 +2,13 @@
 
 namespace Ryssbowh\Activity\models;
 
+use Ryssbowh\Activity\events\RegisterDeleteTypesOptions;
 use craft\base\Model;
 
 class Settings extends Model
 {
+    public const EVENT_REGISTER_DELETE_TYPES_OPTIONS = 'event-register-delete-types';
+
     /**
      * @var boolean
      */
@@ -20,6 +23,12 @@ class Settings extends Model
      * @var boolean
      */
     public bool $deleteLogsWithUser = false;
+
+    /**
+     * @var boolean
+     * @since 2.4.0
+     */
+    public bool $deleteLogsWithSite = false;
 
     /**
      * @var boolean
@@ -59,12 +68,20 @@ class Settings extends Model
 
     /**
      * @var array
+     * @since 2.4.0
+     */
+    public $deleteTypes;
+
+    /**
+     * @var array
      */
     public $ignoreRules = [
         ['type' => 'entryMoved', 'active' => 1, 'request' => ''],
         ['type' => 'categoryMoved', 'active' => 1, 'request' => ''],
         ['type' => 'userLoggedOut', 'active' => 1, 'request' => '']
     ];
+
+    protected $_deleteTypesOptions;
 
     /**
      * Is a log type ignored by the set of rules
@@ -89,5 +106,34 @@ class Settings extends Model
             }
         }
         return false;
+    }
+
+    /**
+     * Get the options for the activity types that can be deleted
+     *
+     * @return array
+     */
+    public function getDeleteTypesOptions(): array
+    {
+        if ($this->_deleteTypesOptions === null) {
+            $event = new RegisterDeleteTypesOptions();
+            $this->trigger(self::EVENT_REGISTER_DELETE_TYPES_OPTIONS, $event);
+            $this->_deleteTypesOptions = $event->options;
+        }
+        return $this->_deleteTypesOptions;
+    }
+
+    /**
+     * Should a type of activity be deleted
+     *
+     * @param  string $type
+     * @return bool
+     */
+    public function shouldDeleteActivity(string $type): bool
+    {
+        if ($this->deleteTypes === '*') {
+            return true;
+        }
+        return in_array($type, is_array($this->deleteTypes) ? $this->deleteTypes : []);
     }
 }

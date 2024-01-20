@@ -1,6 +1,8 @@
 {% import "activity/includes/macros" as macros %}
 
-<li>
-    {{ 'Field layout was changed'|t('activity') }}
-    {{ macros.fieldLayout(field.data) }}
-</li>
+{% if field.data.added ?? false or field.data.removed ?? false or field.data.changed ?? false %}
+    <li>
+        {{ 'Field layout was changed'|t('activity') }}
+        {{ macros.fieldLayout(field.data) }}
+    </li>
+{% endif %}

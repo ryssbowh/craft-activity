@@ -4,9 +4,12 @@
 
 ### Added
 - Vizy fields support
+- House keeping options to delete activity automatically when models/elements are deleted
+- Activity page date format now follows user locale preference
 
 ### Fixed
 - Fixed export button that was broken for multisites
+- Fixed issue where date filters would not work for some locales
 
 ## 2.3.16 - 2023-10-13
 

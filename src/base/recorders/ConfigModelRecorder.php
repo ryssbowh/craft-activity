@@ -14,8 +14,20 @@ abstract class ConfigModelRecorder extends ProjectConfigRecorder
     protected $currentEvent;
 
     /**
+     * @var ?string
+     * @since 2.4.0
+     */
+    protected ?string $deleteTypesCategory = null;
+
+    /**
+     * @var array
+     * @since 2.4.0
+     */
+    protected array $deleteTypes = [];
+
+    /**
      * Saved a log on update
-     * 
+     *
      * @param ConfigEvent $event
      */
     public function onUpdate(ConfigEvent $event)
@@ -26,7 +38,7 @@ abstract class ConfigModelRecorder extends ProjectConfigRecorder
 
     /**
      * Saved a log on add
-     * 
+     *
      * @param ConfigEvent $event
      */
     public function onAdd(ConfigEvent $event)
@@ -37,18 +49,22 @@ abstract class ConfigModelRecorder extends ProjectConfigRecorder
 
     /**
      * Saved a log on remove
-     * 
+     *
      * @param ConfigEvent $event
      */
     public function onRemove(ConfigEvent $event)
     {
+        if ($this->deleteTypesCategory and Activity::$plugin->settings->shouldDeleteActivity($this->deleteTypesCategory)) {
+            Activity::$plugin->logs->deleteLogsByType($this->deleteTypes, $event->tokenMatches[0]);
+            return;
+        }
         $type = $this->getActivityHandle() . 'Deleted';
         $this->onChanged($event, $type);
     }
 
     /**
      * Saves a log when config is changed
-     * 
+     *
      * @param ConfigEvent $event
      * @param string      $type
      */
@@ -79,7 +95,7 @@ abstract class ConfigModelRecorder extends ProjectConfigRecorder
 
     /**
      * Get the config field name that describes what's being changed
-     * 
+     *
      * @return ?string
      */
     protected function getDescriptiveFieldName(): ?string
@@ -89,7 +105,7 @@ abstract class ConfigModelRecorder extends ProjectConfigRecorder
 
     /**
      * Modify log param before it's saved
-     * 
+     *
      * @param  array       $params
      * @param  ConfigEvent $event
      * @return array
@@ -101,7 +117,7 @@ abstract class ConfigModelRecorder extends ProjectConfigRecorder
 
     /**
      * Get the activity handle, used to build the log type
-     * 
+     *
      * @return string
      */
     abstract protected function getActivityHandle(): string;

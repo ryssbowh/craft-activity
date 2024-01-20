@@ -18,8 +18,20 @@ abstract class ElementsRecorder extends Recorder
     protected $oldFields = [];
 
     /**
+     * @var ?string
+     * @since 2.4.0
+     */
+    protected ?string $deleteTypesCategory = null;
+
+    /**
+     * @var array
+     * @since 2.4.0
+     */
+    protected array $deleteTypes = [];
+
+    /**
      * Before an element is saved, saves old field values
-     * 
+     *
      * @param Element $element
      */
     public function beforeSaved(Element $element)
@@ -38,7 +50,7 @@ abstract class ElementsRecorder extends Recorder
 
     /**
      * Before an element is reverted to a revision, saves old field values
-     * 
+     *
      * @param Element $revision
      * @param Element $element
      */
@@ -49,7 +61,7 @@ abstract class ElementsRecorder extends Recorder
 
     /**
      * Saves a log when an element is saved
-     * 
+     *
      * @param Element $element
      */
     public function onSaved(Element $element)
@@ -74,11 +86,15 @@ abstract class ElementsRecorder extends Recorder
 
     /**
      * Saves a log when an element is deleted
-     * 
+     *
      * @param Element $element
      */
     public function onDeleted(Element $element)
     {
+        if ($this->deleteTypesCategory and Activity::$plugin->settings->shouldDeleteActivity($this->deleteTypesCategory)) {
+            Activity::$plugin->logs->deleteLogsByType($this->deleteTypes, $element->uid);
+            return;
+        }
         $type = $this->getActivityHandle() . 'Deleted';
         if (!$this->shouldSaveElementLog($type, $element)) {
             return;
@@ -90,7 +106,7 @@ abstract class ElementsRecorder extends Recorder
 
     /**
      * Saves a log when an element is restored
-     * 
+     *
      * @param Element $element
      */
     public function onRestored(Element $element)
@@ -106,7 +122,7 @@ abstract class ElementsRecorder extends Recorder
 
     /**
      * Saves a log when an element is moved
-     * 
+     *
      * @param Element $element
      */
     public function onMoved(Element $element)
@@ -122,7 +138,7 @@ abstract class ElementsRecorder extends Recorder
 
     /**
      * Save a log when an element is reverted to a revision
-     * 
+     *
      * @param  Element $element
      * @param  int     $revisionNum
      */
@@ -149,7 +165,7 @@ abstract class ElementsRecorder extends Recorder
 
     /**
      * Should an element log be saved
-     * 
+     *
      * @param  string  $type
      * @param  Element $element
      * @return bool
@@ -157,9 +173,9 @@ abstract class ElementsRecorder extends Recorder
     protected function shouldSaveElementLog(string $type, Element $element): bool
     {
         $settings = Activity::$plugin->settings;
-        if (!$this->shouldSaveLog($type) or 
-            ElementHelper::isDraftOrRevision($element) or 
-            ($settings->ignorePropagate and $element->propagating) or 
+        if (!$this->shouldSaveLog($type) or
+            ElementHelper::isDraftOrRevision($element) or
+            ($settings->ignorePropagate and $element->propagating) or
             ($settings->ignoreResave and $element->resaving)) {
             return false;
         }
@@ -168,7 +184,7 @@ abstract class ElementsRecorder extends Recorder
 
     /**
      * Get the activity log type
-     * 
+     *
      * @param  Element $element
      * @return string
      */
@@ -183,21 +199,21 @@ abstract class ElementsRecorder extends Recorder
 
     /**
      * Get the activity handle, used to build the log type
-     * 
+     *
      * @return string
      */
     abstract protected function getActivityHandle(): string;
-        
+
     /**
      * Get the element type this recorder handles
-     * 
+     *
      * @return string
      */
     abstract protected function getElementType(): string;
 
     /**
      * Get an element field values, returns an array of field handlers
-     * 
+     *
      * @param  Element $element
      * @return array
      */

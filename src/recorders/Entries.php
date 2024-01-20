@@ -20,6 +20,16 @@ class Entries extends ElementsRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'entries';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['entryDeleted', 'entryCreated', 'entryMoved', 'entryRestored', 'entryReverted', 'entrySaved'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         if (Activity::$plugin->settings->ignoreResave) {

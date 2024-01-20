@@ -15,6 +15,16 @@ class Categories extends ElementsRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'categories';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['categoryDeleted', 'categoryCreated', 'categoryMoved', 'categoryRestored', 'categorySaved'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         if (Activity::$plugin->settings->ignoreResave) {

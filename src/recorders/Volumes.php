@@ -12,6 +12,16 @@ class Volumes extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'volumes';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['volumeDeleted', 'volumeSaved', 'volumeCreated'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_VOLUMES . '.{uid}', function (Event $event) {
@@ -24,7 +34,7 @@ class Volumes extends ConfigModelRecorder
             Activity::getRecorder('volumes')->onRemove($event);
         });
     }
-    
+
     /**
      * @inheritDoc
      */

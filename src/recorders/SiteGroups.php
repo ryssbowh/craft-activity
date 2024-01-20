@@ -12,6 +12,16 @@ class SiteGroups extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
+    protected ?string $deleteTypesCategory = 'siteGroups';
+
+    /**
+     * @inheritDoc
+     */
+    protected array $deleteTypes = ['siteGroupDeleted', 'siteGroupSaved', 'siteGroupCreated'];
+
+    /**
+     * @inheritDoc
+     */
     public function init(): void
     {
         \Craft::$app->projectConfig->onUpdate(ProjectConfig::PATH_SITE_GROUPS . '.{uid}', function (Event $event) {
@@ -24,7 +34,7 @@ class SiteGroups extends ConfigModelRecorder
             Activity::getRecorder('siteGroups')->onRemove($event);
         });
     }
-    
+
     /**
      * @inheritDoc
      */
