@@ -1,6 +1,6 @@
 # ryssbowh/craft-activity Changelog
 
-## 2.4.0 - unreleased
+## 2.4.0 - 2024-02-01
 
 ### Added
 - Vizy fields support
