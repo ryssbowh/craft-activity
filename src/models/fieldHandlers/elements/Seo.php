@@ -39,6 +39,9 @@ class Seo extends ElementFieldHandler
      */
     public function isDirty(FieldHandler $handler): bool
     {
+        if (get_class($handler) != get_class($this)) {
+            return true;
+        }
         return !empty($this->getDirty($handler));
     }
 
@@ -73,7 +76,7 @@ class Seo extends ElementFieldHandler
 
     /**
      * Build dirty values
-     * 
+     *
      * @param  array  $newValue
      * @param  array  $oldFields
      * @return array
@@ -97,12 +100,12 @@ class Seo extends ElementFieldHandler
                     't' => $newValue[$key]['image']['id'],
                     'tf' => $newValue[$key]['image']['title']
                 ];
-            } else if (!array_key_exists('id', $newValue[$key]['image'] ?? [])) {
+            } elseif (!array_key_exists('id', $newValue[$key]['image'] ?? [])) {
                 $dirty[$key]['image'] = [
                     'f' => $oldValue[$key]['image']['id'],
                     'ff' => $oldValue[$key]['title']
                 ];
-            } else if ($oldValue[$key]['image']['id'] !== $newValue[$key]['image']['id']) {
+            } elseif ($oldValue[$key]['image']['id'] !== $newValue[$key]['image']['id']) {
                 $dirty[$key]['image'] = [
                     'f' => $oldValue[$key]['image']['id'],
                     'ff' => $oldValue[$key]['image']['title'],
@@ -124,7 +127,7 @@ class Seo extends ElementFieldHandler
 
     /**
      * Build the value
-     * 
+     *
      * @return array
      */
     protected function buildValues(): array
@@ -179,11 +182,11 @@ class Seo extends ElementFieldHandler
             return [
                 't' => $newValue[$key]
             ];
-        } else if (!array_key_exists($key, $newValue)) {
+        } elseif (!array_key_exists($key, $newValue)) {
             return [
                 'f' => $oldValue[$key]
             ];
-        } else if ($oldValue[$key] !== $newValue[$key]) {
+        } elseif ($oldValue[$key] !== $newValue[$key]) {
             return [
                 'f' => $oldValue[$key],
                 't' => $newValue[$key]

@@ -9,12 +9,14 @@ use Ryssbowh\Activity\events\RegisterProjectConfigfieldHandlersEvent;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Unknown;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\DefaultHandler;
 use craft\base\Component;
+use craft\base\Element;
+use craft\base\Field;
 use yii\base\Event;
 
 class FieldHandlers extends Component
 {
-    const EVENT_REGISTER_ELEMENT_HANDLERS = 'event-register-element-handlers';
-    const EVENT_REGISTER_PROJECTCONFIG_HANDLERS = 'event-register-projectconfig-handlers';
+    public const EVENT_REGISTER_ELEMENT_HANDLERS = 'event-register-element-handlers';
+    public const EVENT_REGISTER_PROJECTCONFIG_HANDLERS = 'event-register-projectconfig-handlers';
 
     /**
      * Element fields handlers
@@ -35,7 +37,7 @@ class FieldHandlers extends Component
 
     /**
      * Get element handlers, indexed by field class
-     * 
+     *
      * @return array
      */
     public function getElementHandlers(): array
@@ -48,7 +50,7 @@ class FieldHandlers extends Component
 
     /**
      * Get project config field handlers, indexed by config path
-     * 
+     *
      * @return array
      */
     public function getProjectConfigHandlers(): array
@@ -61,7 +63,7 @@ class FieldHandlers extends Component
 
     /**
      * Does a field have a field handler registered
-     * 
+     *
      * @param  string  $fieldClass
      * @return boolean
      */
@@ -72,7 +74,7 @@ class FieldHandlers extends Component
 
     /**
      * Does a path have a field handler registered
-     * 
+     *
      * @param  string  $path
      * @return boolean
      */
@@ -83,7 +85,7 @@ class FieldHandlers extends Component
 
     /**
      * Get the field handler class for an element field class
-     * 
+     *
      * @param  string $fieldClass
      * @return string
      */
@@ -96,8 +98,30 @@ class FieldHandlers extends Component
     }
 
     /**
+     * Get a field handler instance for a field and an element
+     *
+     * @param Field   $field
+     * @param Element $element
+     * @param ?string $label
+     * @return FieldHandler
+     * @since 2.4.0
+     */
+    public function getHandlerForField(Field $field, Element $element, ?string $label = null): FieldHandler
+    {
+        $class = $this->getForElementField(get_class($field));
+        $fieldValue = $element->getFieldValue($field->handle);
+        return new $class([
+            'field' => $field,
+            'element' => $element,
+            'name' => $label ?: $field->name,
+            'value' => $field->serializeValue($fieldValue, $element),
+            'rawValue' => $fieldValue
+        ]);
+    }
+
+    /**
      * Get the field handler for a project config path
-     * 
+     *
      * @param  string $path
      * @return string
      */
@@ -114,14 +138,14 @@ class FieldHandlers extends Component
      */
     protected function registerElementHandlers()
     {
-        $event = new RegisterElementFieldHandlersEvent;
+        $event = new RegisterElementFieldHandlersEvent();
         $this->trigger(self::EVENT_REGISTER_ELEMENT_HANDLERS, $event);
         $this->_elementHandlers = $event->handlers;
     }
 
     /**
      * Get the targets for a handler
-     * 
+     *
      * @param  string $class
      * @param  array  $default
      * @return array
@@ -143,7 +167,7 @@ class FieldHandlers extends Component
      */
     protected function registerProjectConfigHandlers()
     {
-        $event = new RegisterProjectConfigfieldHandlersEvent;
+        $event = new RegisterProjectConfigfieldHandlersEvent();
         $this->trigger(self::EVENT_REGISTER_PROJECTCONFIG_HANDLERS, $event);
         $this->_projectConfigHandlers = $event->handlers;
     }

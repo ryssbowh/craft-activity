@@ -56,15 +56,7 @@ trait ElementFields
             foreach ($tab->elements as $elem) {
                 if ($elem instanceof CustomField) {
                     $handle = $elem->field->handle;
-                    $class = Activity::$plugin->fieldHandlers->getForElementField(get_class($elem->field));
-                    $value = $element->getFieldValue($handle);
-                    $handlers['field_' . $handle] = new $class([
-                        'field' => $elem->field,
-                        'element' => $element,
-                        'name' => $elem->label ?? $elem->field->name,
-                        'value' => $elem->field->serializeValue($value, $element),
-                        'rawValue' => $value
-                    ]);
+                    $handlers['field_' . $handle] = Activity::$plugin->fieldHandlers->getHandlerForField($elem->field, $element, $elem->label);
                 } elseif ($elem instanceof EntryTitleField or $elem instanceof TitleField) {
                     $handlers['title'] = new Plain([
                         'element' => $element,

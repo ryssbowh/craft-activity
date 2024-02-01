@@ -7,8 +7,8 @@ use craft\base\Model;
 
 abstract class FieldHandler extends Model
 {
-    const EVENT_REGISTER_TARGETS = 'register-targets';
-    
+    public const EVENT_REGISTER_TARGETS = 'register-targets';
+
     /**
      * @var mixed
      */
@@ -27,7 +27,7 @@ abstract class FieldHandler extends Model
 
     /**
      * Does this handler defines a fancy value
-     * 
+     *
      * @return boolean
      */
     public function hasFancyValue(): bool
@@ -37,7 +37,7 @@ abstract class FieldHandler extends Model
 
     /**
      * Get dirty values compared to another field handler
-     * 
+     *
      * @param FieldHandler $handler
      * @return array
      */
@@ -51,18 +51,21 @@ abstract class FieldHandler extends Model
 
     /**
      * Is the value dirty compared to another field handler
-     * 
+     *
      * @param  FieldHandler $handler
      * @return boolean
      */
     public function isDirty(FieldHandler $handler): bool
     {
+        if (get_class($handler) != get_class($this)) {
+            return true;
+        }
         return $this->value !== $handler->value;
     }
 
     /**
      * Get the targets this field handler applies to, can be modified through an event
-     * 
+     *
      * @return array
      */
     public static function getTargets(): array
@@ -83,7 +86,7 @@ abstract class FieldHandler extends Model
 
     /**
      * Get the template used to render this field description
-     * 
+     *
      * @return ?string
      */
     public static function getTemplate(): ?string
@@ -95,7 +98,7 @@ abstract class FieldHandler extends Model
      * Get the value to be stored in database.
      * $valueKey is either 'f' for a from value, or 't' for a to value
      * If this handler has a fancy value, the db value will also contain 'ff' or 'tf'
-     * 
+     *
      * @param string $valueKey
      * @return array
      */

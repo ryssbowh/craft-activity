@@ -43,6 +43,9 @@ class Neo extends ElementFieldHandler
      */
     public function isDirty(FieldHandler $handler): bool
     {
+        if (get_class($handler) != get_class($this)) {
+            return true;
+        }
         return !empty($this->getDirty($handler)['blocks']);
     }
 
@@ -100,63 +103,96 @@ class Neo extends ElementFieldHandler
     protected function buildDirtyBlocks(array $newBlocks, array $oldBlocks): array
     {
         $blocks = [];
-        $order = 1;
         foreach (array_intersect_key($newBlocks, $oldBlocks) as $id => $block) {
-            $blockIsdirty = false;
+            $blockIsDirty = false;
             $blockDirty = [
-                'order' => $order,
+                'order' => $id + 1,
                 'mode' => 'changed'
             ];
+            $oldBlock = $oldBlocks[$id];
+            if ($block['enabled'] != $oldBlock['enabled']) {
+                $blockIsDirty = true;
+                $blockDirty['enabled'] = [
+                    'f' => $oldBlock['enabled'],
+                    't' => $block['enabled'],
+                ];
+            }
+            if ($block['type'] != $oldBlock['type']) {
+                $blockIsDirty = true;
+                $blockDirty['type'] = [
+                    'f' => $oldBlock['type'],
+                    't' => $block['type'],
+                ];
+            }
             foreach ($block['fields'] as $fieldId => $handler) {
-                $oldHandler = $oldBlocks[$id]['fields'][$fieldId] ?? null;
-                if ($oldHandler and $fdirty = $handler->getDirty($oldHandler)) {
-                    $blockIsdirty = true;
-                    $blockDirty['fields'][$fieldId] = [
-                        'handler' => get_class($handler),
-                        'data' => $fdirty
-                    ];
-                }
-            }
-            if ($children = $this->buildDirtyBlocks($block['children'], $oldBlocks[$id]['children'])) {
-                $blockDirty['children'] = $children;
-                $blockIsdirty = true;
-            }
-            if ($blockIsdirty) {
-                $blocks[$id] = $blockDirty;
-            }
-            $order++;
-        }
-        $order = 1;
-        foreach ($newBlocks as $id => $block) {
-            if (!isset($oldBlocks[$id])) {
-                $block['fields'] = array_map(function ($handler) {
-                    return [
+                if ($oldHandler = ($oldBlock['fields'][$fieldId] ?? null)) {
+                    if ($handler->isDirty($oldHandler)) {
+                        $blockIsDirty = true;
+                        $blockDirty['fields'][] = [
+                            'handler' => get_class($handler),
+                            'data' => $handler->getDirty($oldHandler)
+                        ];
+                    }
+                } else {
+                    $blockIsDirty = true;
+                    $blockDirty['fields'][] = [
                         'handler' => get_class($handler),
                         'data' => $handler->getDbValue('t')
                     ];
-                }, $block['fields']);
-                $block['children'] = $this->buildDirtyBlocks($block['children'], []);
-                $block['mode'] = 'added';
-                $block['order'] = $order;
-                $blocks[$id] = $block;
+                }
             }
-            $order++;
+            foreach ($oldBlock['fields'] as $fieldId => $oldHandler) {
+                if (!isset($block['fields'][$fieldId])) {
+                    $blockIsDirty = true;
+                    $blockDirty['fields'][] = [
+                        'handler' => get_class($oldHandler),
+                        'data' => $oldHandler->getDbValue('f')
+                    ];
+                }
+            }
+            if ($children = $this->buildDirtyBlocks($block['children'], $oldBlock['children'])) {
+                $blockDirty['children'] = $children;
+                $blockIsDirty = true;
+            }
+            if ($blockIsDirty) {
+                $blocks[] = $blockDirty;
+            }
         }
-        $order = 1;
+        foreach ($newBlocks as $id => $block) {
+            if (!isset($oldBlocks[$id])) {
+                $dirty = [
+                    'order' => $id + 1,
+                    'mode' => 'added',
+                    'enabled' => $block['enabled'],
+                    'type' => $block['type'],
+                    'fields' => array_map(function ($handler) {
+                        return [
+                            'handler' => get_class($handler),
+                            'data' => $handler->getDbValue('t')
+                        ];
+                    }, $block['fields']),
+                    'children' => $this->buildDirtyBlocks($block['children'], [])
+                ];
+                $blocks[] = $dirty;
+            }
+        }
         foreach ($oldBlocks as $id => $block) {
             if (!isset($newBlocks[$id])) {
-                $block['fields'] = array_map(function ($handler) {
-                    return [
-                        'handler' => get_class($handler),
-                        'data' => $handler->getDbValue('f')
-                    ];
-                }, $block['fields']);
-                $block['children'] = $this->buildDirtyBlocks([], $block['children']);
-                $block['mode'] = 'removed';
-                $block['order'] = $order;
-                $blocks[$id] = $block;
+                $dirty = [
+                    'order' => $id + 1,
+                    'mode' => 'removed',
+                    'enabled' => $block['enabled'],
+                    'type' => $block['type'],
+                    'fields' => array_map(function ($handler) {
+                        return [
+                            'handler' => get_class($handler),
+                            'data' => $handler->getDbValue('f')
+                        ];
+                    }, $block['fields']),
+                    'children' => $this->buildDirtyBlocks([], $block['children'])
+                ];
+                $blocks[] = $dirty;
             }
-            $order++;
         }
         return $blocks;
     }
@@ -169,14 +205,14 @@ class Neo extends ElementFieldHandler
     protected function buildValues(): array
     {
         $value = [];
-        $blocks = $this->field->normalizeValue($this->element->getFieldValue($this->field->handle), $this->element)->all();
+        $blocks = $this->field->normalizeValue($this->rawValue)->anyStatus()->all();
         $children = [];
         foreach ($blocks as $block) {
-            $children[$block->id] = $block->getChildren()->all();
+            $children[$block->id] = $block->getChildren()->anyStatus()->all();
         }
         foreach ($blocks as $block) {
             if ($block->level == 1) {
-                $value[$block->id] = $this->buildBlockValues($block, $children);
+                $value[] = $this->buildBlockValues($block, $children);
             }
         }
         return $value;
@@ -198,24 +234,17 @@ class Neo extends ElementFieldHandler
                     continue;
                 }
                 $field = $elem->field;
-                $class = Activity::$plugin->fieldHandlers->getForElementField(get_class($field));
-                $fields[$field->id] = new $class([
-                    'field' => $field,
-                    'element' => $block,
-                    'name' => $field->name,
-                    'value' => $field->serializeValue($block->{$field->handle}, $block),
-                    'rawValue' => $block->{$field->handle}
-                ]);
+                $fields[$field->id] = Activity::$plugin->fieldHandlers->getHandlerForField($field, $block);
             }
         }
         $value = [
             'fields' => $fields,
+            'enabled' => $block->enabled,
+            'type' => $block->type->handle,
             'children' => []
         ];
-        if ($children[$block->id] ?? null) {
-            foreach ($children[$block->id] as $child) {
-                $value['children'][$child->id] = $this->buildBlockValues($child, $children);
-            }
+        foreach ($children[$block->id] ?? [] as $child) {
+            $value['children'][] = $this->buildBlockValues($child, $children);
         }
         return $value;
     }

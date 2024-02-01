@@ -1,16 +1,66 @@
 {% import "activity/includes/macros" as macros %}
 
-{% macro neoBlock(field, block, key) %}
+{% macro neoBlockFields(field, block, key) %}
+    {% for handle, mfield in block.fields ?? [] %}
+        {{ macros.elementField(mfield, {fieldId: field.id, key: key ~ '.fields.' ~ handle ~ '.data' }) }}
+    {% endfor %}
+    {% if block.children ?? [] %}
+        <li>{{ 'Children blocks changes:'|t('activity') }}</li>
+        <ul>
+            {{ _self.neoBlocks(block.children, field, key ~ '.children') }}
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro neoBlockChanged(field, block, key, row) %}
+    <li>{{ 'Block {row} was changed'|t('activity', {row: row}) }}</li>
     <ul>
-        {% for handle, mfield in block.fields ?? [] %}
-            {{ macros.elementField(mfield, {fieldId: field.id, key: key ~ '.fields.' ~ handle ~ '.data' }) }}
-        {% endfor %}
-        {% if block.children ?? [] %}
-            <li>{{ 'Children blocks changes:'|t('activity') }}</li>
-            <ul>
-                {{ _self.neoBlocks(block.children, field, key ~ '.children') }}
-            </ul>
+        {% if block.enabled.t ?? null is same as(true) and block.enabled.f ?? null is same as(false) %}
+            <li>{{ 'Block was enabled'|t('activity') }}</li>
+        {% elseif block.enabled.t ?? null is same as(false) and block.enabled.f ?? null is same as(true) %}
+            <li>{{ 'Block was disabled'|t('activity') }}</li>
         {% endif %}
+        {% if block.type.f ?? null != block.type.t ?? null %}
+            <li>{{ 'Block type was changed from {from} to {to}'|t('activity', {
+                from: '<code>' ~ block.type.f ~ '</code>',
+                to: '<code>' ~ block.type.t ~ '</code>',
+            })|raw }}</li>
+        {% endif %}
+        {{ _self.neoBlockFields(field, block, key) }}
+    </ul>
+{% endmacro %}
+
+{% macro neoBlockRemoved(field, block, key, row) %}
+    <li>{{ 'Block {row} was removed'|t('activity', {row: row}) }}</li>
+    <ul>
+        {% if block.enabled ?? null is same as(true) %}
+            <li>{{ 'Block was enabled'|t('activity') }}</li>
+        {% elseif block.enabled ?? null is same as(false) %}
+            <li>{{ 'Block was disabled'|t('activity') }}</li>
+        {% endif %}
+        {% if block.type.f ?? null %}
+            <li>{{ 'Block type was {from}'|t('activity', {
+                from: '<code>' ~ block.type ~ '</code>'
+            })|raw }}</li>
+        {% endif %}
+        {{ _self.neoBlockFields(field, block, key) }}
+    </ul>
+{% endmacro %}
+
+{% macro neoBlockAdded(field, block, key, row) %}
+    <li>{{ 'Block {row} was added'|t('activity', {row: row}) }}</li>
+    <ul>
+        {% if block.enabled ?? null is same as(true) %}
+            <li>{{ 'Block was enabled'|t('activity') }}</li>
+        {% elseif block.enabled ?? null is same as(false) %}
+            <li>{{ 'Block was disabled'|t('activity') }}</li>
+        {% endif %}
+        {% if block.type ?? null %}
+            <li>{{ 'Block type was set to {to}'|t('activity', {
+                from: '<code>' ~ block.type ~ '</code>'
+            })|raw }}</li>
+        {% endif %}
+        {{ _self.neoBlockFields(field, block, key) }}
     </ul>
 {% endmacro %}
 
@@ -19,14 +69,11 @@
         {% set key = key ~ '.' ~ row %}
         {% set label = block.order ?? (row + 1) %}
         {% if block.mode == 'changed' %}
-            <li>{{ 'Block {row} was changed'|t('activity', {row: label}) }}</li>
-            {{ _self.neoBlock(field, block, key) }}
+            {{ _self.neoBlockChanged(field, block, key, label) }}
         {% elseif block.mode == 'removed' %}
-            <li>{{ 'Block {row} was removed'|t('activity', {row: label}) }}</li>
-            {{ _self.neoBlock(field, block, key) }}
+            {{ _self.neoBlockRemoved(field, block, key, label) }}
         {% else %}
-            <li>{{ 'Block {row} was added'|t('activity', {row: label}) }}</li>
-            {{ _self.neoBlock(field, block, key) }}
+            {{ _self.neoBlockAdded(field, block, key, label) }}
         {% endif %}
     {% endfor %}
 {% endmacro %}

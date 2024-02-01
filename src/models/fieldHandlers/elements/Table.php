@@ -43,6 +43,9 @@ class Table extends ElementFieldHandler
      */
     public function isDirty(FieldHandler $handler): bool
     {
+        if (get_class($handler) != get_class($this)) {
+            return true;
+        }
         return !empty($this->getDirty($handler));
     }
 
@@ -77,7 +80,7 @@ class Table extends ElementFieldHandler
 
     /**
      * Build dirty values
-     * 
+     *
      * @param  array  $newValue
      * @param  array  $oldValue
      * @return array
@@ -89,10 +92,10 @@ class Table extends ElementFieldHandler
             $rowDirty = [];
             foreach ($row as $handle => $handler) {
                 if (array_key_exists($handle, $oldValue[$id])) {
-                    if ($fdirty = $handler->getDirty($oldValue[$id][$handle])) {
+                    if ($handler->isDirty($oldValue[$id][$handle])) {
                         $rowDirty[$handle] = [
                             'handler' => get_class($handler),
-                            'data' => $fdirty
+                            'data' => $handler->getDirty($oldValue[$id][$handle])
                         ];
                     }
                 } else {
@@ -144,7 +147,7 @@ class Table extends ElementFieldHandler
 
     /**
      * Build each rows as field handlers
-     * 
+     *
      * @return array
      */
     protected function buildValues(): array
@@ -164,7 +167,7 @@ class Table extends ElementFieldHandler
 
     /**
      * Get the handler for a column
-     * 
+     *
      * @param  string $handle
      * @param  mixed  $value
      * @return FieldHandler

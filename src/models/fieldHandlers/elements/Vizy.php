@@ -44,6 +44,9 @@ class Vizy extends ElementFieldHandler
      */
     public function isDirty(FieldHandler $handler): bool
     {
+        if (get_class($handler) != get_class($this)) {
+            return true;
+        }
         return !empty($this->getDirty($handler)['blocks']);
     }
 
@@ -99,7 +102,7 @@ class Vizy extends ElementFieldHandler
     protected function buildValues(): array
     {
         $value = [];
-        $nodes = $this->field->normalizeValue($this->element->getFieldValue($this->field->handle), $this->element)->getNodes();
+        $nodes = $this->field->normalizeValue($this->rawValue, $this->element)->getNodes();
         $currentText = '';
         $mode = null;
         foreach ($nodes as $node) {
@@ -142,19 +145,16 @@ class Vizy extends ElementFieldHandler
                     continue;
                 }
                 $field = $elem->field;
-                $class = Activity::$plugin->fieldHandlers->getForElementField(get_class($field));
-                $fieldValue = $block->getFieldValue($field->handle);
-                $fields[$field->id] = new $class([
-                    'field' => $field,
-                    'element' => $this->element,
-                    'name' => $field->name,
-                    'value' => $field->serializeValue($fieldValue),
-                    'rawValue' => $fieldValue
-                ]);
+                //Vizy fields don't actually create neo/super table blocks, they save them all as json which makes it impossible to calculate changes on
+                if (get_class($field) == 'benf\\neo\\Field') {
+                    continue;
+                }
+                $fields[$field->id] = Activity::$plugin->fieldHandlers->getHandlerForField($field, $block->getBlockElement($this->element));
             }
         }
         return [
             'type' => 'block',
+            'handle' => $block->getBlockType()->handle,
             'id' => $block->attrs['id'],
             'enabled' => $block->attrs['enabled'],
             'fields' => $fields
@@ -192,13 +192,20 @@ class Vizy extends ElementFieldHandler
                         'f' => $oldBlock['enabled']
                     ];
                 }
+                if ($block['handle'] != $oldBlock['handle']) {
+                    $blockIsDirty = true;
+                    $blockDirty['handle'] = [
+                        't' => $block['handle'],
+                        'f' => $oldBlock['handle']
+                    ];
+                }
                 foreach ($block['fields'] as $fieldId => $handler) {
                     $oldHandler = $oldBlock['fields'][$fieldId] ?? null;
-                    if ($oldHandler and $fdirty = $handler->getDirty($oldHandler)) {
+                    if ($oldHandler and $handler->isDirty($oldHandler)) {
                         $blockIsDirty = true;
                         $blockDirty['fields'][$fieldId] = [
                             'handler' => get_class($handler),
-                            'data' => $fdirty
+                            'data' => $handler->getDirty($oldHandler)
                         ];
                     }
                 }
@@ -229,7 +236,8 @@ class Vizy extends ElementFieldHandler
                         'data' => $handler->getDbValue('t')
                     ];
                 }, $block['fields']);
-                $dirty['enabled'] = ['t' => $block['enabled']];
+                $dirty['enabled'] = $block['enabled'];
+                $dirty['handle'] = $block['handle'];
             } else {
                 $dirty['value'] = ['t' => $block['value']];
             }
@@ -251,7 +259,8 @@ class Vizy extends ElementFieldHandler
                         'data' => $handler->getDbValue('f')
                     ];
                 }, $block['fields']);
-                $dirty['enabled'] = ['f' => $block['enabled']];
+                $dirty['enabled'] = $block['enabled'];
+                $dirty['handle'] = $block['handle'];
             } else {
                 $dirty['value'] = ['f' => $block['value']];
             }

@@ -3,43 +3,101 @@
 {% set fieldId = field.id ?? data.fieldId %}
 {% set key = (data.key is defined) ? data.key ~ '.blocks.' : 'blocks.' %}
 
-{% macro vizyBlock(block, key, fieldId) %}
-    {% if block.type == 'block' %}
-        {% if block.enabled.t ?? null is same as(true) and block.enabled.f ?? null is same as(false) %}
-            <li>{{ 'Block was enabled'|t('activity') }}</li>
-        {% elseif block.enabled.t ?? null is same as(false) and block.enabled.f ?? null is same as(true) %}
-            <li>{{ 'Block was disabled'|t('activity') }}</li>
+{% macro vizyBlockFields(block, key, fieldId) %}
+    {% for handle, mfield in block.fields ?? [] %}
+        {{ macros.elementField(mfield, {fieldId: fieldId, key: key ~ '.fields.' ~ handle ~ '.data' }) }}
+    {% endfor %}
+{% endmacro %}
+
+{% macro vizyBlockText(block, key, fieldId) %}
+    {% set hasFrom = 'f' in block.value|keys %}
+    {% set hasTo = 't' in block.value|keys %}
+    {% set field = {
+        data: block.value
+    } %}
+    {% set data = {
+        key: key ~ '.value',
+        fieldId: fieldId
+    } %}
+    <li>
+        {% if hasFrom and hasTo %}
+            {{ "Text was changed from {from} to {to}"|t('activity', {
+                from: macros.longTextFromValue(field, data)|spaceless,
+                to: macros.longTextToValue(field, data)|spaceless,
+            })|raw }}
+        {% elseif hasTo %}
+            {{ "Text was set to {to}"|t('activity', {
+                to: macros.longTextToValue(field, data)|spaceless,
+            })|raw }}
+        {% elseif hasFrom %}
+            {{ "Text ({from}) was removed"|t('activity', {
+                from: macros.longTextFromValue(field, data)|spaceless,
+            })|raw }}
         {% endif %}
-        {% for handle, mfield in block.fields ?? [] %}
-            {{ macros.elementField(mfield, {fieldId: fieldId, key: key ~ '.fields.' ~ handle ~ '.data' }) }}
-        {% endfor %}
-    {% else %}
-        {% set hasFrom = 'f' in block.value|keys %}
-        {% set hasTo = 't' in block.value|keys %}
-        {% set field = {
-            data: block.value
-        } %}
-        {% set data = {
-            key: key ~ '.value',
-            fieldId: fieldId
-        } %}
-        <li>
-            {% if hasFrom and hasTo %}
-                {{ "Text was changed from {from} to {to}"|t('activity', {
-                    from: macros.longTextFromValue(field, data)|spaceless,
-                    to: macros.longTextToValue(field, data)|spaceless,
-                })|raw }}
-            {% elseif hasTo %}
-                {{ "Text was set to {to}"|t('activity', {
-                    to: macros.longTextToValue(field, data)|spaceless,
-                })|raw }}
-            {% elseif hasFrom %}
-                {{ "Text ({from}) was removed"|t('activity', {
-                    from: macros.longTextFromValue(field, data)|spaceless,
-                })|raw }}
+    </li>
+{% endmacro %}
+
+{% macro vizyBlockChanged(block, key, fieldId) %}
+    <li>{{ 'Block {row} was changed'|t('activity', {row: block.index + 1}) }}
+        <ul>
+            {% if block.type == 'block' %}
+                {% if block.enabled.t ?? null is same as(true) and block.enabled.f ?? null is same as(false) %}
+                    <li>{{ 'Block was enabled'|t('activity') }}</li>
+                {% elseif block.enabled.t ?? null is same as(false) and block.enabled.f ?? null is same as(true) %}
+                    <li>{{ 'Block was disabled'|t('activity') }}</li>
+                {% endif %}
+                {% if block.handle.f ?? null != block.handle.t ?? null %}
+                    <li>{{ 'Block type was changed from {from} to {to}'|t('activity', {
+                        from: '<code>' ~ block.handle.f ~ '</code>',
+                        to: '<code>' ~ block.handle.t ~ '</code>',
+                    })|raw }}</li>
+                {% endif %}
+                {{ _self.vizyBlockFields(block, key, fieldId) }}
+            {% else %}
+                {{ _self.vizyBlockText(block, key, fieldId) }}
             {% endif %}
-        </li>
-    {% endif %}
+        </ul>
+    </li>
+{% endmacro %}
+
+{% macro vizyBlockRemoved(block, key, fieldId) %}
+    <li>{{ 'Block {row} was removed'|t('activity', {row: block.index + 1}) }}
+        <ul>
+            {% if block.type == 'block' %}
+                {% if block.enabled ?? null is same as(true) %}
+                    <li>{{ 'Block was enabled'|t('activity') }}</li>
+                {% else %}
+                    <li>{{ 'Block was disabled'|t('activity') }}</li>
+                {% endif %}
+                <li>{{ 'Block type was {from}'|t('activity', {
+                    from: '<code>' ~ block.handle ~ '</code>',
+                })|raw }}</li>
+                {{ _self.vizyBlockFields(block, key, fieldId) }}
+            {% else %}
+                {{ _self.vizyBlockText(block, key, fieldId) }}
+            {% endif %}
+        </ul>
+    </li>
+{% endmacro %}
+
+{% macro vizyBlockAdded(block, key, fieldId) %}
+    <li>{{ 'Block {row} was added'|t('activity', {row: block.index + 1}) }}
+        <ul>
+            {% if block.type == 'block' %}
+                {% if block.enabled ?? null is same as(true) %}
+                    <li>{{ 'Block was enabled'|t('activity') }}</li>
+                {% else %}
+                    <li>{{ 'Block was disabled'|t('activity') }}</li>
+                {% endif %}
+                <li>{{ 'Block type was set to {to}'|t('activity', {
+                    to: '<code>' ~ block.handle ~ '</code>',
+                })|raw }}</li>
+                {{ _self.vizyBlockFields(block, key, fieldId) }}
+            {% else %}
+                {{ _self.vizyBlockText(block, key, fieldId) }}
+            {% endif %}
+        </ul>
+    </li>
 {% endmacro %}
 
 <li>
@@ -49,23 +107,11 @@
     <ul>
         {% for row, block in field.data.blocks %}
             {% if block.mode == 'changed' %}
-                <li>{{ 'Block {row} was changed'|t('activity', {row: block.index + 1}) }}
-                    <ul>
-                        {{ _self.vizyBlock(block, key ~ row, fieldId) }}
-                    </ul>
-                </li>
+                {{ _self.vizyBlockChanged(block, key ~ row, fieldId) }}
             {% elseif block.mode == 'removed' %}
-                <li>{{ 'Block {row} was removed'|t('activity', {row: block.index + 1}) }}
-                    <ul>
-                        {{ _self.vizyBlock(block, key ~ row, fieldId) }}
-                    </ul>
-                </li>
+                {{ _self.vizyBlockRemoved(block, key ~ row, fieldId) }}
             {% else %}
-                <li>{{ 'Block {row} was added'|t('activity', {row: block.index + 1}) }}
-                    <ul>
-                        {{ _self.vizyBlock(block, key ~ row, fieldId) }}
-                    </ul>
-                </li>
+                {{ _self.vizyBlockAdded(block, key ~ row, fieldId) }}
             {% endif %}
         {% endfor %}
     </ul>

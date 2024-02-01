@@ -33,6 +33,9 @@ abstract class ElementsFieldHandler extends ElementFieldHandler
      */
     public function isDirty(FieldHandler $handler): bool
     {
+        if (get_class($handler) != get_class($this)) {
+            return true;
+        }
         $from = is_array($this->value) ? $this->value : [];
         $to = is_array($handler->value) ? $handler->value : [];
         return !(empty(array_diff($from, $to)) and empty(array_diff($to, $from)));

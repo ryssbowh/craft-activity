@@ -7,11 +7,15 @@
 - CKEditor fields support
 - House keeping settings to delete activity automatically when models/elements are deleted
 - Activity page date format now follows user locale preference
+- Neo blocks enabled status is now tracked
+- Neo blocks type is now tracked
 
 ### Fixed
 - Fixed export button that was broken for multisite installations
 - Fixed issue where date filters would not work for some locales
 - Fixed issue where Redactor fields setting `defaultTransform` was not tracked
+- Fixed issues with nested fields (Neo within Super table for example)
+- Improved Neo fields changes calculations
 
 ## 2.3.16 - 2023-10-13
 

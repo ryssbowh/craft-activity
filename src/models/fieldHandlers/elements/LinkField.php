@@ -38,6 +38,9 @@ class LinkField extends ElementFieldHandler
      */
     public function isDirty(FieldHandler $handler): bool
     {
+        if (get_class($handler) != get_class($this)) {
+            return true;
+        }
         return !empty($this->getDirty($handler));
     }
 
@@ -72,7 +75,7 @@ class LinkField extends ElementFieldHandler
 
     /**
      * Build dirty values
-     * 
+     *
      * @param  array  $newValue
      * @param  array  $oldFields
      * @return array
@@ -85,11 +88,11 @@ class LinkField extends ElementFieldHandler
                 $dirty[$key] = [
                     't' => $newValue[$key]
                 ];
-            } else if (!array_key_exists($key, $newValue)) {
+            } elseif (!array_key_exists($key, $newValue)) {
                 $dirty[$key] = [
                     'f' => $oldValue[$key]
                 ];
-            } else if ($oldValue[$key] !== $newValue[$key]) {
+            } elseif ($oldValue[$key] !== $newValue[$key]) {
                 $dirty[$key] = [
                     'f' => $oldValue[$key],
                     't' => $newValue[$key]
@@ -104,7 +107,7 @@ class LinkField extends ElementFieldHandler
                     'type' => $newValue['value']['type']
                 ]
             ];
-        } else if (!array_key_exists('value', $newValue)) {
+        } elseif (!array_key_exists('value', $newValue)) {
             $dirty['value'] = [
                 'f' => [
                     'id' => $oldValue['value']['id'],
@@ -112,7 +115,7 @@ class LinkField extends ElementFieldHandler
                     'type' => $oldValue['value']['type']
                 ]
             ];
-        } else if ($newValue['value']['id'] != $oldValue['value']['id'] or $newValue['value']['type'] != $oldValue['value']['type']) {
+        } elseif ($newValue['value']['id'] != $oldValue['value']['id'] or $newValue['value']['type'] != $oldValue['value']['type']) {
             $dirty['value'] = [
                 'f' => [
                     'id' => $oldValue['value']['id'],
@@ -134,7 +137,7 @@ class LinkField extends ElementFieldHandler
 
     /**
      * Build the value
-     * 
+     *
      * @return array
      */
     protected function buildValues(): array

@@ -51,6 +51,8 @@ All native Craft fields tracking is supported, as well as :
 - [SEO](https://plugins.craftcms.com/seo)
 - [Typed Link](https://plugins.craftcms.com/typedlinkfield)
 - [TinyMCE](https://plugins.craftcms.com/tinymce)
+- [Vizy](https://plugins.craftcms.com/vizy)
+- [CKEditor](https://plugins.craftcms.com/ckeditor)
 
 User activity and the fields changed will remain viewable even when the object recorded for no longer exists.
 

@@ -12,6 +12,9 @@ class Unknown extends ElementFieldHandler
      */
     public function isDirty(FieldHandler $handler): bool
     {
+        if (get_class($handler) != get_class($this)) {
+            return true;
+        }
         return false;
     }
 }

@@ -38,6 +38,9 @@ class SuperTable extends ElementFieldHandler
      */
     public function isDirty(FieldHandler $handler): bool
     {
+        if (get_class($handler) != get_class($this)) {
+            return true;
+        }
         return !empty($this->getDirty($handler)['blocks']);
     }
 
@@ -86,11 +89,11 @@ class SuperTable extends ElementFieldHandler
                 'mode' => 'changed'
             ];
             foreach ($block['fields'] as $fieldId => $handler) {
-                if ($fdirty = $handler->getDirty($oldBlocks[$id]['fields'][$fieldId])) {
+                if ($handler->isDirty($oldBlocks[$id]['fields'][$fieldId])) {
                     $blockIsdirty = true;
                     $blockDirty['fields'][$fieldId] = [
                         'handler' => get_class($handler),
-                        'data' => $fdirty
+                        'data' => $handler->getDirty($oldBlocks[$id]['fields'][$fieldId])
                     ];
                 }
             }
@@ -132,18 +135,11 @@ class SuperTable extends ElementFieldHandler
     protected function buildValues(): array
     {
         $value = [];
-        $blocks = $this->field->normalizeValue($this->element->getFieldValue($this->field->handle), $this->element)->all();
-        foreach ($blocks as $id => $block) {
+        $blocks = $this->field->normalizeValue($this->rawValue, $this->element)->all();
+        foreach ($blocks as $block) {
             $fields = [];
             foreach ($this->field->getBlockTypeFields([$block->type->id]) as $field) {
-                $class = Activity::$plugin->fieldHandlers->getForElementField(get_class($field));
-                $fields[$field->id] = new $class([
-                    'field' => $field,
-                    'element' => $block,
-                    'name' => $field->name,
-                    'value' => $field->serializeValue($block->{$field->handle}, $block),
-                    'rawValue' => $block->{$field->handle}
-                ]);
+                $fields[$field->id] = Activity::$plugin->fieldHandlers->getHandlerForField($field, $block);
             }
             $value[] = [
                 'fields' => $fields
