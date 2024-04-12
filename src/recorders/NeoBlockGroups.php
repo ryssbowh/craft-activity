@@ -17,13 +17,13 @@ class NeoBlockGroups extends ConfigModelRecorder
      */
     public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate('neoBlockTypeGroups.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate('neo.blockTypeGroups.{uid}', function (Event $event) {
             Activity::getRecorder('neoBlockGroups')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd('neoBlockTypeGroups.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd('neo.blockTypeGroups.{uid}', function (Event $event) {
             Activity::getRecorder('neoBlockGroups')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove('neoBlockTypeGroups.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove('neo.blockTypeGroups.{uid}', function (Event $event) {
             Activity::getRecorder('neoBlockGroups')->onRemove($event);
         });
     }
@@ -41,7 +41,7 @@ class NeoBlockGroups extends ConfigModelRecorder
         ];
         return $params;
     }
-        
+
     /**
      * @inheritDoc
      */
@@ -55,7 +55,7 @@ class NeoBlockGroups extends ConfigModelRecorder
      */
     protected function getTrackedFieldNames(array $config): array
     {
-        return ['alwaysShowDropdown', 'name', 'sortOrder'];
+        return ['alwaysShowDropdown', 'name'];
     }
 
     /**

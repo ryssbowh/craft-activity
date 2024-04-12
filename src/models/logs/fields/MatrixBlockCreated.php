@@ -10,6 +10,7 @@ use craft\helpers\UrlHelper;
 
 /**
  * @since 2.2.0
+ * @deprecated in 3.0.0
  */
 class MatrixBlockCreated extends ConfigModelLog
 {
@@ -59,17 +60,12 @@ class MatrixBlockCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        foreach (\Craft::$app->matrix->getAllBlockTypes() as $block) {
-            if ($block->uid == $this->target_uid) {
-                return $block;
-            }
-        }
         return null;
     }
 
     /**
      * Get the associated field
-     * 
+     *
      * @return ?Model
      */
     protected function getField(): ?Model
@@ -79,7 +75,7 @@ class MatrixBlockCreated extends ConfigModelLog
 
     /**
      * Get the associated field name
-     * 
+     *
      * @return string
      */
     protected function getFieldName(): string

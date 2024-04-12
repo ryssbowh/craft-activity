@@ -29,7 +29,7 @@ class SectionCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->sections->getSectionByUid($this->target_uid);
+        return \Craft::$app->entries->getSectionByUid($this->target_uid);
     }
 
     /**
@@ -41,7 +41,9 @@ class SectionCreated extends ConfigModelLog
             'name' => \Craft::t('app', 'Name'),
             'handle' => \Craft::t('app', 'Handle'),
             'type' => \Craft::t('app', 'Section Type'),
-            'enableVersioning' => \Craft::t('app', 'Enable versionning'),
+            'enableVersioning' => \Craft::t('app', 'Enable versioning for entries in this section'),
+            'entryTypes' => \Craft::t('app', 'Entry Types'),
+            'maxAuthors' => \Craft::t('app', 'Max Authors'),
             'propagationMethod' => \Craft::t('app', 'Propagation Method'),
             'maxLevels' => \Craft::t('app', 'Max Levels'),
             'defaultPlacement' => \Craft::t('app', 'Default Entry Placement'),

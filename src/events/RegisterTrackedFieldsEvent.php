@@ -2,6 +2,7 @@
 
 namespace Ryssbowh\Activity\events;
 
+use craft\fields\Addresses;
 use craft\fields\Assets;
 use craft\fields\Categories;
 use craft\fields\Checkboxes;
@@ -47,7 +48,7 @@ class RegisterTrackedFieldsEvent extends Event
         $fields[MultiSelect::class] = ['settings.options'];
         $fields[RadioButtons::class] = ['settings.options'];
         $fields[Assets::class] = ['settings.restrictLocation', 'settings.restrictedLocationSource', 'settings.restrictedLocationSubpath', 'settings.allowSubfolders', 'settings.restrictedDefaultUploadSubpath', 'settings.sources', 'settings.defaultUploadLocationSource', 'settings.defaultUploadLocationSubpath', 'settings.showUnpermittedVolumes', 'settings.showUnpermittedFiles', 'settings.restrictFiles', 'settings.allowUploads', 'settings.maxRelations', 'settings.minRelations', 'settings.viewMode', 'settings.selectionLabel', 'settings.validateRelatedElements', 'settings.previewMode', 'settings.allowSelfRelations', 'settings.allowedKinds', 'settings.useTargetSite', 'settings.showSiteMenu', 'settings.localizeRelations'];
-        $fields[Color::class] = ['settings.defaultColor'];
+        $fields[Color::class] = ['settings.defaultColor', 'settings.presets'];
         $fields[Date::class] = ['settings.minuteIncrement', 'settings.showTimeZone', 'settings.showDate', 'settings.showTime', 'settings.min', 'settings.max'];
         $fields[Time::class] = ['settings.minuteIncrement', 'settings.min', 'settings.max'];
         $fields[Email::class] = ['settings.placeholder'];
@@ -61,7 +62,8 @@ class RegisterTrackedFieldsEvent extends Event
         $fields[Lightswitch::class] = ['settings.default', 'settings.offLabel', 'settings.onLabel'];
         $fields[Table::class] = ['settings.addRowLabel', 'settings.columnType', 'settings.columns', 'settings.defaults', 'settings.minRows', 'settings.maxRows'];
         $fields[Url::class] = ['settings.types', 'settings.maxLength'];
-        $fields[Matrix::class] = ['settings.minBlocks', 'settings.maxBlocks', 'settings.propagationMethod'];
+        $fields[Matrix::class] = ['settings.entryTypes', 'settings.siteSettings', 'settings.propagationMethod', 'settings.minEntries', 'settings.maxEntries', 'settings.viewMode', 'settings.createButtonLabel', 'settings.showCardsInGrid'];
+        $fields[Addresses::class] = ['settings.minAddresses', 'settings.maxAddresses', 'settings.viewMode'];
         $this->tracked = $fields;
     }
 }

@@ -10,7 +10,7 @@ use Ryssbowh\Activity\models\fieldHandlers\elements\Entries;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Lightswitch;
 use Ryssbowh\Activity\models\fieldHandlers\elements\ListField;
 use Ryssbowh\Activity\models\fieldHandlers\elements\ListsField;
-use Ryssbowh\Activity\models\fieldHandlers\elements\Matrix;
+use Ryssbowh\Activity\models\fieldHandlers\elements\MatrixNew;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Money;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use Ryssbowh\Activity\models\fieldHandlers\elements\PlainText;
@@ -42,7 +42,7 @@ class RegisterElementFieldHandlersEvent extends Event
             ListField::class,
             ListsField::class,
             LongText::class,
-            Matrix::class,
+            MatrixNew::class,
             Money::class,
             Plain::class,
             PlainText::class,
@@ -63,7 +63,7 @@ class RegisterElementFieldHandlersEvent extends Event
 
     /**
      * Add a field handler to register
-     * 
+     *
      * @param string  $handler
      * @param boolean $replace
      */
@@ -79,7 +79,7 @@ class RegisterElementFieldHandlersEvent extends Event
 
     /**
      * Add many field handlers to register
-     * 
+     *
      * @param array   $handlers
      * @param boolean $replace
      */

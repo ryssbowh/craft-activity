@@ -117,7 +117,7 @@ class Matrix extends ElementFieldHandler
                 $blocks[$id] = $blockDirty;
             }
         }
-        foreach(array_diff_key($newBlocks, $oldBlocks) as $id => $block) {
+        foreach (array_diff_key($newBlocks, $oldBlocks) as $id => $block) {
             $block['fields'] = array_map(function ($handler) {
                 return [
                     'handler' => get_class($handler),
@@ -127,7 +127,7 @@ class Matrix extends ElementFieldHandler
             $block['mode'] = 'added';
             $blocks[$id] = $block;
         }
-        foreach(array_diff_key($oldBlocks, $newBlocks) as $id => $block) {
+        foreach (array_diff_key($oldBlocks, $newBlocks) as $id => $block) {
             $block['fields'] = array_map(function ($handler) {
                 return [
                     'handler' => get_class($handler),

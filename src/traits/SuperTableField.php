@@ -2,16 +2,15 @@
 
 namespace Ryssbowh\Activity\traits;
 
-use Ryssbowh\Activity\models\fieldHandlers\elements\SuperTable;
-use Ryssbowh\Activity\models\fieldHandlers\projectConfig\BlockFields;
+use Ryssbowh\Activity\models\fieldHandlers\elements\MatrixNew;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\EntryTypes;
 use Ryssbowh\Activity\models\logs\fields\SuperTableBlockCreated;
 use Ryssbowh\Activity\models\logs\fields\SuperTableBlockDeleted;
 use Ryssbowh\Activity\models\logs\fields\SuperTableBlockSaved;
-use Ryssbowh\Activity\recorders\SuperTableBlocks;
-use Ryssbowh\Activity\services\FieldHandlers;
 use Ryssbowh\Activity\services\Fields;
-use Ryssbowh\Activity\services\Recorders;
 use Ryssbowh\Activity\services\Types;
+use craft\services\ProjectConfig;
+use verbb\supertable\fields\SuperTableField as Field;
 use yii\base\Event;
 
 /**
@@ -25,32 +24,31 @@ trait SuperTableField
     protected function initSuperTableField()
     {
         Event::on(Fields::class, Fields::EVENT_REGISTER_FIELD_LABELS, function (Event $event) {
-            $categories = array_keys(\Craft::$app->i18n->translations);
-            $category = in_array('super-table', $categories) ? 'super-table' : 'activity';
             $event->labels['verbb\\supertable\\fields\\SuperTableField'] = [
-                'settings.fieldLayout' => \Craft::t($category, 'Field Layout'),
-                'settings.maxRows' => \Craft::t($category, 'Max Rows'),
-                'settings.minRows' => \Craft::t($category, 'Min Rows'),
-                'settings.selectionLabel' => \Craft::t($category, 'New Row Label'),
-                'settings.staticField' => \Craft::t($category, 'Static field')
+                'settings.entryTypes' => \Craft::t('app', 'Entry Types'),
+                'settings.siteSettings' => \Craft::t('app', 'Site Settings'),
+                'settings.propagationMethod' => \Craft::t('app', 'Propagation Method'),
+                'settings.minEntries' => \Craft::t('app', 'Min Entries'),
+                'settings.maxEntries' => \Craft::t('app', 'Max Entries'),
+                'settings.viewMode' => \Craft::t('app', 'View Mode'),
+                'settings.showCardsInGrid' => \Craft::t('app', 'Show cards in a grid'),
+                'settings.createButtonLabel' => \Craft::t('app', '“New” Button Label'),
             ];
         });
         Event::on(Fields::class, Fields::EVENT_REGISTER_TRACKED_FIELDS, function (Event $event) {
-            $event->tracked['verbb\\supertable\\fields\\SuperTableField'] = ['settings.fieldLayout', 'settings.maxRows', 'settings.minRows', 'settings.selectionLabel', 'settings.staticField'];
+            $event->tracked['verbb\\supertable\\fields\\SuperTableField'] = ['settings.entryTypes', 'settings.siteSettings', 'settings.propagationMethod', 'settings.minEntries', 'settings.maxEntries', 'settings.viewMode', 'settings.createButtonLabel', 'settings.showCardsInGrid'];
         });
-        Event::on(FieldHandlers::class, FieldHandlers::EVENT_REGISTER_ELEMENT_HANDLERS, function (Event $event) {
-            $event->add(SuperTable::class);
+        Event::on(EntryTypes::class, EntryTypes::EVENT_REGISTER_TARGETS, function (Event $event) {
+            $event->targets[] = ProjectConfig::PATH_FIELDS . '.{uid}.settings[verbb\\supertable\\fields\\SuperTableField].entryTypes';
         });
-        Event::on(BlockFields::class, BlockFields::EVENT_REGISTER_TARGETS, function (Event $event) {
-            $event->targets[] = 'superTableBlockTypes.{uid}.fields';
+        Event::on(MatrixNew::class, MatrixNew::EVENT_REGISTER_TARGETS, function (Event $event) {
+            $event->targets[] = Field::class;
         });
-        Event::on(Recorders::class, Recorders::EVENT_REGISTER, function (Event $event) {
-            $event->add('superTableBlocks', new SuperTableBlocks);
-        });
+        //These are registered for legacy events but aren't used anymore
         Event::on(Types::class, Types::EVENT_REGISTER, function (Event $event) {
-            $event->add(new SuperTableBlockCreated);
-            $event->add(new SuperTableBlockSaved);
-            $event->add(new SuperTableBlockDeleted);
+            $event->add(new SuperTableBlockCreated());
+            $event->add(new SuperTableBlockSaved());
+            $event->add(new SuperTableBlockDeleted());
         });
     }
 }

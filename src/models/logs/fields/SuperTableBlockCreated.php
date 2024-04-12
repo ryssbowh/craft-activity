@@ -10,6 +10,7 @@ use craft\helpers\UrlHelper;
 
 /**
  * @since 2.2.0
+ * @deprecated in 3.0.0
  */
 class SuperTableBlockCreated extends ConfigModelLog
 {
@@ -59,7 +60,7 @@ class SuperTableBlockCreated extends ConfigModelLog
 
     /**
      * Get the associated field
-     * 
+     *
      * @return ?Model
      */
     protected function getField(): ?Model
@@ -69,7 +70,7 @@ class SuperTableBlockCreated extends ConfigModelLog
 
     /**
      * Get the associated field name
-     * 
+     *
      * @return string
      */
     protected function getFieldName(): string

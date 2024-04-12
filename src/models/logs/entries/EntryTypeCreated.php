@@ -19,53 +19,9 @@ class EntryTypeCreated extends ConfigModelLog
      */
     public function getTitle(): string
     {
-        return \Craft::t('activity', 'Created entry type {name} in section {section}', [
-            'name' => $this->modelName,
-            'section' => $this->sectionName
+        return \Craft::t('activity', 'Created entry type {name}', [
+            'name' => $this->modelName
         ]);
-    }
-
-    /**
-     * Section setter
-     *
-     * @param Section $section
-     */
-    public function setSection(Section $section)
-    {
-        $this->_section = $section;
-        $this->data = [
-            'section' => [
-                'name' => $section->name,
-                'id' => $section->id
-            ]
-        ];
-    }
-
-    /**
-     * Section getter
-     * 
-     * @return ?Model
-     */
-    public function getSection(): ?Section
-    {
-        if ($this->_section === null and $this->data['section']['id'] ?? false) {
-            $this->_section = \Craft::$app->sections->getSectionById($this->data['section']['id']);
-        }
-        return $this->_section;
-    }
-
-    /**
-     * Section name getter
-     * 
-     * @return string
-     */
-    public function getSectionName(): string
-    {
-        $title = $this->data['section']['name'];
-        if ($this->section) {
-            $title = Html::a($this->section->name, UrlHelper::cpUrl('settings/sections/' . $this->section->id), ['target' => '_blank']);
-        }
-        return $title;
     }
 
     /**
@@ -73,7 +29,7 @@ class EntryTypeCreated extends ConfigModelLog
      */
     protected function getModelLink(): string
     {
-        return UrlHelper::cpUrl('settings/sections/' . $this->section->id . '/entrytypes/' . $this->model->id);
+        return UrlHelper::cpUrl('settings/entry-types/' . $this->model->id);
     }
 
     /**
@@ -81,7 +37,7 @@ class EntryTypeCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->sections->getEntryTypeByUid($this->target_uid);
+        return \Craft::$app->entries->getEntryTypeByUid($this->target_uid);
     }
 
     /**
@@ -92,9 +48,14 @@ class EntryTypeCreated extends ConfigModelLog
         return [
             'name' => \Craft::t('app', 'Name'),
             'handle' => \Craft::t('app', 'Handle'),
+            'entryTypes' => \Craft::t('app', 'Entry Types'),
             'hasTitleField' => \Craft::t('app', 'Show the Title field'),
+            'showSlugField' => \Craft::t('app', 'Show the Slug field'),
             'titleFormat' => \Craft::t('app', 'Title Format'),
             'titleTranslationMethod' => \Craft::t('app', 'Title Translation Method'),
+            'slugTranslationMethod' => \Craft::t('app', 'Slug Translation Method'),
+            'color' => \Craft::t('app', 'Color'),
+            'icon' => \Craft::t('app', 'Icon'),
         ];
     }
 }

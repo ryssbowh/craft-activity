@@ -10,6 +10,7 @@ use craft\services\ProjectConfig;
 
 /**
  * @since 2.2.0
+ * @deprecated in 3.0.0
  */
 class BlockFields extends DefaultHandler
 {
@@ -59,18 +60,8 @@ class BlockFields extends DefaultHandler
     }
 
     /**
-     * @inheritDoc
-     */
-    protected static function _getTargets(): array
-    {
-        return [
-            ProjectConfig::PATH_MATRIX_BLOCK_TYPES . '.{uid}.fields'
-        ];
-    }
-
-    /**
      * Build dirty values
-     * 
+     *
      * @param  array  $newFields
      * @param  array  $oldFields
      * @return array

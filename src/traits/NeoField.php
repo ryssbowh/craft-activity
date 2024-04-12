@@ -51,19 +51,19 @@ trait NeoField
             $event->add(NeoGroup::class);
         });
         Event::on(FieldLayout::class, FieldLayout::EVENT_REGISTER_TARGETS, function (Event $event) {
-            $event->targets[] = 'neoBlockTypes.{uid}.fieldLayouts';
+            $event->targets[] = 'neo.blockTypes.{uid}.fieldLayouts';
         });
         Event::on(Recorders::class, Recorders::EVENT_REGISTER, function (Event $event) {
-            $event->add('neoBlocks', new NeoBlocks);
-            $event->add('neoBlockGroups', new NeoBlockGroups);
+            $event->add('neoBlocks', new NeoBlocks());
+            $event->add('neoBlockGroups', new NeoBlockGroups());
         });
         Event::on(Types::class, Types::EVENT_REGISTER, function (Event $event) {
-            $event->add(new NeoBlockCreated);
-            $event->add(new NeoBlockSaved);
-            $event->add(new NeoBlockDeleted);
-            $event->add(new NeoBlockGroupCreated);
-            $event->add(new NeoBlockGroupSaved);
-            $event->add(new NeoBlockGroupDeleted);
+            $event->add(new NeoBlockCreated());
+            $event->add(new NeoBlockSaved());
+            $event->add(new NeoBlockDeleted());
+            $event->add(new NeoBlockGroupCreated());
+            $event->add(new NeoBlockGroupSaved());
+            $event->add(new NeoBlockGroupDeleted());
         });
     }
 }

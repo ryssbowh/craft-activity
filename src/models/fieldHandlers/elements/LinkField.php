@@ -6,6 +6,10 @@ use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\fieldHandlers\ElementFieldHandler;
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
 
+/**
+ * @since 2.2.0
+ * @deprecated in 3.0.0
+ */
 class LinkField extends ElementFieldHandler
 {
     /**

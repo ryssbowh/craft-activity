@@ -9,6 +9,7 @@ use craft\services\ProjectConfig;
 
 /**
  * @since 2.2.0
+ * @deprecated in 3.0.0
  */
 class LinkFieldTypes extends DefaultHandler
 {
@@ -57,7 +58,7 @@ class LinkFieldTypes extends DefaultHandler
 
     /**
      * Get the Craft field
-     * 
+     *
      * @return Field
      */
     protected function getField(): Field
@@ -70,7 +71,7 @@ class LinkFieldTypes extends DefaultHandler
 
     /**
      * Build dirty values
-     * 
+     *
      * @param  array  $newFields
      * @param  array  $oldFields
      * @return array
@@ -173,7 +174,7 @@ class LinkFieldTypes extends DefaultHandler
 
     /**
      * Get fancy sources names
-     * 
+     *
      * @param  array|string $sources
      * @return string
      */
@@ -191,7 +192,7 @@ class LinkFieldTypes extends DefaultHandler
                 $model = \Craft::$app->volumes->getVolumeByUid($elems[1] ?? '');
                 $fancy[] = $model ? $model->name : $source;
             } elseif ($elems[0] == 'section') {
-                $model = \Craft::$app->sections->getSectionByUid($elems[1] ?? '');
+                $model = \Craft::$app->entries->getSectionByUid($elems[1] ?? '');
                 $fancy[] = $model ? $model->name : $source;
             } elseif ($elems[0] == 'group') {
                 $model = \Craft::$app->userGroups->getGroupByUid($elems[1] ?? '');
@@ -203,7 +204,7 @@ class LinkFieldTypes extends DefaultHandler
 
     /**
      * Get fancy sites names
-     * 
+     *
      * @param  array|string $sites
      * @return string
      */

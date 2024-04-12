@@ -3,7 +3,9 @@
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
 use Ryssbowh\Activity\base\fieldHandlers\FieldHandler;
+use craft\fieldlayoutelements\BaseField;
 use craft\fieldlayoutelements\CustomField;
+use craft\fieldlayoutelements\addresses\AddressField;
 use craft\helpers\ProjectConfig as ProjectConfigHelper;
 use craft\services\ProjectConfig;
 
@@ -38,7 +40,6 @@ class FieldLayout extends DefaultHandler
             ProjectConfig::PATH_VOLUMES . '.{uid}.fieldLayouts',
             ProjectConfig::PATH_USER_FIELD_LAYOUTS,
             ProjectConfig::PATH_ADDRESS_FIELD_LAYOUTS,
-            ProjectConfig::PATH_MATRIX_BLOCK_TYPES . '.{uid}.fieldLayouts'
         ];
     }
 
@@ -98,7 +99,6 @@ class FieldLayout extends DefaultHandler
             if ((bool)$newFields[$uid]['required'] !== (bool)$oldFields[$uid]['required']) {
                 $rowIsdirty = true;
                 $rowDirty['required'] = [
-                    'label' => \Craft::t('app', 'Required'),
                     'f' => (bool)$oldFields[$uid]['required'],
                     't' => (bool)$newFields[$uid]['required']
                 ];
@@ -106,17 +106,22 @@ class FieldLayout extends DefaultHandler
             if (($newFields[$uid]['label'] ?? null) !== ($oldFields[$uid]['label'] ?? null)) {
                 $rowIsdirty = true;
                 $rowDirty['label'] = [
-                    'label' => \Craft::t('app', 'Label'),
-                    'f' => $oldFields[$uid]['label'],
-                    't' => $newFields[$uid]['label']
+                    'f' => $oldFields[$uid]['label'] ?? '',
+                    't' => $newFields[$uid]['label'] ?? ''
                 ];
             }
             if (($newFields[$uid]['instructions'] ?? null) !== ($oldFields[$uid]['instructions'] ?? null)) {
                 $rowIsdirty = true;
                 $rowDirty['instructions'] = [
-                    'label' => \Craft::t('app', 'Instructions'),
-                    'f' => $oldFields[$uid]['instructions'],
-                    't' => $newFields[$uid]['instructions']
+                    'f' => $oldFields[$uid]['instructions'] ?? '',
+                    't' => $newFields[$uid]['instructions'] ?? ''
+                ];
+            }
+            if (($newFields[$uid]['includeInCards'] ?? null) !== ($oldFields[$uid]['includeInCards'] ?? null)) {
+                $rowIsdirty = true;
+                $rowDirty['includeInCards'] = [
+                    'f' => $oldFields[$uid]['includeInCards'] ?? false,
+                    't' => $newFields[$uid]['includeInCards'] ?? false
                 ];
             }
             if ($rowIsdirty) {
@@ -155,20 +160,34 @@ class FieldLayout extends DefaultHandler
         $fieldLayout = reset($fieldLayout);
         foreach ($fieldLayout['tabs'] ?? [] as $tab) {
             foreach ($tab['elements'] ?? [] as $element) {
+                $uid = false;
                 if ($element['type'] == CustomField::class) {
                     $field = \Craft::$app->fields->getFieldByUid($element['fieldUid']);
-                    $values[$element['fieldUid']] = [
-                        'name' => $field ? $field->name : '*deleted field*',
+                    $uid = $element['uid'];
+                    $name = $field ? $field->name : '*deleted field*';
+                } elseif ($element['type'] == AddressField::class) {
+                    $uid = $element['uid'];
+                    $name = \Craft::t('app', 'Address');
+                } elseif (is_subclass_of($element['type'], BaseField::class)) {
+                    $uid = $element['uid'];
+                    $name = $element['label'] ?? (new $element['type']())->label();
+                }
+                if ($uid) {
+                    $values[$uid] = [
+                        'name' => $name,
                         'required' => $element['required'] ?? ''
                     ];
-                    if (isset($element['label'])) {
-                        $values[$element['fieldUid']]['label'] = $element['label'];
+                    if (isset($element['label']) and $element['label'] != $name) {
+                        $values[$uid]['label'] = $element['label'];
                     }
                     if (isset($element['instructions'])) {
-                        $values[$element['fieldUid']]['instructions'] = $element['instructions'];
+                        $values[$uid]['instructions'] = $element['instructions'];
                     }
                     if (isset($element['width'])) {
-                        $values[$element['fieldUid']]['width'] = $element['width'];
+                        $values[$uid]['width'] = $element['width'];
+                    }
+                    if (isset($element['includeInCards'])) {
+                        $values[$uid]['includeInCards'] = $element['includeInCards'];
                     }
                 }
             }

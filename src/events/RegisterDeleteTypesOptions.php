@@ -18,6 +18,7 @@ class RegisterDeleteTypesOptions extends Event
     {
         parent::init();
         $this->addMany([
+            'userAddresses' => \Craft::t('app', 'Addresses'),
             'entries' => \Craft::t('app', 'Entries'),
             'sections' => \Craft::t('app', 'Sections'),
             'entryTypes' => \Craft::t('app', 'Entry Types'),

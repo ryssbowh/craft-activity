@@ -6,6 +6,7 @@ use Ryssbowh\Activity\exceptions\FieldHandlerException;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\BlockFields;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\CkEditorConfig;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\DefaultCategoryPlacement;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\EntryTypes;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldGroup;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldLayout;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\FieldType;
@@ -74,7 +75,8 @@ class RegisterProjectConfigfieldHandlersEvent extends Event
             Transform::class,
             TableColumns::class,
             TableDefaultValues::class,
-            CkEditorConfig::class
+            CkEditorConfig::class,
+            EntryTypes::class
         ]);
     }
 

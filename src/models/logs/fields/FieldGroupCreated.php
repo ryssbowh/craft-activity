@@ -6,6 +6,9 @@ use Ryssbowh\Activity\base\logs\ConfigModelLog;
 use craft\base\Model;
 use craft\helpers\UrlHelper;
 
+/**
+ * @deprecated in 3.0.0
+ */
 class FieldGroupCreated extends ConfigModelLog
 {
     /**
@@ -29,7 +32,7 @@ class FieldGroupCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        return \Craft::$app->fields->getGroupByUid($this->target_uid);
+        return null;
     }
 
     /**

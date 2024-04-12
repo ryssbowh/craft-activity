@@ -48,7 +48,7 @@ class Sections extends ConfigModelRecorder
      */
     protected function getTrackedFieldNames(array $config): array
     {
-        return ['name', 'handle', 'type', 'enableVersioning', 'siteSettings', 'previewTargets', 'propagationMethod', 'maxLevels'];
+        return ['name', 'handle', 'type', 'enableVersioning', 'siteSettings', 'previewTargets', 'propagationMethod', 'maxLevels', 'entryTypes', 'maxAuthors'];
     }
 
     /**

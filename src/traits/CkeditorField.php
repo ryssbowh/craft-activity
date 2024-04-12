@@ -3,6 +3,7 @@
 namespace Ryssbowh\Activity\traits;
 
 use Ryssbowh\Activity\models\fieldHandlers\elements\LongText;
+use Ryssbowh\Activity\models\fieldHandlers\projectConfig\EntryTypes;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Transform;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Transforms;
 use Ryssbowh\Activity\models\fieldHandlers\projectConfig\Volumes;
@@ -36,16 +37,20 @@ trait CkeditorField
                 'settings.purifyHtml' => \Craft::t($category, 'Purify HTML'),
                 'settings.purifierConfig' => \Craft::t($category, 'HTML Purifier Config'),
                 'settings.columnType' => \Craft::t($category, 'Column Type'),
+                'settings.entryTypes' => \Craft::t('app', 'Entry Types'),
             ];
         });
         Event::on(Fields::class, Fields::EVENT_REGISTER_TRACKED_FIELDS, function (Event $event) {
-            $event->tracked['craft\\ckeditor\\Field'] = ['settings.ckeConfig', 'settings.wordLimit', 'settings.showWordCount', 'settings.enableSourceEditingForNonAdmins', 'settings.showUnpermittedVolumes', 'settings.showUnpermittedFiles', 'settings.availableVolumes', 'settings.availableTransforms', 'settings.defaultTransform', 'settings.purifyHtml', 'settings.purifierConfig', 'settings.columnType'];
+            $event->tracked['craft\\ckeditor\\Field'] = ['settings.ckeConfig', 'settings.wordLimit', 'settings.showWordCount', 'settings.enableSourceEditingForNonAdmins', 'settings.showUnpermittedVolumes', 'settings.showUnpermittedFiles', 'settings.availableVolumes', 'settings.availableTransforms', 'settings.defaultTransform', 'settings.purifyHtml', 'settings.purifierConfig', 'settings.columnType', 'settings.entryTypes'];
         });
         Event::on(LongText::class, LongText::EVENT_REGISTER_TARGETS, function (Event $event) {
             $event->targets[] = 'craft\\ckeditor\\Field';
         });
         Event::on(Volumes::class, Volumes::EVENT_REGISTER_TARGETS, function (Event $event) {
             $event->targets[] = ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\ckeditor\\Field].availableVolumes';
+        });
+        Event::on(EntryTypes::class, EntryTypes::EVENT_REGISTER_TARGETS, function (Event $event) {
+            $event->targets[] = ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\ckeditor\\Field].entryTypes';
         });
         Event::on(Transforms::class, Transforms::EVENT_REGISTER_TARGETS, function (Event $event) {
             $event->targets[] = ProjectConfig::PATH_FIELDS . '.{uid}.settings[craft\\ckeditor\\Field].availableTransforms';

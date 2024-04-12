@@ -47,19 +47,9 @@ class EntryTypes extends ConfigModelRecorder
     /**
      * @inheritDoc
      */
-    protected function modifyParams(array $params, ConfigEvent $event): array
-    {
-        $uid = $event->newValue['section'] ?? $event->oldValue['section'];
-        $params['section'] = \Craft::$app->sections->getSectionByUid($uid);
-        return $params;
-    }
-
-    /**
-     * @inheritDoc
-     */
     protected function getTrackedFieldNames(array $config): array
     {
-        return ['name', 'handle', 'hasTitleField', 'titleTranslationMethod', 'titleFormat', 'fieldLayouts'];
+        return ['name', 'handle', 'hasTitleField', 'titleTranslationMethod', 'titleFormat', 'fieldLayouts', 'color', 'icon', 'showSlugField', 'slugTranslationMethod'];
     }
 
     /**
@@ -68,7 +58,8 @@ class EntryTypes extends ConfigModelRecorder
     protected function _getTrackedFieldTypings(): array
     {
         return [
-            'hasTitleField' => 'bool'
+            'hasTitleField' => 'bool',
+            'showSlugField' => 'bool',
         ];
     }
 

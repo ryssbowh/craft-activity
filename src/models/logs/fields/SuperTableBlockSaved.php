@@ -4,6 +4,7 @@ namespace Ryssbowh\Activity\models\logs\fields;
 
 /**
  * @since 2.2.0
+ * @deprecated in 3.0.0
  */
 class SuperTableBlockSaved extends SuperTableBlockCreated
 {

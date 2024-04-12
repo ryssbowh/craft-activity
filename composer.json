@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^4.0",
+        "craftcms/cms": "^5.0",
         "mpdf/mpdf": "^8.1"
     },
     "require-dev": {

@@ -4,6 +4,7 @@ namespace Ryssbowh\Activity\models\logs\fields;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\logs\ConfigModelLog;
+use benf\neo\Plugin;
 use craft\base\Model;
 use craft\helpers\Html;
 use craft\helpers\UrlHelper;
@@ -59,7 +60,10 @@ class NeoBlockGroupCreated extends ConfigModelLog
      */
     protected function loadModel(): ?Model
     {
-        foreach (\Craft::$app->matrix->getAllBlockTypes() as $block) {
+        if (!$this->getField()) {
+            return null;
+        }
+        foreach (Plugin::getInstance()->blockTypes->getByFieldId($this->getField()->id) as $block) {
             if ($block->uid == $this->target_uid) {
                 return $block;
             }
@@ -69,7 +73,7 @@ class NeoBlockGroupCreated extends ConfigModelLog
 
     /**
      * Get the associated field
-     * 
+     *
      * @return ?Model
      */
     protected function getField(): ?Model
@@ -79,7 +83,7 @@ class NeoBlockGroupCreated extends ConfigModelLog
 
     /**
      * Get the associated field name
-     * 
+     *
      * @return string
      */
     protected function getFieldName(): string

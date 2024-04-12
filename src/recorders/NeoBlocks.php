@@ -18,13 +18,13 @@ class NeoBlocks extends ConfigModelRecorder
      */
     public function init(): void
     {
-        \Craft::$app->projectConfig->onUpdate('neoBlockTypes.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onUpdate('neo.blockTypes.{uid}', function (Event $event) {
             Activity::getRecorder('neoBlocks')->onUpdate($event);
         });
-        \Craft::$app->projectConfig->onAdd('neoBlockTypes.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onAdd('neo.blockTypes.{uid}', function (Event $event) {
             Activity::getRecorder('neoBlocks')->onAdd($event);
         });
-        \Craft::$app->projectConfig->onRemove('neoBlockTypes.{uid}', function (Event $event) {
+        \Craft::$app->projectConfig->onRemove('neo.blockTypes.{uid}', function (Event $event) {
             Activity::getRecorder('neoBlocks')->onRemove($event);
         });
     }
@@ -42,7 +42,7 @@ class NeoBlocks extends ConfigModelRecorder
         ];
         return $params;
     }
-        
+
     /**
      * @inheritDoc
      */
@@ -56,7 +56,7 @@ class NeoBlocks extends ConfigModelRecorder
      */
     protected function getTrackedFieldNames(array $config): array
     {
-        return ['name', 'handle', 'childBlocks', 'description', 'enabled', 'fieldLayouts', 'group', 'groupChildBlockTypes', 'ignorePermissions', 'maxBlocks', 'maxChildBlocks', 'maxSiblingBlocks', 'minBlocks', 'minChildBlocks', 'minSiblingBlocks', 'sortOrder', 'topLevel'];
+        return ['name', 'handle', 'childBlocks', 'description', 'enabled', 'fieldLayouts', 'group', 'groupChildBlockTypes', 'ignorePermissions', 'maxBlocks', 'maxChildBlocks', 'maxSiblingBlocks', 'minBlocks', 'minChildBlocks', 'minSiblingBlocks', 'topLevel', 'color'];
     }
 
     /**

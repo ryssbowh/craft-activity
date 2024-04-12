@@ -2,6 +2,7 @@
 
 namespace Ryssbowh\Activity\events;
 
+use craft\fields\Addresses;
 use craft\fields\Assets;
 use craft\fields\Categories;
 use craft\fields\Checkboxes;
@@ -65,7 +66,7 @@ class RegisterFieldLabelsEvent extends Event
             'settings.maxRelations' => \Craft::t('app', 'Max Relations'),
             'settings.minRelations' => \Craft::t('app', 'Min Relations'),
             'settings.viewMode' => \Craft::t('app', 'View Mode'),
-            'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
+            'settings.selectionLabel' => \Craft::t('app', '“Add” Button Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related assets'),
             'settings.previewMode' => \Craft::t('app', 'Preview Mode'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
@@ -81,7 +82,8 @@ class RegisterFieldLabelsEvent extends Event
         $labels[MultiSelect::class] = $labels[Dropdown::class];
         $labels[RadioButtons::class] = $labels[Dropdown::class];
         $labels[Color::class] = [
-            'settings.defaultColor' => \Craft::t('app', 'Default colour')
+            'settings.defaultColor' => \Craft::t('app', 'Default colour'),
+            'settings.presets' => \Craft::t('app', 'Presets'),
         ];
         $labels[Date::class] = [
             'settings.minuteIncrement' => \Craft::t('app', 'Minute Increment'),
@@ -103,7 +105,7 @@ class RegisterFieldLabelsEvent extends Event
             'settings.sources' => \Craft::t('app', 'Sources'),
             'settings.minRelations' => \Craft::t('app', 'Min Relations'),
             'settings.maxRelations' => \Craft::t('app', 'Max Relations'),
-            'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
+            'settings.selectionLabel' => \Craft::t('app', '“Add” Button Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related entries'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
             'settings.useTargetSite' => \Craft::t('app', 'Relate entries from a specific site?'),
@@ -114,7 +116,7 @@ class RegisterFieldLabelsEvent extends Event
             'settings.sources' => \Craft::t('app', 'Sources'),
             'settings.minRelations' => \Craft::t('app', 'Min Relations'),
             'settings.maxRelations' => \Craft::t('app', 'Max Relations'),
-            'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
+            'settings.selectionLabel' => \Craft::t('app', '“Add” Button Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related users'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
             'settings.localizeRelations' => \Craft::t('app', 'Manage relations on a per-site basis')
@@ -122,7 +124,7 @@ class RegisterFieldLabelsEvent extends Event
         $labels[Categories::class] = [
             'settings.source' => \Craft::t('app', 'Source'),
             'settings.branchLimit' => \Craft::t('app', 'Branch Limit'),
-            'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
+            'settings.selectionLabel' => \Craft::t('app', '“Add” Button Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related categories'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
             'settings.useTargetSite' => \Craft::t('app', 'Relate categories from a specific site?'),
@@ -131,7 +133,7 @@ class RegisterFieldLabelsEvent extends Event
         ];
         $labels[Tags::class] = [
             'settings.source' => \Craft::t('app', 'Source'),
-            'settings.selectionLabel' => \Craft::t('app', 'Selection Label'),
+            'settings.selectionLabel' => \Craft::t('app', '“Add” Button Label'),
             'settings.validateRelatedElements' => \Craft::t('app', 'Validate related tags'),
             'settings.allowSelfRelations' => \Craft::t('app', 'Allow self relations'),
             'settings.useTargetSite' => \Craft::t('app', 'Relate tags from a specific site?'),
@@ -185,10 +187,21 @@ class RegisterFieldLabelsEvent extends Event
             'settings.maxLength' => \Craft::t('app', 'Max Length'),
         ];
         $labels[Matrix::class] = [
-            'settings.minBlocks' => \Craft::t('app', 'Min Blocks'),
-            'settings.maxBlocks' => \Craft::t('app', 'Max Blocks'),
+            'settings.entryTypes' => \Craft::t('app', 'Entry Types'),
+            'settings.siteSettings' => \Craft::t('app', 'Site Settings'),
             'settings.propagationMethod' => \Craft::t('app', 'Propagation Method'),
+            'settings.minEntries' => \Craft::t('app', 'Min Entries'),
+            'settings.maxEntries' => \Craft::t('app', 'Max Entries'),
+            'settings.viewMode' => \Craft::t('app', 'View Mode'),
+            'settings.showCardsInGrid' => \Craft::t('app', 'Show cards in a grid'),
+            'settings.createButtonLabel' => \Craft::t('app', '“New” Button Label'),
         ];
+        $labels[Addresses::class] = [
+            'settings.minAddresses' => \Craft::t('app', 'Min Addresses'),
+            'settings.maxAddresses' => \Craft::t('app', 'Max Addresses'),
+            'settings.viewMode' => \Craft::t('app', 'View Mode'),
+        ];
+
         $this->labels = $labels;
     }
 }

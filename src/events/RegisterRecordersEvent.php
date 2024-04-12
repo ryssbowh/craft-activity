@@ -15,7 +15,6 @@ use Ryssbowh\Activity\recorders\Dashboard;
 use Ryssbowh\Activity\recorders\EmailSettings;
 use Ryssbowh\Activity\recorders\Entries;
 use Ryssbowh\Activity\recorders\EntryTypes;
-use Ryssbowh\Activity\recorders\FieldGroups;
 use Ryssbowh\Activity\recorders\Fields;
 use Ryssbowh\Activity\recorders\FileSystems;
 use Ryssbowh\Activity\recorders\GeneralSettings;
@@ -23,13 +22,13 @@ use Ryssbowh\Activity\recorders\GlobalSets;
 use Ryssbowh\Activity\recorders\Globals;
 use Ryssbowh\Activity\recorders\ImageTransforms;
 use Ryssbowh\Activity\recorders\Mailer;
-use Ryssbowh\Activity\recorders\MatrixBlocks;
 use Ryssbowh\Activity\recorders\Plugins;
 use Ryssbowh\Activity\recorders\Routes;
 use Ryssbowh\Activity\recorders\Sections;
 use Ryssbowh\Activity\recorders\SiteGroups;
 use Ryssbowh\Activity\recorders\Sites;
 use Ryssbowh\Activity\recorders\Tags;
+use Ryssbowh\Activity\recorders\UserAddresses;
 use Ryssbowh\Activity\recorders\UserGroups;
 use Ryssbowh\Activity\recorders\UserGroupsPermissions;
 use Ryssbowh\Activity\recorders\UserLayout;
@@ -52,44 +51,43 @@ class RegisterRecordersEvent extends Event
     {
         parent::init();
         $this->addMany([
-            'addressLayout' => new AddressLayout,
-            'sites' => new Sites,
-            'siteGroups' => new SiteGroups,
-            'application' => new Application,
-            'assets' => new Assets,
-            'assetSettings' => new AssetSettings,
-            'backup' => new Backup,
-            'categories' => new Categories,
-            'categoryGroups' => new CategoryGroups,
-            'dashboard' => new Dashboard,
-            'entries' => new Entries,
-            'entryTypes' => new EntryTypes,
-            'emailSettings' => new EmailSettings,
-            'fieldGroups' => new FieldGroups,
-            'fields' => new Fields,
-            'fileSystems' => new FileSystems,
-            'globals' => new Globals,
-            'globalSets' => new GlobalSets,
-            'imageTransforms' => new ImageTransforms,
-            'matrixBlocks' => new MatrixBlocks,
-            'mailer' => new Mailer,
-            'plugins' => new Plugins,
-            'routes' => new Routes,
-            'sections' => new Sections,
-            'generalSettings' => new GeneralSettings,
-            'tags' => new Tags,
-            'users' => new Users,
-            'userLayout' => new UserLayout,
-            'userGroups' => new UserGroups,
-            'userGroupsPermissions' => new UserGroupsPermissions,
-            'userSettings' => new UserSettings,
-            'volumes' => new Volumes
+            'addressLayout' => new AddressLayout(),
+            'sites' => new Sites(),
+            'siteGroups' => new SiteGroups(),
+            'application' => new Application(),
+            'assets' => new Assets(),
+            'assetSettings' => new AssetSettings(),
+            'backup' => new Backup(),
+            'categories' => new Categories(),
+            'categoryGroups' => new CategoryGroups(),
+            'dashboard' => new Dashboard(),
+            'entries' => new Entries(),
+            'entryTypes' => new EntryTypes(),
+            'emailSettings' => new EmailSettings(),
+            'fields' => new Fields(),
+            'fileSystems' => new FileSystems(),
+            'globals' => new Globals(),
+            'globalSets' => new GlobalSets(),
+            'imageTransforms' => new ImageTransforms(),
+            'mailer' => new Mailer(),
+            'plugins' => new Plugins(),
+            'routes' => new Routes(),
+            'sections' => new Sections(),
+            'generalSettings' => new GeneralSettings(),
+            'tags' => new Tags(),
+            'users' => new Users(),
+            'userAddresses' => new UserAddresses(),
+            'userLayout' => new UserLayout(),
+            'userGroups' => new UserGroups(),
+            'userGroupsPermissions' => new UserGroupsPermissions(),
+            'userSettings' => new UserSettings(),
+            'volumes' => new Volumes()
         ]);
     }
 
     /**
      * Get registered recorders
-     * 
+     *
      * @return array
      */
     public function getRecorders(): array
@@ -99,7 +97,7 @@ class RegisterRecordersEvent extends Event
 
     /**
      * Add a recorder to register
-     * 
+     *
      * @param string   $name
      * @param Recorder $recorder
      * @param boolean  $replace
@@ -114,7 +112,7 @@ class RegisterRecordersEvent extends Event
 
     /**
      * Add many recorders to register
-     * 
+     *
      * @param array   $recorders
      * @param boolean $replace
      */

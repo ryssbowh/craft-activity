@@ -64,6 +64,9 @@ class Users extends ElementsRecorder
         Event::on(CraftUsers::class, CraftUsers::EVENT_AFTER_ACTIVATE_USER, function ($event) {
             Activity::getRecorder('users')->onActivated($event->user);
         });
+        Event::on(CraftUsers::class, CraftUsers::EVENT_AFTER_DEACTIVATE_USER, function ($event) {
+            Activity::getRecorder('users')->onDeactivated($event->user);
+        });
         Event::on(CraftUsers::class, CraftUsers::EVENT_AFTER_ASSIGN_USER_TO_GROUPS, function ($event) {
             Activity::getRecorder('users')->onAssignGroups($event->userId, $event->newGroupIds, $event->removedGroupIds);
         });
@@ -252,6 +255,23 @@ class Users extends ElementsRecorder
             $type = 'userSelfActivated';
             $params['user'] = $user;
         }
+        if (!$this->shouldSaveLog($type)) {
+            return;
+        }
+        $this->commitLog($type, $params);
+    }
+
+    /**
+     * Save a log when a user is deactivated
+     *
+     * @param User $user
+     */
+    public function onDeactivated(User $user)
+    {
+        $params = [
+            'element' => $user,
+        ];
+        $type = 'userDeactivated';
         if (!$this->shouldSaveLog($type)) {
             return;
         }

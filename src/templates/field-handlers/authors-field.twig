@@ -1,0 +1,44 @@
+{% import "activity/includes/macros" as macros %}
+
+{% macro authorValue(ids, names) %}
+    {% set markdown = [] %}
+    {% for index, id in ids %}
+        {% set user = craft.users.id(id).anyStatus().one() %}
+        {% if user %}
+            {% set markdown = markdown|merge([macros.htmlElementValue(user, 'friendlyName')]) %}
+        {% else %}
+            {% set markdown = markdown|merge([names[index]]) %}
+        {% endif %}
+    {% endfor %}
+    {{ markdown|join(', ')|raw }}
+{% endmacro %}
+
+{% macro authorFromValue(field) %}
+    {{ _self.authorValue(field.data.f, field.data.ff) }}
+{% endmacro %}
+
+{% macro authorToValue(field) %}
+    {{ _self.authorValue(field.data.t, field.data.tf) }}
+{% endmacro %}
+
+{% set hasFrom = 'f' in field.data|keys %}
+{% set hasTo = 't' in field.data|keys %}
+<li>
+    {% if hasFrom and hasTo %}
+        {{ "Author(s) was changed from {from} to {to}"|t('activity', {
+            field: field.data.name,
+            from: _self.authorFromValue(field)|spaceless,
+            to: _self.authorToValue(field)|spaceless,
+        })|raw }}
+    {% elseif hasTo %}
+        {{ "Author(s) was set to {to}"|t('activity', {
+            field: field.data.name,
+            to: _self.authorToValue(field)|spaceless,
+        })|raw }}
+    {% elseif hasFrom %}
+        {{ "Author(s) ({from}) was removed"|t('activity', {
+            field: field.data.name,
+            from: _self.authorFromValue(field)|spaceless,
+        })|raw }}
+    {% endif %}
+</li>

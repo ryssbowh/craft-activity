@@ -1,0 +1,38 @@
+{% import "activity/includes/macros" as macros %}
+
+{% set fieldId = field.id ?? data.fieldId %}
+{% set key = (data.key is defined) ? data.key ~ '.blocks.' : 'blocks.' %}
+
+<li>
+    {% if field.data.blocks %}
+        {{ 'Field {field} was changed'|t('activity', {
+            field: field.data.name
+        }) }}
+        <ul>
+            {% for block in field.data.blocks %}
+                {% if block.mode == 'changed' %}
+                    {% if block.t ?? null is same as(true) and block.f ?? null is same as(false) %}
+                        <li>{{ 'Block {block} was enabled'|t('activity', {
+                            block: block.title
+                        }) }}</li>
+                    {% elseif block.t ?? null is same as(false) and block.f ?? null is same as(true) %}
+                        <li>{{ 'Block {block} was disabled'|t('activity', {
+                            block: block.title
+                        }) }}</li>
+                    {% endif %}
+                {% elseif block.mode == 'removed' %}
+                    <li>{{ 'Block {block} was removed'|t('activity', {block: block.title}) }}
+                    </li>
+                {% else %}
+                    <li>{{ 'Block {block} was added'|t('activity', {block: block.title}) }}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        {{ 'Field {field} was set to {value}'|t('activity', {
+            field: field.data.name,
+            value: '<code>null</code>'
+        })|raw }}
+    {% endif %}
+</li>

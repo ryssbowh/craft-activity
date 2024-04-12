@@ -20,8 +20,10 @@ use Ryssbowh\Activity\traits\TypedLinkField;
 use Ryssbowh\Activity\traits\VizyField;
 use Ryssbowh\Activity\twig\ActivityExtension;
 use Ryssbowh\Activity\twig\TwigActivity;
+use craft\base\Element;
 use craft\base\Model;
 use craft\base\Plugin;
+use craft\elements\User;
 use craft\services\Elements;
 use craft\services\Gc;
 use craft\services\Plugins;
@@ -177,12 +179,10 @@ class Activity extends Plugin
      */
     protected function registerUserHook()
     {
-        \Craft::$app->view->hook('cp.users.edit.details', function (array &$context) {
-            if (\Craft::$app->user->identity->can('viewActivityLogs')) {
-                return \Craft::$app->view->renderTemplate('activity/user-latest-activity', [
-                    'user' => $context['user']
-                ]);
-            }
+        Event::on(User::class, Element::EVENT_DEFINE_SIDEBAR_HTML, function (Event $event) {
+            $event->html .= \Craft::$app->view->renderTemplate('activity/user-latest-activity', [
+                'user' => $event->sender
+            ]);
         });
     }
 

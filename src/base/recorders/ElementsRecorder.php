@@ -173,10 +173,12 @@ abstract class ElementsRecorder extends Recorder
     protected function shouldSaveElementLog(string $type, Element $element): bool
     {
         $settings = Activity::$plugin->settings;
+        $root = ElementHelper::rootElement($element);
         if (!$this->shouldSaveLog($type) or
-            ElementHelper::isDraftOrRevision($element) or
-            ($settings->ignorePropagate and $element->propagating) or
-            ($settings->ignoreResave and $element->resaving)) {
+            $root->getIsDraft() or
+            $root->getIsRevision() or
+            ($settings->ignorePropagate and $root->propagating) or
+            ($settings->ignoreResave and $root->resaving)) {
             return false;
         }
         return true;

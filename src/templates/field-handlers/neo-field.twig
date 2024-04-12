@@ -57,7 +57,7 @@
         {% endif %}
         {% if block.type ?? null %}
             <li>{{ 'Block type was set to {to}'|t('activity', {
-                from: '<code>' ~ block.type ~ '</code>'
+                to: '<code>' ~ block.type ~ '</code>'
             })|raw }}</li>
         {% endif %}
         {{ _self.neoBlockFields(field, block, key) }}

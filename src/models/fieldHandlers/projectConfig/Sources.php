@@ -47,7 +47,7 @@ class Sources extends DefaultHandler
 
     /**
      * Get a source name
-     * 
+     *
      * @param  string $source
      * @return string
      */
@@ -60,7 +60,7 @@ class Sources extends DefaultHandler
             $model = \Craft::$app->volumes->getVolumeByUid($elems[1] ?? '');
             return $model ? $model->name : $source;
         } elseif ($elems[0] == 'section') {
-            $model = \Craft::$app->sections->getSectionByUid($elems[1] ?? '');
+            $model = \Craft::$app->entries->getSectionByUid($elems[1] ?? '');
             return $model ? $model->name : $source;
         } elseif ($elems[0] == 'group') {
             $model = \Craft::$app->userGroups->getGroupByUid($elems[1] ?? '');

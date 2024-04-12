@@ -4,15 +4,15 @@ namespace Ryssbowh\Activity\recorders;
 
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\ElementsRecorder;
-use Ryssbowh\Activity\models\fieldHandlers\elements\Author;
+use Ryssbowh\Activity\models\fieldHandlers\elements\Authors;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Date;
 use Ryssbowh\Activity\models\fieldHandlers\elements\Plain;
 use craft\base\Element;
 use craft\elements\Entry;
 use craft\services\Elements;
+use craft\services\Entries as CraftEntries;
 use craft\services\ProjectConfig;
 use craft\services\Revisions;
-use craft\services\Sections;
 use yii\base\Event;
 
 class Entries extends ElementsRecorder
@@ -47,11 +47,11 @@ class Entries extends ElementsRecorder
                 Activity::getRecorder('entries')->stopRecording();
             });
         }
-        //------------Emoty log queue after entry types have been created/removed
-        Event::on(Sections::class, Sections::EVENT_AFTER_SAVE_ENTRY_TYPE, function (Event $event) {
+        //------------Empty log queue after entry types have been created/removed
+        Event::on(CraftEntries::class, CraftEntries::EVENT_AFTER_SAVE_ENTRY_TYPE, function (Event $event) {
             Activity::getRecorder('entries')->emptyQueue();
         });
-        Event::on(Sections::class, Sections::EVENT_AFTER_DELETE_ENTRY_TYPE, function (Event $event) {
+        Event::on(CraftEntries::class, CraftEntries::EVENT_AFTER_DELETE_ENTRY_TYPE, function (Event $event) {
             Activity::getRecorder('entries')->emptyQueue();
         });
         //------------
@@ -104,6 +104,8 @@ class Entries extends ElementsRecorder
      */
     protected function getFieldsValues(Element $entry): array
     {
+        $statuses = Entry::statuses();
+        $statuses['enabled'] = \Craft::t('app', 'Enabled');
         $fields = array_merge(
             [
                 'slug' => new Plain([
@@ -112,7 +114,7 @@ class Entries extends ElementsRecorder
                 ]),
                 'status' => new Plain([
                     'name' => \Craft::t('app', 'Status'),
-                    'value' => Entry::statuses()[$entry->status],
+                    'value' => $statuses[$entry->status],
                 ]),
                 'postDate' => new Date([
                     'name' => \Craft::t('app', 'Post date'),
@@ -122,15 +124,13 @@ class Entries extends ElementsRecorder
                     'name' => \Craft::t('app', 'Expiry date'),
                     'rawValue' => $entry->expiryDate,
                 ]),
+                'authors' => new Authors([
+                    'name' => \Craft::t('app', 'Authors'),
+                    'rawValue' => $entry->authors
+                ])
             ],
             $this->getCustomFieldValues($entry)
         );
-        if ($entry->section->type != 'single' and $entry->author) {
-            $fields['author'] = new Author([
-                'name' => \Craft::t('app', 'Author'),
-                'rawValue' => $entry->author
-            ]);
-        }
         return $fields;
     }
 }
