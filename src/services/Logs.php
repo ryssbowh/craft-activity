@@ -10,10 +10,12 @@ use Ryssbowh\Activity\models\ChangedField;
 use Ryssbowh\Activity\records\ActivityChangedField;
 use Ryssbowh\Activity\records\ActivityLog;
 use craft\base\Component;
+use craft\console\Application;
 use craft\db\ActiveQuery;
 use craft\db\Paginator;
 use craft\db\Query;
 use craft\elements\User;
+use craft\helpers\Console;
 use craft\web\Request;
 use craft\web\twig\variables\Paginate;
 
@@ -283,5 +285,9 @@ class Logs extends Component
         }
         $date = (new \DateTime())->sub(new \DateInterval('P' . $threshold . 'D'));
         ActivityLog::deleteAll(['<', 'dateCreated', $date->format('Y-m-d H:i:s')]);
+        if (\Craft::$app instanceof Application) {
+            Console::stdout('    > deleting activity logs older than ' . $threshold . " days... ");
+            Console::stdout("done\n", Console::FG_GREEN);
+        }
     }
 }
