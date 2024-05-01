@@ -1,6 +1,6 @@
 # ryssbowh/craft-activity Changelog
 
-## 3.0.0 - 2024-05-12
+## 3.0.0 - unreleased
 
 ### Changed
 
@@ -17,6 +17,7 @@
 - Added log `Ryssbowh\Activity\models\logs\addresses\UserAddressDeleted`
 - Added log `Ryssbowh\Activity\models\logs\addresses\UserAddressSaved`
 - Added log `Ryssbowh\Activity\models\logs\users\UserDeactivated`
+- Added method `Ryssbowh\Activity\services\Recorders::emptyQueues`
 
 ### Removed
 
