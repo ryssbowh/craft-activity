@@ -61,6 +61,8 @@ class Recorders extends ServiceLocator
 
     /**
      * Empty queues of all recorders
+     *
+     * @since 3.0.0
      */
     public function emptyQueues()
     {
