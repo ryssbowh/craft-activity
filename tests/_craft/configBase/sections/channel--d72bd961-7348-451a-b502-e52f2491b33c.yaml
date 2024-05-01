@@ -1,5 +1,7 @@
 defaultPlacement: end
 enableVersioning: true
+entryTypes:
+  - 782cb4cb-f7ad-4fa7-bece-e8b3d4c287c6 # Channel
 handle: channel
 name: Channel
 previewTargets:

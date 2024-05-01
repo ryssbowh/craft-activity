@@ -11,6 +11,7 @@ class VolumesTest extends BaseTest
         $volume = new Volume([
             'name' => 'Test',
             'handle' => 'test',
+            'subpath' => 'test',
             'fs' => \Craft::$app->fs->getFilesystemByHandle('default')
         ]);
         $this->assertTrue(\Craft::$app->volumes->saveVolume($volume));

@@ -19,4 +19,4 @@ $devMode = true;
 TestSetup::configureCraft();
 
 //This is needed during the creation of a volume
-\Craft::setAlias('@webroot', __DIR__ . '/_craft/web');
+\Craft::setAlias('@webroot', __DIR__ . '/../../../web');

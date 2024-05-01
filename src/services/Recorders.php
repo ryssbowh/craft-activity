@@ -8,7 +8,7 @@ use yii\di\ServiceLocator;
 
 class Recorders extends ServiceLocator
 {
-    const EVENT_REGISTER = 'register';
+    public const EVENT_REGISTER = 'register';
 
     /**
      * @var boolean
@@ -23,7 +23,7 @@ class Recorders extends ServiceLocator
         if ($this->registered) {
             return;
         }
-        $event = new RegisterRecordersEvent;
+        $event = new RegisterRecordersEvent();
         $this->trigger(self::EVENT_REGISTER, $event);
         $this->setComponents($event->recorders);
         $this->registered = true;
@@ -56,6 +56,16 @@ class Recorders extends ServiceLocator
     {
         foreach ($this->getComponents(false) as $recorder) {
             $recorder->startRecording();
+        }
+    }
+
+    /**
+     * Empty queues of all recorders
+     */
+    public function emptyQueues()
+    {
+        foreach ($this->getComponents(false) as $recorder) {
+            $recorder->emptyQueue();
         }
     }
 }

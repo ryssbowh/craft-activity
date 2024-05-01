@@ -99,9 +99,8 @@ class ElementsTest extends BaseTest
 
     protected function createEntry()
     {
-        $section = \Craft::$app->sections->getSectionByHandle('channel');
-        $entryTypes = $section->getEntryTypes();
-        $entryType = reset($entryTypes);
+        $section = \Craft::$app->entries->getSectionByHandle('channel');
+        $entryType = \Craft::$app->entries->getEntryTypeByHandle('channel');
         $user = User::find()->one();
         return new Entry([
             'sectionId' => $section->id,

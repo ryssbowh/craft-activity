@@ -9,8 +9,7 @@ class FieldsTest extends BaseTest
         $this->resetActivity();
         $field = new PlainText([
             'name' => 'Test',
-            'handle' => 'test',
-            'groupId' => \Craft::$app->fields->getAllGroups()[0]->id
+            'handle' => 'test'
         ]);
         $this->assertTrue(\Craft::$app->fields->saveField($field));
         $this->assertLogCount(1);

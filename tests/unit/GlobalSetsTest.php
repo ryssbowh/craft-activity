@@ -1,6 +1,8 @@
 <?php
 
 use craft\elements\GlobalSet;
+use craft\models\FieldLayout;
+use craft\models\FieldLayoutTab;
 
 class GlobalSetsTest extends BaseTest
 {
@@ -9,7 +11,12 @@ class GlobalSetsTest extends BaseTest
         $this->resetActivity();
         $set = new GlobalSet([
             'name' => 'Test',
-            'handle' => 'test'
+            'handle' => 'test',
+            'fieldLayout' => new FieldLayout([
+                'tabs' => [new FieldLayoutTab([
+                    'name' => 'Test'
+                ])]
+            ])
         ]);
         $this->assertTrue(\Craft::$app->globals->saveSet($set));
         $this->assertLogCount(1);

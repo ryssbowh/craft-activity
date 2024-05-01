@@ -7,6 +7,7 @@ class RoutesTest extends BaseTest
 {
     public function _before()
     {
+        parent::_before();
         Activity::$plugin->settings->ignoreRules = [];
     }
 

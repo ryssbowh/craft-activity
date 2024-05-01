@@ -4,15 +4,15 @@ fieldLayouts:
       -
         elementCondition: null
         elements:
-        -
+          -
             elementCondition: null
-            fieldUid: e62c6607-e845-4656-98e9-e021b18067be
+            fieldUid: 3d96efc0-85b3-4dc1-bf91-45da1b309776
             instructions: null
             label: null
             required: false
             tip: null
             type: craft\fieldlayoutelements\CustomField
-            uid: 3d96efc0-85b3-4dc1-bf91-45da1b309776
+            uid: 3d96efc0-85b3-4dc1-bf91-45da1b309777
             userCondition: null
             warning: null
             width: 100

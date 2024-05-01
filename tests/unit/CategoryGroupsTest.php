@@ -8,13 +8,14 @@ class CategoryGroupsTest extends BaseTest
     public function testCategoryGroup()
     {
         $this->resetActivity();
+        $site = \Craft::$app->sites->getPrimarySite();
         $settings = new CategoryGroup_SiteSettings([
-            'siteId' => 1
+            'siteId' => $site->id
         ]);
         $group = new CategoryGroup([
             'name' => 'Test',
             'handle' => 'test',
-            'siteSettings' => [1 => $settings]
+            'siteSettings' => [$site->id => $settings]
         ]);
         $this->assertTrue(\Craft::$app->categories->saveGroup($group));
         $this->assertLogCount(1);

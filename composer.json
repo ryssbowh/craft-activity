@@ -21,12 +21,12 @@
         "mpdf/mpdf": "^8.1"
     },
     "require-dev": {
-        "codeception/codeception": "^4.0",
-        "codeception/module-asserts": "^1.0.0",
-        "codeception/module-phpbrowser": "^1.0.0",
-        "codeception/module-yii2": "^1.0.0",
+        "codeception/codeception": "^5.0",
+        "codeception/module-asserts": "^3.0",
+        "codeception/module-phpbrowser": "^3.0",
+        "codeception/module-yii2": "^1.0",
         "codeception/stub": "^3.0",
-        "vlucas/phpdotenv": "^3.0",
+        "vlucas/phpdotenv": "^5.4",
         "symfony/var-dumper": "^5.3"
     },
     "autoload": {

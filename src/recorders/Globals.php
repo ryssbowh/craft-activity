@@ -67,4 +67,12 @@ class Globals extends ElementsRecorder
     {
         return $this->getCustomFieldValues($global);
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getSavedActivityType(Element $element): string
+    {
+        return $this->getActivityHandle() . 'Saved';
+    }
 }
