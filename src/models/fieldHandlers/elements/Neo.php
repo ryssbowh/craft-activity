@@ -106,10 +106,17 @@ class Neo extends ElementFieldHandler
         foreach (array_intersect_key($newBlocks, $oldBlocks) as $id => $block) {
             $blockIsDirty = false;
             $blockDirty = [
-                'order' => $id + 1,
+                'order' => $block['order'],
                 'mode' => 'changed'
             ];
             $oldBlock = $oldBlocks[$id];
+            if ($block['order'] != $oldBlock['order']) {
+                $blockIsDirty = true;
+                $blockDirty['order'] = [
+                    'f' => $oldBlock['order'],
+                    't' => $block['order'],
+                ];
+            }
             if ($block['enabled'] != $oldBlock['enabled']) {
                 $blockIsDirty = true;
                 $blockDirty['enabled'] = [
@@ -161,7 +168,7 @@ class Neo extends ElementFieldHandler
         foreach ($newBlocks as $id => $block) {
             if (!isset($oldBlocks[$id])) {
                 $dirty = [
-                    'order' => $id + 1,
+                    'order' => $block['order'],
                     'mode' => 'added',
                     'enabled' => $block['enabled'],
                     'type' => $block['type'],
@@ -179,7 +186,7 @@ class Neo extends ElementFieldHandler
         foreach ($oldBlocks as $id => $block) {
             if (!isset($newBlocks[$id])) {
                 $dirty = [
-                    'order' => $id + 1,
+                    'order' => $block['order'],
                     'mode' => 'removed',
                     'enabled' => $block['enabled'],
                     'type' => $block['type'],
@@ -210,9 +217,11 @@ class Neo extends ElementFieldHandler
         foreach ($blocks as $block) {
             $children[$block->id] = $block->getChildren()->anyStatus()->all();
         }
+        $order = 1;
         foreach ($blocks as $block) {
             if ($block->level == 1) {
-                $value[] = $this->buildBlockValues($block, $children);
+                $value[$block->id] = $this->buildBlockValues($block, $children, $order);
+                $order++;
             }
         }
         return $value;
@@ -223,9 +232,10 @@ class Neo extends ElementFieldHandler
      *
      * @param  Block  $block
      * @param  array $children Children for all blocks
+     * @param  int $order
      * @return array
      */
-    protected function buildBlockValues(Block $block, array $children): array
+    protected function buildBlockValues(Block $block, array $children, int $order): array
     {
         $fields = [];
         foreach ($block->getFieldLayout()->getTabs() as $tab) {
@@ -238,13 +248,16 @@ class Neo extends ElementFieldHandler
             }
         }
         $value = [
+            'order' => $order,
             'fields' => $fields,
             'enabled' => $block->enabled,
             'type' => $block->type->handle,
             'children' => []
         ];
+        $order = 1;
         foreach ($children[$block->id] ?? [] as $child) {
-            $value['children'][] = $this->buildBlockValues($child, $children);
+            $value['children'][$child->id] = $this->buildBlockValues($child, $children, $order);
+            $order++;
         }
         return $value;
     }

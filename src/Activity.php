@@ -50,7 +50,7 @@ class Activity extends Plugin
     /**
      * @inheritDoc
      */
-    public string $schemaVersion = '2.3.4';
+    public string $schemaVersion = '2.4.1';
 
     /**
      * @inheritdoc
