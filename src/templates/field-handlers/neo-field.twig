@@ -26,6 +26,12 @@
                 to: '<code>' ~ block.type.t ~ '</code>',
             })|raw }}</li>
         {% endif %}
+        {% if block.order.f ?? null != block.order.t ?? null %}
+            <li>{{ 'Order was changed from {from} to {to}'|t('activity', {
+                from: '<code>' ~ block.order.f ~ '</code>',
+                to: '<code>' ~ block.order.t ~ '</code>',
+            })|raw }}</li>
+        {% endif %}
         {{ _self.neoBlockFields(field, block, key) }}
     </ul>
 {% endmacro %}
@@ -67,7 +73,13 @@
 {% macro neoBlocks(blocks, field, key = '') %}
     {% for row, block in blocks %}
         {% set key = key ~ '.' ~ row %}
-        {% set label = block.order ?? (row + 1) %}
+        {% set label = loop.index %}
+        {% if block.order ?? null %}
+            {% set label = block.order %}
+            {% if block.order is iterable %}
+                {% set label = block.order.t %}
+            {% endif %}
+        {% endif %}
         {% if block.mode == 'changed' %}
             {{ _self.neoBlockChanged(field, block, key, label) }}
         {% elseif block.mode == 'removed' %}

@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.0.1 - 2024-06-30
+
+### Fixed
+- Fixed issue with neo blocks all being tracked and causing a SQL error `1406 Data too long` [#23](https://github.com/ryssbowh/craft-activity/issues/23)
+- Changed table `activity_changed_fields` data column from `text` to `longtext`
+
 ## 3.0.0 - 2024-05-07
 
 ### Changed
