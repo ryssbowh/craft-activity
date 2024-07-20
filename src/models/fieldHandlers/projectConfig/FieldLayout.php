@@ -107,8 +107,8 @@ class FieldLayout extends DefaultHandler
                 $rowIsdirty = true;
                 $rowDirty['label'] = [
                     'label' => \Craft::t('app', 'Label'),
-                    'f' => $oldFields[$uid]['label'],
-                    't' => $newFields[$uid]['label']
+                    'f' => $oldFields[$uid]['label'] ?? '',
+                    't' => $newFields[$uid]['label'] ?? ''
                 ];
             }
             if (($newFields[$uid]['instructions'] ?? null) !== ($oldFields[$uid]['instructions'] ?? null)) {

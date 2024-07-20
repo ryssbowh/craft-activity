@@ -1,5 +1,10 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.4.2 - 2024-07-20
+
+### Fixed
+- Fixed issue that occured when hiding labels [#24](https://github.com/ryssbowh/craft-activity/issues/24)
+
 ## 2.4.1 - 2024-06-30
 
 ### Fixed
