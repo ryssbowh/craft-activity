@@ -48,8 +48,10 @@ class Plugins extends Recorder
         if (!$event->oldValue['enabled'] and $event->newValue['enabled']) {
             $this->onEnabled($handle);
         }
-        if ($event->oldValue['edition'] != $event->newValue['edition']) {
-            $this->onEditionChanged($handle, $event->newValue['edition'], $event->oldValue['edition']);
+        if ($event->oldValue['edition'] ?? null and $event->newValue['edition'] ?? null) {
+            if ($event->oldValue['edition'] != $event->newValue['edition']) {
+                $this->onEditionChanged($handle, $event->newValue['edition'], $event->oldValue['edition']);
+            }
         }
     }
 
