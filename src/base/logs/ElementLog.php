@@ -69,10 +69,14 @@ abstract class ElementLog extends ActivityLog
      */
     public function getElementTitle(): string
     {
-        $title = $this->target_name;
+        $title = $this->target_name ?: '<i>' . \Craft::t('activity', 'No name') . '</i>';
         if ($this->element) {
             $status = '<span class="status ' . $this->element->status . '"></span>';
-            $title = Html::a($status . $this->element->{$this->titleField} . '</span>', $this->element->cpEditUrl, ['target' => '_blank']);
+            $name = $this->element->{$this->titleField};
+            if (!$name) {
+                $name = '<i>' . \Craft::t('activity', 'No name') . '</i>';
+            }
+            $title = Html::a($status . $name . '</span>', $this->element->cpEditUrl, ['target' => '_blank']);
         }
         return $title;
     }
