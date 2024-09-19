@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.0.3 - 2024-09-19
+
+### Fixed
+
+- Fixed issue with possible null plugin edition [#27](https://github.com/ryssbowh/craft-activity/issues/27)
+
 ## 3.0.2 - 2024-09-14
 
 ### Fixed
