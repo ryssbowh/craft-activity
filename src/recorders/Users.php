@@ -338,7 +338,7 @@ class Users extends ElementsRecorder
         $type = 'userPermissionsSaved';
         foreach ($this->permissions as $userId => $oldPerms) {
             $user = User::find()->id($userId)->anyStatus()->one();
-            if (!$this->shouldSaveElementLog($type, $user)) {
+            if (!$user or !$this->shouldSaveElementLog($type, $user)) {
                 continue;
             }
             $newPerms = \Craft::$app->userPermissions->getPermissionsByUserId($userId);
@@ -373,7 +373,7 @@ class Users extends ElementsRecorder
         $this->permissions[$user->id] = \Craft::$app->userPermissions->getPermissionsByUserId($user->id);
         if (!$this->endRequestInitiated) {
             Event::on(Application::class, Application::EVENT_AFTER_REQUEST, function (Event $event) {
-                Activity::getRecorder('users')->saveNewPermissions($event->sender);
+                Activity::getRecorder('users')->saveNewPermissions();
             });
             $this->endRequestInitiated = true;
         }

@@ -155,4 +155,12 @@ class UserAddresses extends ElementsRecorder
         );
         return $fields;
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getRootElement(Element $element): Element
+    {
+        return $element;
+    }
 }

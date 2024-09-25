@@ -173,12 +173,14 @@ abstract class ElementsRecorder extends Recorder
     protected function shouldSaveElementLog(string $type, Element $element): bool
     {
         $settings = Activity::$plugin->settings;
-        $root = ElementHelper::rootElement($element);
-        if (!$this->shouldSaveLog($type) or
+        $root = $this->getRootElement($element);
+        if (
+            !$this->shouldSaveLog($type) or
             $root->getIsDraft() or
             $root->getIsRevision() or
             ($settings->ignorePropagate and $root->propagating) or
-            ($settings->ignoreResave and $root->resaving)) {
+            ($settings->ignoreResave and $root->resaving)
+        ) {
             return false;
         }
         return true;
@@ -197,6 +199,18 @@ abstract class ElementsRecorder extends Recorder
         } else {
             return $this->getActivityHandle() . 'Saved';
         }
+    }
+
+    /**
+     * Get the root element of an element
+     * 
+     * @param Element $element
+     * @return Element
+     * @since 3.0.4
+     */
+    protected function getRootElement(Element $element): Element
+    {
+        return ElementHelper::rootElement($element);
     }
 
     /**

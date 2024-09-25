@@ -1,5 +1,12 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.0.4 - 2024-09-25
+
+### Fixed
+
+- Fixed issue creating users [#28](https://github.com/ryssbowh/craft-activity/issues/28)
+- Fixed issues saving user addresses
+
 ## 3.0.3 - 2024-09-19
 
 ### Fixed
