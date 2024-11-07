@@ -165,10 +165,17 @@ class Activity extends Plugin
         ksort($types);
         $controller = \Craft::$app->controller;
 
+        $userGroups = [];
+        foreach (\Craft::$app->userGroups->getAllGroups() as $group) {
+            $userGroups[$group->handle] = $group->name;
+        }
+
         return $controller->renderTemplate('activity/settings', [
             'settings' => $this->settings,
+            'userGroups' => $userGroups,
             'types' => $types,
-            'plugin' => $this
+            'plugin' => $this,
+            'isPro' => \Craft::$app->getEdition() == \Craft::Pro
         ]);
     }
 

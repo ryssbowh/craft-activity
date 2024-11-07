@@ -1,5 +1,17 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.5.0 - 2024-11-07
+
+### Added
+
+- Added setting to ignore activity for admins
+- Added setting to ignore activity for some user groups
+- Added setting to consider the ignore rules as allow rules
+
+### Fixed
+
+- Fixed issue with field layout instructions [#29](https://github.com/ryssbowh/craft-activity/issues/29)
+
 ## 2.4.3 - 2024-08-03
 
 ### Fixed
