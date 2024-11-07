@@ -1,5 +1,13 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.1.0 - 2024-11-07
+
+### Added
+
+- Added setting to ignore activity for admins
+- Added setting to ignore activity for some user groups
+- Added setting to consider the ignore rules as allow rules
+
 ## 3.0.4 - 2024-09-25
 
 ### Fixed

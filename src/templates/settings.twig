@@ -53,9 +53,40 @@
             })
         }}
 
+        {% if isPro %}
+            {{
+                forms.lightswitchField({
+                    label: 'Ignore activity for admins'|t('activity'),
+                    name: 'ignoreAdmins',
+                    on: settings.ignoreAdmins
+                })
+            }}
+            
+            {% if userGroups %}
+                {{
+                    forms.checkboxSelectField({
+                        options: userGroups,
+                        values: settings.ignoreUserGroups,
+                        label: 'Ignore activity for the following user groups'|t('emails'),
+                        name: 'ignoreUserGroups',
+                    })
+                }}
+            {% endif %}
+        {% endif %}
+
+        {{
+            forms.lightswitchField({
+                label: 'Rules whitelist'|t('activity'),
+                name: 'rulesAreWhitelist',
+                id: 'rulesAreWhitelist',
+                on: settings.rulesAreWhitelist,
+                instructions: 'The rules below will allow instead of ignore'|t('activity'),
+            })
+        }}
+
         <div class="field">
             <div class="heading">
-                <label for="ignore-rules">{{ 'Ignore rules'|t('activity') }}</label>
+                <label for="ignore-rules" id="rules-title" data-allow="{{ 'Allow rules'|t('activity') }}" data-ignore="{{ 'Ignore rules'|t('activity') }}">{{ settings.rulesAreWhitelist ? 'Allow rules'|t('activity') : 'Ignore rules'|t('activity') }}</label>
             </div>
             {{ forms.editableTable({
                 rows: settings.ignoreRules,
@@ -193,3 +224,15 @@
     </div>
     {% endnamespace %}
 {% endblock %}
+
+{% js %}
+    $('#settings-rulesAreWhitelist').change(function () {
+        var switched = $(this).hasClass('on');
+        var label = $('#settings-rules-title');
+        if (switched) {
+            label.html(label.data('allow'));
+        } else {
+            label.html(label.data('ignore'));
+        }
+    });
+{% endjs %}
