@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.5.1 - 2025-02-24
+
+### Fixed
+
+- Fixed installation failing on PostgresQL [#32](https://github.com/ryssbowh/craft-activity/issues/32)
+
 ## 2.5.0 - 2024-11-07
 
 ### Added
