@@ -29,12 +29,13 @@ class Install extends Migration
             'dateUpdated' => $this->dateTime()->notNull(),
             'uid' => $this->uid(),
         ]);
+        $type = $this->getDb()->getDriverName() === 'pgsql' ? $this->text() : 'longtext';
         $this->createTable('{{%activity_changed_fields}}', [
             'id' => $this->primaryKey(),
             'log_id' => $this->integer(11),
             'name' => $this->string(255)->notNull(),
             'handler' => $this->string(255)->notNull(),
-            'data' => 'longtext',
+            'data' => $type,
             'dateCreated' => $this->dateTime()->notNull(),
             'dateUpdated' => $this->dateTime()->notNull(),
             'uid' => $this->uid(),

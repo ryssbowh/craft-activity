@@ -15,7 +15,8 @@ class m240630_075435_ChangeFieldType extends Migration
      */
     public function safeUp(): bool
     {
-        $this->alterColumn('{{%activity_changed_fields}}', 'data', 'longtext');
+        $type = $this->getDb()->getDriverName() === 'pgsql' ? $this->text() : 'longtext';
+        $this->alterColumn('{{%activity_changed_fields}}', 'data', $type);
         return true;
     }
 
