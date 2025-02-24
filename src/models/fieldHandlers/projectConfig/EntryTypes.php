@@ -17,6 +17,9 @@ class EntryTypes extends DefaultHandler
         if ($this->value) {
             $this->fancyValue = [];
             foreach ($this->value as $uid) {
+                if (is_array($uid)) {
+                    $uid = $uid['uid'];
+                }
                 $this->fancyValue[] = $this->getTypeName($uid);
             }
             $this->fancyValue = implode(', ', $this->fancyValue);

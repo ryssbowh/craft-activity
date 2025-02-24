@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.1.2 - 2025-02-24
+
+### Fixed
+
+- Fixed issue saving sections [#31](https://github.com/ryssbowh/craft-activity/issues/31)
+
 ## 3.1.1 - 2025-02-24
 
 ### Fixed
