@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 2.5.2 - 2025-05-07
+
+### Fixed
+
+- Fixed issue saving Neo blocks on globals [#30](https://github.com/ryssbowh/craft-activity/issues/30)
+
 ## 2.5.1 - 2025-02-24
 
 ### Fixed
