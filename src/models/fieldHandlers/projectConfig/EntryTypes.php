@@ -3,6 +3,7 @@
 namespace Ryssbowh\Activity\models\fieldHandlers\projectConfig;
 
 use craft\services\ProjectConfig;
+use craft\helpers\ProjectConfig as ProjectConfigHelper;
 
 /**
  * @since 3.0.0
@@ -16,11 +17,9 @@ class EntryTypes extends DefaultHandler
     {
         if ($this->value) {
             $this->fancyValue = [];
-            foreach ($this->value as $uid) {
-                if (is_array($uid)) {
-                    $uid = $uid['uid'];
-                }
-                $this->fancyValue[] = $this->getTypeName($uid);
+            $this->value = ProjectConfigHelper::unpackAssociativeArrays($this->value);
+            foreach ($this->value as $data) {
+                $this->fancyValue[] = $this->getTypeName(is_array($data) ? $data['uid'] : $data);
             }
             $this->fancyValue = implode(', ', $this->fancyValue);
         }

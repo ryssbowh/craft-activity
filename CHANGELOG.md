@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.1.3 - 2025-05-07
+
+### Fixed
+
+- Fixed issue saving matrix fields [#33](https://github.com/ryssbowh/craft-activity/issues/33)
+
 ## 3.1.2 - 2025-02-24
 
 ### Fixed
