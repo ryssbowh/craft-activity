@@ -39,7 +39,7 @@ class Globals extends ElementsRecorder
         Event::on(GlobalSet::class, GlobalSet::EVENT_BEFORE_SAVE, function ($event) {
             Activity::getRecorder('globals')->beforeSaved($event->sender);
         });
-        Event::on(GlobalSet::class, GlobalSet::EVENT_AFTER_SAVE, function ($event) {
+        Event::on(GlobalSet::class, GlobalSet::EVENT_AFTER_PROPAGATE, function ($event) {
             Activity::getRecorder('globals')->onSaved($event->sender);
         });
     }

@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fixed issue saving matrix fields [#33](https://github.com/ryssbowh/craft-activity/issues/33)
+- Fixed issue saving Neo blocks on globals [#30](https://github.com/ryssbowh/craft-activity/issues/30)
 
 ## 3.1.2 - 2025-02-24
 
