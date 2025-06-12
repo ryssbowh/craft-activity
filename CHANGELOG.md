@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.1.4 - 2025-06-12
+
+- Fixed issue saving table fields without default values [#34](https://github.com/ryssbowh/craft-activity/issues/34)
+
+### Fixed
+
 ## 3.1.3 - 2025-05-07
 
 ### Fixed
