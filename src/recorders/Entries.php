@@ -106,6 +106,7 @@ class Entries extends ElementsRecorder
     {
         $statuses = Entry::statuses();
         $statuses['enabled'] = \Craft::t('app', 'Enabled');
+        $statuses['draft'] = \Craft::t('app', 'Draft');
         $fields = array_merge(
             [
                 'slug' => new Plain([
@@ -114,7 +115,7 @@ class Entries extends ElementsRecorder
                 ]),
                 'status' => new Plain([
                     'name' => \Craft::t('app', 'Status'),
-                    'value' => $statuses[$entry->status] ?? null,
+                    'value' => $statuses[$entry->status],
                 ]),
                 'postDate' => new Date([
                     'name' => \Craft::t('app', 'Post date'),

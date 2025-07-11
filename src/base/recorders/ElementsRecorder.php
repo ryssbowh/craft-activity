@@ -177,7 +177,9 @@ abstract class ElementsRecorder extends Recorder
         if (
             !$this->shouldSaveLog($type) or
             $root->getIsDraft() or
+            $element->getIsDraft() or
             $root->getIsRevision() or
+            $element->getIsRevision() or
             ($settings->ignorePropagate and $root->propagating) or
             ($settings->ignoreResave and $root->resaving)
         ) {
