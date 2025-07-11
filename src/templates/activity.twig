@@ -5,7 +5,7 @@
 
 {% block actionButton %}
     {% if currentUser.can('deleteActivityLogs') %}
-        <a href="#" class="submit btn delete icon {% if not logs %}hidden{% endif %}">{{ "Delete all records"|t('activity') }}</a>
+        <button href="#" class="submit btn delete icon {% if not logs %}hidden{% endif %}">{{ "Delete all records"|t('activity') }}</button>
     {% endif %}
     <button type="button" class="btn menubtn">{{ "Export"|t('activity') }}</button>
     <div class="menu">
