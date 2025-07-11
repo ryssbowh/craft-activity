@@ -114,7 +114,7 @@ class Entries extends ElementsRecorder
                 ]),
                 'status' => new Plain([
                     'name' => \Craft::t('app', 'Status'),
-                    'value' => $statuses[$entry->status],
+                    'value' => $statuses[$entry->status] ?? null,
                 ]),
                 'postDate' => new Date([
                     'name' => \Craft::t('app', 'Post date'),

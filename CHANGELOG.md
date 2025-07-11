@@ -1,10 +1,21 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.1.6 - 2025-07-11
+
+### Fixed
+
+- Fixed issue with draft statuses [#35](https://github.com/ryssbowh/craft-activity/issues/35)
+- Fixed button style
+
 ## 3.1.5 - 2025-06-16
+
+### Fixed
 
 - Fixed issue empty table fields [#34](https://github.com/ryssbowh/craft-activity/issues/34)
 
 ## 3.1.4 - 2025-06-12
+
+### Fixed
 
 - Fixed issue saving table fields without default values [#34](https://github.com/ryssbowh/craft-activity/issues/34)
 
