@@ -1,7 +1,7 @@
 {% import "activity/includes/macros" as macros %}
 
 <li>
-    {% if field.data.rows %}
+    {% if field.data.rows ?? null %}
         {{ 'Field {field} was changed'|t('activity', {
             field: field.data.name
         }) }}

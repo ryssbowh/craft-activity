@@ -23,7 +23,7 @@ class TableDefaultValues extends DefaultHandler
     public function init(): void
     {
         parent::init();
-        $this->value = array_values(ProjectConfigHelper::unpackAssociativeArray($this->value));
+        $this->value = $this->value ? array_values(ProjectConfigHelper::unpackAssociativeArray($this->value)) : [];
     }
 
     /**
