@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.1.7 - 2025-11-12
+
+### Added
+
+- Added extra filters for authors/users/entries/categories/assets
+
 ## 3.1.6 - 2025-07-11
 
 ### Fixed

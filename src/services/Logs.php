@@ -2,6 +2,9 @@
 
 namespace Ryssbowh\Activity\services;
 
+use craft\elements\Asset;
+use craft\elements\Category;
+use craft\elements\Entry;
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\logs\ActivityLog as BaseActivityLog;
 use Ryssbowh\Activity\exceptions\ActivityChangedFieldException;
@@ -184,6 +187,26 @@ class Logs extends Component
             $date = \DateTime::createFromFormat($format, $filters['dateTo']);
             $query->andWhere(['<=', 'dateCreated', $date->format('Y-m-d') . ' 23:59:59']);
         }
+        if ($filters['userElems'] ?? false or $filters['entries'] ?? false or $filters['categories'] ?? false or $filters['assets'] ?? false) {
+            $cond = ['or'];
+            if ($filters['userElems'] ?? false) {
+                $uuids = User::find()->id($filters['userElems'])->status(null)->select('uid')->column();
+                $cond[] = ['and', ['=', 'target_class', User::class], ['in', 'target_uid', $uuids]];
+            }
+            if ($filters['entries'] ?? false) {
+                $uuids = Entry::find()->id($filters['entries'])->status(null)->select('uid')->column();
+                $cond[] = ['and', ['=', 'target_class', Entry::class], ['in', 'target_uid', $uuids]];
+            }
+            if ($filters['categories'] ?? false) {
+                $uuids = Category::find()->id($filters['categories'])->status(null)->select('uid')->column();
+                $cond[] = ['and', ['=', 'target_class', Category::class], ['in', 'target_uid', $uuids]];
+            }
+            if ($filters['assets'] ?? false) {
+                $uuids = Asset::find()->id($filters['assets'])->status(null)->select('uid')->column();
+                $cond[] = ['and', ['=', 'target_class', Asset::class], ['in', 'target_uid', $uuids]];
+            }
+            $query->andWhere($cond);
+        }
         return $query;
     }
 
@@ -234,7 +257,8 @@ class Logs extends Component
      */
     public function deleteLogsByType(array $types, string $target)
     {
-        ActivityLog::deleteAll(['and',
+        ActivityLog::deleteAll([
+            'and',
             ['in', 'type', $types],
             ['target_uid' => $target]
         ]);

@@ -1,0 +1,55 @@
+{% import "_includes/forms" as forms %}
+
+<div class="modal" id="activity-filters-modal" aria-modal="true" role="dialog" style="display: none">
+    <div class="header">
+        <h3>{{ 'More filters'|t('activity') }}</h3>
+    </div>
+    <div class="body">
+        <div class="content">
+            <p>{{ 'The following filter applies to the author of the activity'|t('activity') }}</p>
+            {{ forms.elementSelect({
+                name: 'users',
+                selectionLabel: 'Authors'|t('app'),
+                elementType: 'craft\\elements\\User',
+                sortable: false,
+                elements: craft.users.id(filters.users ?? []).all(),
+            }) }}
+            <p>{{ 'The following filters apply to the object of the activity and will act as an OR combination'|t('activity') }}</p>
+            <div class="flex">
+                {{ forms.elementSelect({
+                    name: 'userElems',
+                    selectionLabel: 'Users'|t('app'),
+                    elementType: 'craft\\elements\\User',
+                    sortable: false,
+                    elements: craft.users.id(filters.userElems ?? []).all(),
+                }) }}
+                {{ forms.elementSelect({
+                    name: 'entries',
+                    selectionLabel: 'Entries'|t('app'),
+                    elementType: 'craft\\elements\\Entry',
+                    sortable: false,
+                    elements: craft.entries.id(filters.entries ?? []).all(),
+                }) }}
+                {{ forms.elementSelect({
+                    name: 'categories',
+                    selectionLabel: 'Categories'|t('app'),
+                    elementType: 'craft\\elements\\Category',
+                    sortable: false,
+                    elements: craft.categories.id(filters.categories ?? []).all(),
+                }) }}
+                {{ forms.elementSelect({
+                    name: 'assets',
+                    selectionLabel: 'Assets'|t('app'),
+                    elementType: 'craft\\elements\\Asset',
+                    sortable: false,
+                    elements: craft.assets.id(filters.assets ?? []).all(),
+                }) }}
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="buttons right">
+            <button type="button" class="btn js-close">{{ 'Close'|t('app') }}</button>
+        </div>
+    </div>
+</div>

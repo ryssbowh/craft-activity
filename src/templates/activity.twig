@@ -22,25 +22,6 @@
 {% endblock %}
 
 {% block toolbar %}
-    <button type="button" data-icon="users" class="btn menubtn">{{ "Users"|t('app') }}</button>
-    <div class="menu activity-filter" data-name="users">
-        <ul class="padded">
-            <li>
-                <a class="all {% if not filters.users ?? [] %}sel{% endif %}">{{ "All users"|t('app') }}</a>
-            </li>
-            {% for user in users %}
-                <li>
-                    <a data-id="{{ user.id }}" {% if user.id in filters.users ?? [] %}class="sel"{% endif %}>
-                    {% if user.exists %}
-                        <span class="status {{ user.status }}"></span>{{ user.name }}
-                    {% else %}
-                        {{ user.name }}
-                    {% endif %}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
     <button type="button" data-icon="settings" class="btn menubtn">{{ "Types"|t('activity') }}</button>
     <div class="menu activity-filter" data-name="types">
         <ul class="padded">
@@ -82,6 +63,7 @@
             <li><a class="{% if perPage == 100 %}sel{% endif %}">100</a></li>
         </ul>
     </div>
+    <button type="button" class="btn more-filters">{{ "More filters"|t('app') }}<span class="more-filters-count">{{ moreFiltersCount ? '(' ~ moreFiltersCount ~ ')' : '' }}</span></button>
     <div class="input">
         <input type="checkbox" class="checkbox js-hot-reload" id="activity-hot-reload">
         <label for="activity-hot-reload">{{ 'Hot reload'|t('activity') }}</label>
@@ -113,6 +95,7 @@
         {% include "activity/activity-pager" %}
     </div>
     {% include "activity/activity-field-modal" %}
+    {% include "activity/activity-filters-modal" %}
 {% endblock %}
 
 {% js on ready %}

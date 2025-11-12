@@ -17,6 +17,12 @@ class ActivityController extends Controller
         $this->requirePermission('viewActivityLogs');
         \Craft::$app->view->registerAssetBundle(ActivityAssets::class);
         $filters = $this->request->getParam('filters', []);
+        $moreFiltersCount = 0;
+        foreach (['users', 'userElems', 'entries', 'categories', 'assets'] as $key) {
+            if (isset($filters[$key])) {
+                $moreFiltersCount += count($filters[$key]);
+            }
+        }
         $perPage = (int)$this->request->getParam('perPage', 20);
         list($paginator, $logs) = Activity::$plugin->logs->getPaginatedLogs($filters, $perPage);
         $types = [];
@@ -36,7 +42,8 @@ class ActivityController extends Controller
             'users' => $users,
             'filters' => $filters,
             'perPage' => $perPage,
-            'exporters' => Activity::$plugin->exporters->all
+            'exporters' => Activity::$plugin->exporters->all,
+            'moreFiltersCount' => $moreFiltersCount
         ]);
     }
 

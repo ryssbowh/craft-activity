@@ -1,62 +1,84 @@
 .icon.arrow {
-    width: 8px;
-    height: 8px;
-    margin-left: 5px;
+  width: 8px;
+  height: 8px;
+  margin-left: 5px;
 }
 
 .icon.arrow:after {
-    transition: all 0.3s;
-    display: inline-block;
-    content: "";
-    font-size: 0;
-    width: 5px;
-    height: 5px;
-    border: solid var(--ui-control-color);
-    border-width: 0 2px 2px 0;
-    -webkit-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
-    position: relative;
+  transition: all 0.3s;
+  display: inline-block;
+  content: "";
+  font-size: 0;
+  width: 6px;
+  height: 6px;
+  border: solid var(--ui-control-color);
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: relative;
+  margin-bottom: 2px;
 }
 
 .icon.arrow.down:after {
-    -webkit-transform: rotate(-135deg);
-    -o-transform: rotate(-135deg);
-    transform: rotate(-135deg);
-    margin-top: 2px;
+  -webkit-transform: rotate(-135deg);
+  -o-transform: rotate(-135deg);
+  transform: rotate(-135deg);
 }
 
 #action-buttons .delete.icon::before {
-    color: white;
-    margin-bottom: 5px;
+  color: white;
+  margin-bottom: 5px;
 }
 
 #toolbar {
-    align-items: baseline;
+  align-items: baseline;
 }
 
 #activity-table ul {
-    list-style: initial;
-    margin-left: 15px;
+  list-style: initial;
+  margin-left: 15px;
 }
 
 #activity-table .status {
-    margin-right: 3px;
-}
-
-#reset-filters {
-    margin-top: 7px;
+  margin-right: 3px;
 }
 
 #activity-field-modal .body {
-    height: calc(100% - 114px);
-    overflow-y: auto;
+  height: calc(100% - 114px);
+  overflow-y: auto;
 }
 
 #activity-field-modal .content {
-    overflow-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 header #toolbar {
-    justify-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn.more-filters::before {
+  font-family: Craft;
+  display: inline-block;
+  content: "filter";
+  margin-right: 5px;
+}
+
+#activity-filters-modal .footer {
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+}
+
+#activity-filters-modal .body {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-bottom: 5rem;
+}
+
+.more-filters-count {
+  margin-left: 2px;
 }
