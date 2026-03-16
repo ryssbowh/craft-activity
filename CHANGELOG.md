@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.1.8 - 2026-03-16
+
+### Fixed
+
+- Ensured the CkEditorConfig field handler is not registered when the ckeditor plugin version is over 2.0.0
+
 ## 3.1.7 - 2025-11-12
 
 ### Added
