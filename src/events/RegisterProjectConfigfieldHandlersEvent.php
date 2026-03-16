@@ -79,7 +79,7 @@ class RegisterProjectConfigfieldHandlersEvent extends Event
         ]);
         if (\Craft::$app->getPlugins()->isPluginEnabled('ckeditor')) {
             $plugin = \Craft::$app->getPlugins()->getPlugin('ckeditor');
-            if ($plugin and version_compare($plugin->version, '2.0.0', '<')) {
+            if ($plugin and version_compare($plugin->version, '5.0.0', '<')) {
                 $this->add(CkEditorConfig::class);
             }
         }
