@@ -18,7 +18,8 @@
     ],
     "require": {
         "craftcms/cms": "^5.0",
-        "mpdf/mpdf": "^8.1"
+        "mpdf/mpdf": "^8.1",
+        "league/csv": "^9.0"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",

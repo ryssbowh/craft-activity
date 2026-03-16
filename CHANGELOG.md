@@ -6,6 +6,10 @@
 
 - Ensured the CkEditorConfig field handler is not registered when the ckeditor plugin version is over 2.0.0
 
+### Added
+
+- CSV exporter
+
 ## 3.1.7 - 2025-11-12
 
 ### Added

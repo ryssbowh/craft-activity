@@ -4,6 +4,7 @@ namespace Ryssbowh\Activity\events;
 
 use Ryssbowh\Activity\base\Exporter;
 use Ryssbowh\Activity\exceptions\ExporterException;
+use Ryssbowh\Activity\exporters\Csv;
 use Ryssbowh\Activity\exporters\Pdf;
 use Ryssbowh\Activity\exporters\Text;
 use yii\base\Event;
@@ -26,6 +27,7 @@ class RegisterExportersEvent extends Event
         parent::init();
         $this->add(new Text);
         $this->add(new Pdf);
+        $this->add(new Csv());
     }
 
     /**
