@@ -2,6 +2,7 @@
 
 namespace Ryssbowh\Activity\recorders;
 
+use craft\errors\InvalidPluginException;
 use Ryssbowh\Activity\Activity;
 use Ryssbowh\Activity\base\recorders\Recorder;
 use Ryssbowh\Activity\traits\ProjectConfigFields;
@@ -64,10 +65,14 @@ class Plugins extends Recorder
         if (!$this->shouldSaveLog('pluginInstalled')) {
             return;
         }
-        $info = \Craft::$app->plugins->getPluginInfo($handle);
+        try {
+            $name = \Craft::$app->plugins->getPluginInfo($handle)['name'];
+        } catch (InvalidPluginException $e) {
+            $name = $handle;
+        }
         $this->commitLog('pluginInstalled', [
             'target_class' => $handle,
-            'target_name' => $info['name']
+            'target_name' => $name
         ]);
     }
 
@@ -82,10 +87,14 @@ class Plugins extends Recorder
         if ($handle == 'activity' or !$this->shouldSaveLog('pluginUninstalled')) {
             return;
         }
-        $info = \Craft::$app->plugins->getPluginInfo($handle);
+        try {
+            $name = \Craft::$app->plugins->getPluginInfo($handle)['name'];
+        } catch (InvalidPluginException $e) {
+            $name = $handle;
+        }
         $this->commitLog('pluginUninstalled', [
             'target_class' => $handle,
-            'target_name' => $info['name']
+            'target_name' => $name
         ]);
     }
 

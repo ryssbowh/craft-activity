@@ -1,5 +1,11 @@
 # ryssbowh/craft-activity Changelog
 
+## 3.1.9 - 2026-11-10
+
+### Fixed
+
+- Fixed issue un/installing plugins during a deployment [#44](https://github.com/ryssbowh/craft-activity/issues/44)
+
 ## 3.1.8 - 2026-03-16
 
 ### Fixed
